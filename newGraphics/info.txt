@@ -1,0 +1,4 @@
+in this folder is a complete set of classes that contain what i believe a more organized way to handle graphics in java
+opposed to one huge class with everything in it, ive made seperate classes for the window, drawing, and the keylistener.
+i've also heavily commented the files so if you need an ELI5 on the classes there you go 
+you're welcome
