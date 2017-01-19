@@ -19,7 +19,7 @@ public class ImageLib {
                                                                    //the string is the file name, while the BufferedImage is the image itself
 
     public ImageLib(){
-        path = "C:\\Users\\Ryan\\IdeaProjects\\testytest\\src\\image"; //make this the path to the folder where the goods ( ͡° ͜ʖ ͡°) are
+        path = "src\\image"; //make this the path to the folder where the goods ( ͡° ͜ʖ ͡°) are
         directory = new File(path);
 
         for (File file : directory.listFiles()){ //this loop goes through the file and puts all the goods ( ͡° ͜ʖ ͡°) into a map
