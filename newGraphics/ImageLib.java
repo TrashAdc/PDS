@@ -33,27 +33,23 @@ public class ImageLib {
     }
 
     public BufferedImage getImage(String filename){ //this method is used to obtain the goods ( ͡° ͜ʖ ͡°) it will return the BufferedImage itself
-        if (imageMap.get(filename) != null)
+        if (imageMap.containsKey(filename))
             return imageMap.get(filename);
 
-        else { //if the image file name does not exist, it will return an image of a question mark
-            try {
-                return ImageIO.read(this.getClass().getResource("missingimg.png"));}
-                catch (IOException ex) {Logger.getLogger(ImageLib.class.getName()).log(Level.SEVERE, null, ex);}
-        }
-        return null;
+        else  //if the image file name does not exist, it will return an image of a question mark
+            return imageMap.get("missingimg.png");
+
     }
 
     public TexturePaint getTexture(String filename, Rectangle rect){ //same as getImage() but with texture paint
-        if (imageMap.get(filename) != null)
+        if (imageMap.containsKey(filename))
             return new TexturePaint(imageMap.get(filename), rect);
 
-        else { //if the image file name does not exist, it will return an image of a question mark
-            try {
-                return new TexturePaint(ImageIO.read(this.getClass().getResource("missingimg.png")), rect);}
-            catch (IOException ex) {Logger.getLogger(ImageLib.class.getName()).log(Level.SEVERE, null, ex);}
+        else  //if the image file name does not exist, it will return an image of a question mark
+            return new TexturePaint(imageMap.get("missingimg.png"), rect);
+
         }
-        return null;
+
     }
 //( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°) ( ͡° ͜ʖ ͡°)
-}
+

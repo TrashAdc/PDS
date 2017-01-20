@@ -14,6 +14,7 @@ public class Window extends JPanel implements Runnable {
     public static Dimension SIZE = new Dimension(960, 540); //dimensions of window
     private Drawer drawitplease = new Drawer(); //this can be changed or be added to; this object has its own draw method
                                                 // which handles all the drawing, positioning, and graphical stuff (with a jpanel)
+    public static final ActiveKeys key = new ActiveKeys(); //this keylistener is GLOBAL. access any key by typing Window.key.-
 
 
 
@@ -25,6 +26,7 @@ public class Window extends JPanel implements Runnable {
         frame.setSize(SIZE); //sets size of the window
         frame.setVisible(true); //honestly have no idea what this does or if it makes a difference
         frame.setLayout(null); //same with this ^^^
+        addKeyListener(key); //adds the key listener
     }
 
 
@@ -32,6 +34,8 @@ public class Window extends JPanel implements Runnable {
     @Override
     public void run(){ //this method runs constantly
         while(true){
+            requestFocus();// focus for the key listener
+
             drawitplease.draw(); //see the 'Drawer' class
             try{Thread.sleep(10);} //pauses the thread for 10 ms
             catch(InterruptedException ie){ie.printStackTrace();}
