@@ -33,7 +33,7 @@ public class Score {
         return scoreConverter(P1Kill);
     }
 
-    public int statKillP2() {
+    public String statKillP2() {
         KOP1 = false;
         while (gameon) {
             if (KOP1 == true) {
@@ -41,7 +41,7 @@ public class Score {
                 KOP2 = false;
             }
         }
-        return P2Kill;
+        return scoreConverter(P2Kill);
     }
 
     // THIS METHOD IS FOR STOCK MODE ONLY
@@ -100,13 +100,25 @@ public class Score {
             if (stockmodeplaceholder) {
                 if (stockCount1 == 0) {
                     //winner2=true
+                    //return winner2
                 }
                 else if(stockCount2==0){
                     //winner1=true
+                    //return winner1
                 }
 
             }
-
+            else{
+                if(P1Kill>P2Kill){
+                    //winner1=true
+                    //return winner1
+                }
+                else if(P2Kill>P1Kill){
+                    //winner2=true
+                    //return winner2 q
+                }
+            }
         }
+        return false;
     }
 }
