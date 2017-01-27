@@ -7,6 +7,19 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  * created by ryan v on 1/26/2017
  **/
 public class Character {
+
+    public enum State {
+        IDLE,
+        ANIMATION,
+        STUNNED,
+        RUNNING,
+        JUMPING,
+        FALLING,
+        HITSTUN,
+        DEAD
+    }
+
+
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
     private int speed; //speed at which the character moves
     private int weight;
@@ -37,6 +50,9 @@ public class Character {
 
 
 //do not worry my friend there will be more to come
+
+
+
 
 
 
