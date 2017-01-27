@@ -1,42 +1,39 @@
 #ifdef GL_ES
-precision mediump float;
+precision lowp float;
 #endif
 
-varying vec4 v_color;
-varying vec2 v_texCoords;
-
-uniform sampler2D u_texture;
+#extension GL_OES_standard_derivatives : enable
 
 uniform float time;
+uniform vec2 mouse;
 uniform vec2 resolution;
 
-vec3 hsv2rgb(vec3 c) {//https://github.com/hughsk/glsl-hsv2rgb
-    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
-    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
-    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
-}
+//https://www.shadertoy.com/view/XsVSzW
 
-void main()
+void main( void )
 {
-    vec2 p = ( v_texCoords.xy );
 
-    //p = p*2000.0;
-    //p.x -= resolution.x;
-    //p.y -= resolution.y;
-    //p.x *= resolution.x / resolution.y;
+	vec2 uv = ( gl_FragCoord.xy / resolution.xy )*4.0;
 
-	float color =
-    		(sin(p.x/125.0-time)+1.0)
-    	      + (sin(p.y/125.0-time)+1.0)
-    	      + (sin(p.x+p.y)+1.0)
-    		;
+	float i0=1.2;
+	float i1=0.95;
+	float i2=1.5;
+	vec2 i4=vec2(0.0,0.0);
+	for(int s=0;s<4;s++)
+	{
+		vec2 r;
+		r=vec2(cos(uv.y*i0-i4.y+time/i1),sin(uv.x*i0+i4.x+time/i1))/i2;
+		r+=vec2(-r.y,r.x)*0.2;
+		uv.xy+=r;
 
-    	color = mod(color,4.0)+time;
-
-    	color = color*0.8;
-
-    	vec3 hsv = hsv2rgb(vec3(color,1,1));
-    	gl_FragColor = vec4( hsv , 1.0 );
-
-    //gl_FragColor = v_color * texture2D(u_texture, v_texCoords);
+		i0*=1.93;
+		i1*=1.25;
+		i2*=1.7;
+		i4+=r.xy*1.0+0.5*time*i1;
+	}
+	float r=sin(uv.x-time)*0.5+0.5;
+	float b=sin(uv.y+time)*0.5+0.5;
+	float g=sin((sqrt(uv.x*uv.x+uv.y*uv.y)+time))*0.5+0.5;
+	vec3 c=vec3(r,g,b);
+	gl_FragColor = vec4(c,1.0);
 }
