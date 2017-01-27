@@ -11,6 +11,8 @@ import com.badlogic.gdx.InputProcessor;
 public class ActiveKeys implements InputProcessor {
     public boolean right = false; //these variables turn true when the corresponding key is pressed
     public boolean left = false; //more keys other than left and right can be added by just copying what ive done but with other keys its really that simple
+    public boolean up = false;
+    public boolean down = false;
 
     @Override
     public boolean keyDown(int keycode) {
@@ -20,6 +22,12 @@ public class ActiveKeys implements InputProcessor {
                 break;
             case Input.Keys.RIGHT:
                 right = true;
+                break;
+            case Input.Keys.UP:
+                up = true;
+                break;
+            case Input.Keys.DOWN:
+                down = true;
                 break;
         }
         return true;
@@ -33,6 +41,12 @@ public class ActiveKeys implements InputProcessor {
                 break;
             case Input.Keys.RIGHT:
                 right = false;
+                break;
+            case Input.Keys.UP:
+                up = false;
+                break;
+            case Input.Keys.DOWN:
+                down = false;
                 break;
         }
         return true;
