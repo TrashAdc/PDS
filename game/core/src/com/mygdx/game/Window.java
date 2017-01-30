@@ -3,7 +3,10 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
+
 import java.awt.*;
 
 public class Window extends ApplicationAdapter {
@@ -13,6 +16,7 @@ public class Window extends ApplicationAdapter {
     SpriteBatch batch; //u need this dont ask me why
     private Character dood; //this is an object in the game
     private Shader shader;
+    private BitmapFont font;
     private float y;
 
 
@@ -23,6 +27,7 @@ public class Window extends ApplicationAdapter {
         dood = new Character();
         shader = new Shader(); //random shader
         batch = new SpriteBatch();
+        font = new BitmapFont();
         Gdx.input.setInputProcessor(key);
         y = 0.0f;
 
@@ -35,14 +40,23 @@ public class Window extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
 
+
+        font.draw(batch, "current state: " + dood.st, 50, 50); //test for states
+
         //draw stuff here
+
         //System.out.println(shader.getShader().isCompiled());
-        shader.getShader().setUniformf("time", y);
-        shader.getShader().setUniformf("resolution", SIZE.width, SIZE.height);
-        batch.setShader(shader.getShader()); //shaders!
-        batch.getProjectionMatrix();
+        //shader.getShader().setUniformf("time", y);
+        //shader.getShader().setUniformf("resolution", SIZE.width, SIZE.height);
+        //batch.setShader(shader.getShader()); //shaders!
+        //batch.getProjectionMatrix();
 
         dood.getSprite().draw(batch); //draw the sprite
+
+
+
+
+
 
         batch.end();
     }
