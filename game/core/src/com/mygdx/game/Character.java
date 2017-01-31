@@ -21,8 +21,7 @@ public class Character implements CharacterStates {
     }
 
 
-    public State currentState;
-    public String st = "idle";
+    private State currentState;
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
     private int speed; //speed at which the character moves
     private int weight;
@@ -30,7 +29,9 @@ public class Character implements CharacterStates {
     public Character(){
 
         playerSprite = new Sprite(new Texture("core/assets/image/spr_parent.png"));  //gets image
-        playerSprite.setPosition(Window.SIZE.width / 2, Window.SIZE.height / 2); //sets initial position
+        playerSprite.setPosition(Window.SIZE.width / 2, 0f); //sets initial position
+        playerSprite.setSize(playerSprite.getWidth() / 2, playerSprite.getHeight() / 2);
+
         speed = 20;
 
         currentState = State.IDLE;
@@ -46,11 +47,9 @@ public class Character implements CharacterStates {
          switch (currentState) {
              case IDLE:
                  St_Idle();
-                 st = "idle";
                  break;
              case RUNNING:
                  St_Walking();
-                 st = "walking";
                  break;
              default:
                  St_Idle();
@@ -61,10 +60,11 @@ public class Character implements CharacterStates {
 
     public void St_Idle(){
         if (Window.key.left && Window.key.right)
-            currentState = State.IDLE;
+            switchState(State.IDLE);
         else if (Window.key.left || Window.key.right)
-            currentState = State.RUNNING;
+            switchState(State.RUNNING);
     }
+
     public void St_Walking(){
         if (Window.key.left)
             playerSprite.translateX(-speed);
@@ -72,11 +72,24 @@ public class Character implements CharacterStates {
             playerSprite.translateX(speed);
 
         if (Window.key.left && Window.key.right)
-            currentState = State.IDLE;
+            switchState(State.IDLE);
         else if (!Window.key.left && !Window.key.right)
-            currentState = State.IDLE;
+            switchState(State.IDLE);
     }
 
+    public void switchState(State newState){
+        currentState = newState;
+    }
+    public String stateToString(){
+        switch (currentState){
+            case IDLE:
+                return "idle";
+            case RUNNING:
+                return "running";
+            default:
+                return "not set";
+        }
+    }
 
 
 //do not worry my friend there will be more to come

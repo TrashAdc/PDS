@@ -41,7 +41,7 @@ public class Window extends ApplicationAdapter {
         batch.begin();
 
 
-        font.draw(batch, "current state: " + dood.st, 50, 50); //test for states
+        font.draw(batch, "current state: " + dood.stateToString(), 50, 50); //test for states
 
         //draw stuff here
 
@@ -63,6 +63,7 @@ public class Window extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        shader.getShader().dispose();
         batch.dispose();
     }
 
