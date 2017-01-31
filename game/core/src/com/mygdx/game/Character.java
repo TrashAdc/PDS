@@ -2,6 +2,12 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.BoundingBox;
+import org.w3c.dom.css.Rect;
+
+import java.awt.*;
 
 /**
  * created by ryan v on 1/26/2017
@@ -22,17 +28,23 @@ public class Character implements CharacterStates {
 
 
     private State currentState;
+
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
+
     private int speed; //speed at which the character moves
     private int weight;
+
+    Rectangle bb1 = new Rectangle(-Window.SIZE.width / 8, 0, -Window.SIZE.width / 8, Window.SIZE.height);
 
     public Character(){
 
         playerSprite = new Sprite(new Texture("core/assets/image/spr_parent.png"));  //gets image
-        playerSprite.setPosition(Window.SIZE.width / 2, 0f); //sets initial position
+        playerSprite.setPosition(Window.SIZE.width / 2, Window.SIZE.height / 2); //sets initial position
         playerSprite.setSize(playerSprite.getWidth() / 2, playerSprite.getHeight() / 2);
 
         speed = 20;
+
+
 
         currentState = State.IDLE;
 
@@ -66,6 +78,7 @@ public class Character implements CharacterStates {
     }
 
     public void St_Walking(){
+
         if (Window.key.left)
             playerSprite.translateX(-speed);
         if (Window.key.right)
@@ -91,6 +104,14 @@ public class Character implements CharacterStates {
         }
     }
 
+    public boolean cCheck(){
+        if (playerSprite.getBoundingRectangle().contains(new Vector2(1f, playerSprite.getOriginY())))
+            return true;
+        else if (playerSprite.getBoundingRectangle().contains(new Vector2(Window.SIZE.width, playerSprite.getOriginY())))
+            return true;
+        else
+            return false;
+    }
 
 //do not worry my friend there will be more to come
 
