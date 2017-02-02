@@ -3,11 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
-import org.w3c.dom.css.Rect;
+import com.badlogic.gdx.physics.box2d.*;
 
-import java.awt.*;
 
 /**
  * created by ryan v on 1/26/2017
@@ -30,17 +27,22 @@ public class Character implements CharacterStates {
     private State currentState;
 
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
+    private BodyDef bodyDef;
+    private Body body;
 
     private int speed; //speed at which the character moves
     private int weight;
 
-    Rectangle bb1 = new Rectangle(-Window.SIZE.width / 8, 0, -Window.SIZE.width / 8, Window.SIZE.height);
 
     public Character(){
 
+        objInit();
+
         playerSprite = new Sprite(new Texture("core/assets/image/spr_parent.png"));  //gets image
-        playerSprite.setPosition(Window.SIZE.width / 2, Window.SIZE.height / 2); //sets initial position
+        playerSprite.setPosition(body.getPosition().x, body.getPosition().y); //sets initial position
         playerSprite.setSize(playerSprite.getWidth() / 2, playerSprite.getHeight() / 2);
+
+        body.setUserData(playerSprite);
 
         speed = 20;
 
@@ -50,12 +52,34 @@ public class Character implements CharacterStates {
 
     }
 
+    private void objInit(){
+        bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(Window.SIZE.width / 2, Window.SIZE.height / 2);
+
+        body = Window.world.createBody(bodyDef);
+
+        PolygonShape bodyShape = new PolygonShape();
+        bodyShape.setAsBox(100, 100);
+
+        FixtureDef fixDef = new FixtureDef();
+        fixDef.shape = bodyShape;
+        fixDef.density = 0.5f;
+        fixDef.restitution = 1.0f;
+        fixDef.friction = 0.5f;
+
+        Fixture fixture = body.createFixture(fixDef);
+
+    }
+
     public Sprite getSprite(){ //returns the sprite (this contains position as well)
         executeState();
         return playerSprite;
     }
 
     private void executeState(){ //this executes the state that the character is currently in
+        playerSprite.setPosition(body.getPosition().x, body.getPosition().y); //set sprite equal to body
+
          switch (currentState) {
              case IDLE:
                  St_Idle();
@@ -71,6 +95,8 @@ public class Character implements CharacterStates {
 
 
     public void St_Idle(){
+        body.setLinearVelocity(0f, body.getLinearVelocity().y);
+
         if (Window.key.left && Window.key.right)
             switchState(State.IDLE);
         else if (Window.key.left || Window.key.right)
@@ -80,9 +106,12 @@ public class Character implements CharacterStates {
     public void St_Walking(){
 
         if (Window.key.left)
-            playerSprite.translateX(-speed);
+            body.setLinearVelocity(-100f, body.getLinearVelocity().y);
         if (Window.key.right)
-            playerSprite.translateX(speed);
+            body.setLinearVelocity(100f, body.getLinearVelocity().y);
+            //playerSprite.translateX(speed);
+
+
 
         if (Window.key.left && Window.key.right)
             switchState(State.IDLE);
