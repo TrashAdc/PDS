@@ -9,3 +9,5 @@ hi
 ##Ryan: Started collision, character, and state machine classes, and converted old classes to integrate the libgdx graphics engine thingy 
 # Week of 1/30/17
 ##Devin: Began to put data into the game database, learning how to implement Music for media class.
+##Ryan: Researchde how to use Box2D for collision and easy physics (its taking a long time sry) https://github.com/libgdx/libgdx/wiki/box2d#sprites-and-bodies
+##Sarath:
