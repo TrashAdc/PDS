@@ -15,22 +15,22 @@ public class Character implements CharacterStates {
         IDLE,           //the character will always be in a state, and only be in one state at a time
         ANIMATION,      //the method corresponding with the state the character is in
         STUNNED,        //these methods will be listed in an interface
-        RUNNING,
-        JUMPING,
-        FALLING,
+        WALKING,
+        AIR,
         HITSTUN,
         DEAD
     }
 
 
     private State currentState;
+    private boolean state_new;
 
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
     private BodyDef bodyDef;
     private Body body;
     private float bodyWidth, bodyHeight;
 
-    private int speed; //speed at which the character moves
+    private float maxSpeed; //speed at which the character moves
 
     public Character(){
 
@@ -45,11 +45,12 @@ public class Character implements CharacterStates {
 
         body.setUserData(playerSprite);
 
-        speed = 20;
+        maxSpeed = 10;
 
 
 
         currentState = State.IDLE;
+        state_new = true;
 
     }
 
@@ -57,6 +58,7 @@ public class Character implements CharacterStates {
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(Window.camera.viewportWidth / 2 , Window.camera.viewportHeight / 2);
+        //bodyDef.fixedRotation = true;
 
         body = Window.world.createBody(bodyDef);
 
@@ -66,8 +68,8 @@ public class Character implements CharacterStates {
         FixtureDef fixDef = new FixtureDef();
         fixDef.shape = bodyShape;
         fixDef.density = 0.5f;
-        fixDef.restitution = 1.0f;
-        fixDef.friction = 0.5f;
+        fixDef.restitution = 0.0f;
+        fixDef.friction = 0.0f;
 
         body.createFixture(fixDef);
 
@@ -85,13 +87,15 @@ public class Character implements CharacterStates {
             case IDLE:
                 St_Idle();
                 break;
-            case RUNNING:
+            case WALKING:
                 St_Walking();
                 break;
             default:
                 St_Idle();
                 break;
         }
+
+        state_new = false;
     }
 
 
@@ -101,16 +105,31 @@ public class Character implements CharacterStates {
         if (Window.key.left && Window.key.right)
             switchState(State.IDLE);
         else if (Window.key.left || Window.key.right)
-            switchState(State.RUNNING);
+            switchState(State.WALKING);
     }
 
     public void St_Walking(){
 
-        if (Window.key.left)
-            body.setLinearVelocity(-10f, body.getLinearVelocity().y);
-        if (Window.key.right)
-            body.setLinearVelocity(10f, body.getLinearVelocity().y);
-        //playerSprite.translateX(speed);
+        if (Window.key.left) {
+
+            if (body.getLinearVelocity().x == 0)
+                body.setLinearVelocity(-.01f, 0);
+
+            body.applyLinearImpulse(-5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
+        }
+
+        if (Window.key.right) {
+            if (body.getLinearVelocity().x == 0)
+                body.setLinearVelocity(.01f, 0);
+
+            body.applyLinearImpulse(5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
+        }
+
+
+        if (body.getLinearVelocity().x > maxSpeed)
+            body.setLinearVelocity(maxSpeed, body.getLinearVelocity().y);
+        else if (body.getLinearVelocity().x < -maxSpeed)
+            body.setLinearVelocity(-maxSpeed, body.getLinearVelocity().y);
 
 
 
@@ -120,7 +139,12 @@ public class Character implements CharacterStates {
             switchState(State.IDLE);
     }
 
+    public void St_Air(){
+        //lkfbdvcbidsjfnffds
+    }
+
     public void switchState(State newState){
+        state_new = true;
         currentState = newState;
     }
 
@@ -128,8 +152,8 @@ public class Character implements CharacterStates {
         switch (currentState){
             case IDLE:
                 return "idle";
-            case RUNNING:
-                return "running";
+            case WALKING:
+                return "walking";
             default:
                 return "not set";
         }
