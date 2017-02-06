@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 
@@ -29,18 +28,20 @@ public class Character implements CharacterStates {
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
     private BodyDef bodyDef;
     private Body body;
+    private float bodyWidth, bodyHeight;
 
     private int speed; //speed at which the character moves
-    private int weight;
-
 
     public Character(){
+
+        bodyWidth = 1f;
+        bodyHeight = 1f * Window.yConst;
 
         objInit();
 
         playerSprite = new Sprite(new Texture("core/assets/image/spr_parent.png"));  //gets image
-        playerSprite.setPosition(body.getPosition().x, body.getPosition().y); //sets initial position
-        playerSprite.setSize(playerSprite.getWidth() / 2, playerSprite.getHeight() / 2);
+        playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //sets initial position
+        playerSprite.setSize(bodyWidth * 2f, bodyHeight * 2f);
 
         body.setUserData(playerSprite);
 
@@ -55,12 +56,12 @@ public class Character implements CharacterStates {
     private void objInit(){
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(Window.SIZE.width / 2, Window.SIZE.height / 2);
+        bodyDef.position.set(Window.camera.viewportWidth / 2 , Window.camera.viewportHeight / 2);
 
         body = Window.world.createBody(bodyDef);
 
         PolygonShape bodyShape = new PolygonShape();
-        bodyShape.setAsBox(100, 100);
+        bodyShape.setAsBox(bodyWidth, bodyHeight);
 
         FixtureDef fixDef = new FixtureDef();
         fixDef.shape = bodyShape;
@@ -68,7 +69,7 @@ public class Character implements CharacterStates {
         fixDef.restitution = 1.0f;
         fixDef.friction = 0.5f;
 
-        Fixture fixture = body.createFixture(fixDef);
+        body.createFixture(fixDef);
 
     }
 
@@ -78,19 +79,19 @@ public class Character implements CharacterStates {
     }
 
     private void executeState(){ //this executes the state that the character is currently in
-        playerSprite.setPosition(body.getPosition().x, body.getPosition().y); //set sprite equal to body
+        playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //set sprite equal to body
 
-         switch (currentState) {
-             case IDLE:
-                 St_Idle();
-                 break;
-             case RUNNING:
-                 St_Walking();
-                 break;
-             default:
-                 St_Idle();
-                 break;
-         }
+        switch (currentState) {
+            case IDLE:
+                St_Idle();
+                break;
+            case RUNNING:
+                St_Walking();
+                break;
+            default:
+                St_Idle();
+                break;
+        }
     }
 
 
@@ -106,10 +107,10 @@ public class Character implements CharacterStates {
     public void St_Walking(){
 
         if (Window.key.left)
-            body.setLinearVelocity(-100f, body.getLinearVelocity().y);
+            body.setLinearVelocity(-10f, body.getLinearVelocity().y);
         if (Window.key.right)
-            body.setLinearVelocity(100f, body.getLinearVelocity().y);
-            //playerSprite.translateX(speed);
+            body.setLinearVelocity(10f, body.getLinearVelocity().y);
+        //playerSprite.translateX(speed);
 
 
 
@@ -122,6 +123,7 @@ public class Character implements CharacterStates {
     public void switchState(State newState){
         currentState = newState;
     }
+
     public String stateToString(){
         switch (currentState){
             case IDLE:
@@ -133,14 +135,6 @@ public class Character implements CharacterStates {
         }
     }
 
-    public boolean cCheck(){
-        if (playerSprite.getBoundingRectangle().contains(new Vector2(1f, playerSprite.getOriginY())))
-            return true;
-        else if (playerSprite.getBoundingRectangle().contains(new Vector2(Window.SIZE.width, playerSprite.getOriginY())))
-            return true;
-        else
-            return false;
-    }
 
 //do not worry my friend there will be more to come
 
