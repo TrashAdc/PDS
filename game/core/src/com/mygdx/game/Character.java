@@ -22,8 +22,8 @@ public class Character implements CharacterStates {
     }
 
 
-    private State currentState;
-    private boolean state_new;
+    private State currentState; //current state of character
+    private boolean state_new; //is true on only the first loop of the state method
 
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
     private BodyDef bodyDef;
@@ -58,7 +58,7 @@ public class Character implements CharacterStates {
         bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(Window.camera.viewportWidth / 2 , Window.camera.viewportHeight / 2);
-        //bodyDef.fixedRotation = true;
+        bodyDef.fixedRotation = true;
 
         body = Window.world.createBody(bodyDef);
 
@@ -90,16 +90,18 @@ public class Character implements CharacterStates {
             case WALKING:
                 St_Walking();
                 break;
+            case AIR:
+                St_Air();
             default:
                 St_Idle();
                 break;
         }
 
-        state_new = false;
     }
 
 
     public void St_Idle(){
+        state_new = false;
         body.setLinearVelocity(0f, body.getLinearVelocity().y);
 
         if (Window.key.left && Window.key.right)
@@ -109,6 +111,7 @@ public class Character implements CharacterStates {
     }
 
     public void St_Walking(){
+        state_new = false;
 
         if (Window.key.left) {
 
@@ -125,6 +128,9 @@ public class Character implements CharacterStates {
             body.applyLinearImpulse(5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
         }
 
+        if (Window.key.numpad3)
+            switchState(State.AIR);
+
 
         if (body.getLinearVelocity().x > maxSpeed)
             body.setLinearVelocity(maxSpeed, body.getLinearVelocity().y);
@@ -140,7 +146,15 @@ public class Character implements CharacterStates {
     }
 
     public void St_Air(){
-        //lkfbdvcbidsjfnffds
+        if (state_new){
+            body.setLinearVelocity(0f, .01f);
+            body.applyLinearImpulse(0f, 2000f, bodyWidth / 2, bodyHeight / 2, false);
+            state_new = false;
+        }
+
+        if (body.getLinearVelocity().x == 0.00f)
+            switchState(State.IDLE);
+
     }
 
     public void switchState(State newState){
