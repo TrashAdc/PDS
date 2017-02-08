@@ -15,8 +15,11 @@ public class Timer {
 
         private BigInteger startTime;
         private BigInteger time;
+        private boolean started;
 
         public Timer(timeType type, int timeAmount){ //constructor
+            started = false;
+
             time = BigInteger.valueOf(timeAmount);
             switch (type) {                             //this assigns how much time in nanoseconds will have to pass
                 case NANOSECONDS:                       //in order to make the timerFinish() method true
@@ -46,11 +49,20 @@ public class Timer {
             }
         }
 
-        public void initTimer(){
-            startTime = BigInteger.valueOf(System.nanoTime()); //this starts the timer. only use this when you are ready
-        }                                                      //to begin.
+        public void initTimer(boolean reset){ //this starts the timer. only use this when you are ready to start
+            if (!started)
+                startTime = BigInteger.valueOf(System.nanoTime());
+            else if (reset && started)
+                startTime = BigInteger.valueOf(System.nanoTime());
+
+            started = true;
+        }
+
 
         public Boolean timerFinish(){
+            if (!started)       //if the timer has not started yet
+                return false;   //return false
+
             BigInteger cur = BigInteger.valueOf(System.nanoTime()); //this method checks to see whether the given time has passed.
             cur = cur.subtract(startTime);                          //you must be checking this method constantly for the most
             int finished = cur.compareTo(time);                     //accurate results.

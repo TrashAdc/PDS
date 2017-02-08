@@ -33,7 +33,9 @@ public class Stage {
         PolygonShape stageShape = new PolygonShape();
         stageShape.setAsBox(stageWidth, stageHeight);
 
-        stageBody.createFixture(stageShape, 0.0f);
+
+        stageBody.createFixture(stageShape, 1.0f);
+
 
     }
 

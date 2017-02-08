@@ -7,5 +7,6 @@ public interface CharacterStates {
 
     void St_Walking();
     void St_Idle();
+    void St_Air();
 
 }

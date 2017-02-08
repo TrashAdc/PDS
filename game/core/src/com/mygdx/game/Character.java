@@ -31,6 +31,9 @@ public class Character implements CharacterStates {
     private float bodyWidth, bodyHeight;
 
     private float maxSpeed; //speed at which the character moves
+    private boolean hasJump; //if the character can double jump
+    private boolean canJump;
+    private Timer jumpTimer;
 
     public Character(){
 
@@ -46,8 +49,9 @@ public class Character implements CharacterStates {
         body.setUserData(playerSprite);
 
         maxSpeed = 10;
-
-
+        hasJump = false;
+        canJump = false;
+        jumpTimer = new Timer(Timer.timeType.MILLISECONDS, 85);
 
         currentState = State.IDLE;
         state_new = true;
@@ -68,10 +72,11 @@ public class Character implements CharacterStates {
         FixtureDef fixDef = new FixtureDef();
         fixDef.shape = bodyShape;
         fixDef.density = 0.5f;
-        fixDef.restitution = 0.0f;
-        fixDef.friction = 0.0f;
+        fixDef.restitution = 0.05f;
+        fixDef.friction = 0.5f;
 
         body.createFixture(fixDef);
+
 
     }
 
@@ -92,9 +97,9 @@ public class Character implements CharacterStates {
                 break;
             case AIR:
                 St_Air();
-            default:
-                St_Idle();
-                break;
+            //default:
+             //   St_Idle();
+            //    break;
         }
 
     }
@@ -102,7 +107,10 @@ public class Character implements CharacterStates {
 
     public void St_Idle(){
         state_new = false;
-        body.setLinearVelocity(0f, body.getLinearVelocity().y);
+        //body.setLinearVelocity(0f, body.getLinearVelocity().y);
+
+        if (Window.key.numpad3)
+            switchState(State.AIR);
 
         if (Window.key.left && Window.key.right)
             switchState(State.IDLE);
@@ -113,31 +121,10 @@ public class Character implements CharacterStates {
     public void St_Walking(){
         state_new = false;
 
-        if (Window.key.left) {
-
-            if (body.getLinearVelocity().x == 0)
-                body.setLinearVelocity(-.01f, 0);
-
-            body.applyLinearImpulse(-5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
-        }
-
-        if (Window.key.right) {
-            if (body.getLinearVelocity().x == 0)
-                body.setLinearVelocity(.01f, 0);
-
-            body.applyLinearImpulse(5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
-        }
+        horizontalMovement();
 
         if (Window.key.numpad3)
             switchState(State.AIR);
-
-
-        if (body.getLinearVelocity().x > maxSpeed)
-            body.setLinearVelocity(maxSpeed, body.getLinearVelocity().y);
-        else if (body.getLinearVelocity().x < -maxSpeed)
-            body.setLinearVelocity(-maxSpeed, body.getLinearVelocity().y);
-
-
 
         if (Window.key.left && Window.key.right)
             switchState(State.IDLE);
@@ -146,20 +133,41 @@ public class Character implements CharacterStates {
     }
 
     public void St_Air(){
+        System.out.println(hasJump);
         if (state_new){
-            body.setLinearVelocity(0f, .01f);
-            body.applyLinearImpulse(0f, 2000f, bodyWidth / 2, bodyHeight / 2, false);
+            body.setLinearVelocity(body.getLinearVelocity().x, .01f);
+            body.applyLinearImpulse(0f, 125f, bodyWidth / 2, bodyHeight / 2, false);
+
+            hasJump = true;
             state_new = false;
         }
+        else if (Window.key.numpad3 && hasJump && canJump){
+            body.setLinearVelocity(body.getLinearVelocity().x, .01f);
+            body.applyLinearImpulse(0f, 125f, bodyWidth / 2, bodyHeight / 2, false);
+            hasJump = false;
+        }
 
-        if (body.getLinearVelocity().x == 0.00f)
-            switchState(State.IDLE);
+        if (!Window.key.numpad3)
+            canJump = true;
+
+        horizontalMovement();
+
+        if (body.getLinearVelocity().y <= 0.1f && body.getLinearVelocity().y >= -0.1f){
+            hasJump = false;
+
+            if (Window.key.left || Window.key.right)
+                switchState(State.WALKING);
+            else
+                switchState(State.IDLE);
+        }
+
 
     }
 
-    public void switchState(State newState){
+   private void switchState(State newState){
         state_new = true;
         currentState = newState;
+        //System.out.println(stateToString());
     }
 
     public String stateToString(){
@@ -168,9 +176,37 @@ public class Character implements CharacterStates {
                 return "idle";
             case WALKING:
                 return "walking";
+            case AIR:
+                return "air";
             default:
                 return "not set";
         }
+    }
+
+    private void horizontalMovement(){
+        if (Window.key.left) {
+
+            if (body.getLinearVelocity().x == 0)
+                body.setLinearVelocity(-.01f, body.getLinearVelocity().y);
+
+            body.applyLinearImpulse(-5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
+        }
+
+        if (Window.key.right) {
+            if (body.getLinearVelocity().x == 0)
+                body.setLinearVelocity(.01f, body.getLinearVelocity().y);
+
+            body.applyLinearImpulse(5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
+        }
+
+        setMaxSpeed(maxSpeed);
+    }
+
+    private void setMaxSpeed(float maxV){
+        if(body.getLinearVelocity().x > maxV)
+            body.setLinearVelocity(maxV, body.getLinearVelocity().y);
+        else if (body.getLinearVelocity().x < -maxV)
+            body.setLinearVelocity(-maxV, body.getLinearVelocity().y);
     }
 
 

@@ -47,7 +47,7 @@ public class Window extends ApplicationAdapter {
         yConst = (float)SIZE.width / (float)SIZE.height;
 
 
-        world = new World(new Vector2(0, -10), true);
+        world = new World(new Vector2(0, -100), true);
 
         debugRenderer=new Box2DDebugRenderer();
 
@@ -65,6 +65,7 @@ public class Window extends ApplicationAdapter {
         shader = new Shader(); //random shader
 
         font = new BitmapFont();
+        font.getData().setScale(.08f);
 
         time = 0.0f;
 
@@ -85,7 +86,7 @@ public class Window extends ApplicationAdapter {
 
 
 
-        // font.draw(batch, "current state: " + dood.stateToString(), 50, 50); //test for states
+        //font.draw(batch, "s t a t e : " + dood.stateToString(), camera.viewportWidth / 2f, camera.viewportHeight / 2f); //test for states
 
         //draw stuff here
 
