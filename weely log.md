@@ -16,3 +16,6 @@ Devin: Began to put data into the game database, learning how to implement Music
 Ryan: Researched how to use Box2D for collision and easy physics (its taking a long time sry) https://github.com/libgdx/libgdx/wiki/box2d#sprites-and-bodies  
 
 Sarath:Began to put data into game database, learning how to implement knockback with Box2D.  
+
+##Week of 2/6/17
+Ryan: Implemented box2d into a parent character that can move, jump, and double jump on a stage with box2d as well. also started making attacks with hitboxes
