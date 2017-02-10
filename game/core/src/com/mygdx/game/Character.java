@@ -97,6 +97,7 @@ public class Character implements CharacterStates {
                 break;
             case AIR:
                 St_Air();
+                break;
             //default:
              //   St_Idle();
             //    break;
@@ -145,6 +146,7 @@ public class Character implements CharacterStates {
             body.setLinearVelocity(body.getLinearVelocity().x, .01f);
             body.applyLinearImpulse(0f, 125f, bodyWidth / 2, bodyHeight / 2, false);
             hasJump = false;
+            canJump = false;
         }
 
         if (!Window.key.numpad3)
@@ -154,6 +156,7 @@ public class Character implements CharacterStates {
 
         if (body.getLinearVelocity().y <= 0.1f && body.getLinearVelocity().y >= -0.1f){
             hasJump = false;
+            canJump = false;
 
             if (Window.key.left || Window.key.right)
                 switchState(State.WALKING);
