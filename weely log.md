@@ -21,3 +21,5 @@ Sarath:Began to put data into game database, learning how to implement knockback
 Ryan: Implemented box2d into a parent character that can move, jump, and double jump on a stage with box2d as well. also started making attacks with hitboxes
 
 Sarath: Creating Sprites/animations
+
+Devin: Tried to implement audio/music which does not look to be possible sadly
