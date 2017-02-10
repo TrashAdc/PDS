@@ -16,18 +16,19 @@ import java.awt.*;
 public class Window extends ApplicationAdapter {
 
     public static Dimension SIZE; //size of window
-    public static final int WORLD_WIDTH = 100; //width of screen in meters
-    public static final int WORLD_HEIGHT = 100; //height so screen in meters
-    public static float yConst;
+    public static float yConst; //this is to fix the clash between resolution and world height
+                                //whenever calculating height, multiply by this to get an accurate visual
+                                //width = 2f, height = 2f;
+                                //width = 2f, height = 2f * Window.yConst;  <------------- correct
 
     public static final ActiveKeys key = new ActiveKeys(); //key listener
 
-    public static World world;
-    Box2DDebugRenderer debugRenderer;
+    public static World world; //physics world
+    Box2DDebugRenderer debugRenderer; //lets us see hitboxes for debugging
 
     public static OrthographicCamera camera; //camera for sizing things down i guess
 
-    private SpriteBatch batch; //u need this dont ask me why
+    private SpriteBatch batch; //u need this to draw
 
     private Character dood; //this is an object in the game
 
@@ -36,47 +37,46 @@ public class Window extends ApplicationAdapter {
 
     private BitmapFont font; //text
 
-    private Stage testStage;
 
 
     @Override
     public void create(){
-        Box2D.init();
+        Box2D.init(); //inits box2d
 
-        SIZE = new Dimension(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        SIZE = new Dimension(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //gets size of window into condensed variables
         yConst = (float)SIZE.width / (float)SIZE.height;
 
 
-        world = new World(new Vector2(0, -100), true);
+        world = new World(new Vector2(0, -100), true); //sets gravity of axis
 
-        debugRenderer=new Box2DDebugRenderer();
+        debugRenderer = new Box2DDebugRenderer();
 
-        camera = new OrthographicCamera(30, 30);
-        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+        camera = new OrthographicCamera(30, 30); //sets view of camera
+        camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0); //position
         camera.update();
 
         batch = new SpriteBatch();
 
         Gdx.input.setInputProcessor(key);
 
-        dood = new Character();
-        testStage = new Stage();
+        dood = new Character(); //creates character
+        Stage testStage = new Stage(); //makes stage in world
 
         shader = new Shader(); //random shader
 
-        font = new BitmapFont();
+        font = new BitmapFont(); //words??
         font.getData().setScale(.08f);
 
-        time = 0.0f;
+        time = 0.0f; //time for shaders
 
     }
 
     @Override
     public void render() {
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
+        camera.update(); //updates camera
+        batch.setProjectionMatrix(camera.combined); //makes sure we're drawing on the scale of the camera
 
-        time += .01f;
+        time += .01f; //increments time for shader
         Gdx.gl.glClearColor(.5f, 0f, 1f, 1f); //bg color
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

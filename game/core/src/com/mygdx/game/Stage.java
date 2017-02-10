@@ -6,24 +6,24 @@ import com.badlogic.gdx.physics.box2d.*;
 /**
  * created by ryan v on 2/5/2017
  **/
-public class Stage {
+public class Stage { //parent stage class
 
-    private Sprite stageSprite;
-    private BodyDef stageDef;
-    private Body stageBody;
-    private float stageWidth, stageHeight;
+    private Sprite stageSprite; //sprite of stage
+    private BodyDef stageDef; //stage body def
+    private Body stageBody; //stage body
+    private float stageWidth, stageHeight; //stage w, h
 
     public Stage(){
 
         stageWidth = 10f;
         stageHeight = 2f * Window.yConst;
 
-        stageBodyInit();
+        stageBodyInit(); //box2d stuff
 
 
     }
 
-    private void stageBodyInit(){
+    private void stageBodyInit(){ //this is a static body
 
         stageDef = new BodyDef();
         stageDef.position.set(Window.camera.viewportWidth / 2f, Window.camera.viewportHeight / 7f);
