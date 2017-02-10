@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.*;
@@ -13,13 +14,27 @@ public class Character implements CharacterStates { //parent character class
 
     public enum State { //states of the character
         IDLE,           //the character will always be in a state, and only be in one state at a time
-        ANIMATION,      //the method corresponding with the state the character is in
-        STUNNED,        //these methods will be listed in an interface
-        WALKING,
-        AIR,
+        WALKING,      //the method corresponding with the state the character is in
+        AIR,        //these methods will be listed in an interface
+        ANIMATION,
         HITSTUN,
+        STUNNED,
         DEAD
     }
+
+    private enum Attacks { //attacks include tilts, (sm/tr)ash attacks, and jabs (dash attacks if we implement running)
+        JAB,               //numpad1 + any direction
+        L_TILT, R_TILT, U_TILT, D_TILT,
+        S_SMASH, U_SMASH, D_SMASH,
+    }
+
+    private enum Specials { //specials are attacks that differ very greatly from other characters, but there are only 4 of them
+        N_SPECIAL,          //numpad2 + any direction
+        S_SPECIAL,
+        U_SPECIAL,
+        D_SPECIAL
+    }
+    //maybe aerial attacks will come in the future but for now use basic attacks in the air
 
 
     private State currentState; //current state of character
@@ -33,6 +48,10 @@ public class Character implements CharacterStates { //parent character class
     private float maxSpeed; //max speed at which the character can move
     private boolean hasJump; //if the character has a double jump
     private boolean canJump; //if the character can use the double jump atm
+
+    private Timer moveTimer; //timer for when the character is attacking
+
+
 
 
     public Character(){
@@ -55,6 +74,8 @@ public class Character implements CharacterStates { //parent character class
 
         currentState = State.IDLE;
         state_new = true;
+
+        //h = new Hitbox(1.0f, 1.0f * Window.yConst, Window.camera.viewportWidth / 3 , Window.camera.viewportHeight / 3);
 
     }
 
@@ -79,6 +100,7 @@ public class Character implements CharacterStates { //parent character class
         body.createFixture(fixDef); //puts the fixture on the body
 
 
+
     }
 
     public Sprite getSprite(){ //returns the sprite (this contains position as well) and updates the body
@@ -98,6 +120,9 @@ public class Character implements CharacterStates { //parent character class
                 break;
             case AIR:
                 St_Air();
+                break;
+            case ANIMATION:
+                St_Animation();
                 break;
             default:
                 St_Idle();
@@ -128,10 +153,11 @@ public class Character implements CharacterStates { //parent character class
         if (Window.key.numpad3) //jump if pressed
             switchState(State.AIR);
 
-        if (Window.key.left && Window.key.right) //if neither or both l & r are pressed stop moving
+        if (Window.key.left && Window.key.right)  //if neither or both l & r are pressed stop moving
             switchState(State.IDLE);
         else if (!Window.key.left && !Window.key.right)
             switchState(State.IDLE);
+
     }
 
     public void St_Air(){ //if the character is in the air
@@ -155,7 +181,6 @@ public class Character implements CharacterStates { //parent character class
         horizontalMovement(); //move horizontally
 
         if (body.getLinearVelocity().y == 0.0f){ //if the body hits the ground
-            System.out.println(body.getLinearVelocity().y);
             hasJump = false;
             canJump = false;
 
@@ -168,7 +193,11 @@ public class Character implements CharacterStates { //parent character class
 
     }
 
-   private void switchState(State newState){ //this method just changes which method
+    public void St_Animation(){
+
+    }
+
+    private void switchState(State newState){ //this method just changes which method
         state_new = true;                    //will be run evey step by changing the state
         currentState = newState;
         //System.out.println(stateToString());

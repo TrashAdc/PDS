@@ -13,6 +13,7 @@ public class ActiveKeys implements InputProcessor {
     public boolean left = false; //more keys other than left and right can be added by just copying what ive done but with other keys its really that simple
     public boolean up = false;
     public boolean down = false;
+    public boolean numpad1 = false;
     public boolean numpad3 = false;
 
     @Override
@@ -29,6 +30,9 @@ public class ActiveKeys implements InputProcessor {
                 break;
             case Input.Keys.DOWN:
                 down = true;
+                break;
+            case Input.Keys.NUMPAD_1:
+                numpad1 = true;
                 break;
             case Input.Keys.NUMPAD_3:
                 numpad3 = true;
@@ -51,6 +55,9 @@ public class ActiveKeys implements InputProcessor {
                 break;
             case Input.Keys.DOWN:
                 down = false;
+                break;
+            case Input.Keys.NUMPAD_1:
+                numpad1 = false;
                 break;
             case Input.Keys.NUMPAD_3:
                 numpad3 = false;
