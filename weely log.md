@@ -19,3 +19,5 @@ Sarath:Began to put data into game database, learning how to implement knockback
 
 ##Week of 2/6/17
 Ryan: Implemented box2d into a parent character that can move, jump, and double jump on a stage with box2d as well. also started making attacks with hitboxes
+
+Sarath: Creating Sprites/animations
