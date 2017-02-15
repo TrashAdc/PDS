@@ -10,7 +10,7 @@ public class Timer {
             MILLISECONDS,
             SECONDS,
             MINUTES,
-            HOURS
+            HOURS,
         }
 
         private BigInteger startTime;

@@ -17,9 +17,9 @@ public class Window extends ApplicationAdapter {
 
     public static Dimension SIZE; //size of window
     public static float yConst; //this is to fix the clash between resolution and world height
-                                //whenever calculating height, multiply by this to get an accurate visual
-                                //width = 2f, height = 2f;                  <------------- incorrect
-                                //width = 2f, height = 2f * Window.yConst;  <------------- correct
+    //whenever calculating height, multiply by this to get an accurate visual
+    //width = 2f, height = 2f;                  <------------- incorrect
+    //width = 2f, height = 2f * Window.yConst;  <------------- correct
 
     public static final ActiveKeys key = new ActiveKeys(); //key listener
 
@@ -27,8 +27,6 @@ public class Window extends ApplicationAdapter {
     Box2DDebugRenderer debugRenderer; //lets us see hitboxes for debugging
 
     public static OrthographicCamera camera; //camera for sizing things down i guess
-
-    private FpsHandler fps;
 
     private SpriteBatch batch; //u need this to draw
 
@@ -56,8 +54,6 @@ public class Window extends ApplicationAdapter {
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0); //position
         camera.update();
 
-        fps = new FpsHandler(60);
-
         batch = new SpriteBatch();
 
         Gdx.input.setInputProcessor(key);
@@ -79,7 +75,6 @@ public class Window extends ApplicationAdapter {
 
     @Override
     public void render() {
-        fps.startFrame();
 
         camera.update(); //updates camera
         batch.setProjectionMatrix(camera.combined); //makes sure we're drawing on the scale of the camera
@@ -100,7 +95,7 @@ public class Window extends ApplicationAdapter {
 
         //System.out.println(shader.getShader().isCompiled());
         //shader.getShader().setUniformf("time", time);
-        //shader.getShader().setUniformf("resolution", SIZE.width, SIZE.height);
+        // shader.getShader().setUniformf("resolution", SIZE.width, SIZE.height);
         //batch.setShader(shader.getShader()); //shaders!
         //batch.getProjectionMatrix();
 
@@ -110,14 +105,13 @@ public class Window extends ApplicationAdapter {
 
         batch.end();
         world.step(1/60f, 6, 2);
-        System.out.println(fps.endFrame());
 
     }
 
     @Override
     public void dispose() {
         shader.getShader().dispose();
-        batch.dispose();
+        //batch.dispose();
     }
 
 }

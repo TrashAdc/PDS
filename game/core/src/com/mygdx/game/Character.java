@@ -1,6 +1,6 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.audio.Music;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.*;
@@ -17,6 +17,7 @@ public class Character implements CharacterStates { //parent character class
         WALKING,      //the method corresponding with the state the character is in
         AIR,        //these methods will be listed in an interface
         ANIMATION,
+        LEDGE,
         HITSTUN,
         STUNNED,
         DEAD
@@ -48,10 +49,6 @@ public class Character implements CharacterStates { //parent character class
     private float maxSpeed; //max speed at which the character can move
     private boolean hasJump; //if the character has a double jump
     private boolean canJump; //if the character can use the double jump atm
-
-    private Timer moveTimer; //timer for when the character is attacking
-
-
 
 
     public Character(){
@@ -109,6 +106,7 @@ public class Character implements CharacterStates { //parent character class
     }
 
     private void executeState(){ //this executes the state that the character is currently in
+
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //set sprite equal to body
 
         switch (currentState) { //executes the state
@@ -136,6 +134,8 @@ public class Character implements CharacterStates { //parent character class
         state_new = false;
         //body.setLinearVelocity(0f, body.getLinearVelocity().y);
 
+        if (Window.key.numpad1)
+            switchState(State.ANIMATION);
         if (Window.key.numpad3)   //jump
             switchState(State.AIR);
 
@@ -194,7 +194,7 @@ public class Character implements CharacterStates { //parent character class
     }
 
     public void St_Animation(){
-
+    //add hitboxes based on what keys are pressed and then switch to another state
     }
 
     private void switchState(State newState){ //this method just changes which method
