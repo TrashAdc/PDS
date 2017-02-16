@@ -26,3 +26,4 @@ Devin: Tried to implement audio/music which does not look to be possible sadly
 
 ##Week of 2/13/17
 Devin: Gathering sound effects and music for main screen/battle screen etc.
+Sarath:Sprites
