@@ -23,3 +23,6 @@ Ryan: Implemented box2d into a parent character that can move, jump, and double 
 Sarath: Creating Sprites/animations
 
 Devin: Tried to implement audio/music which does not look to be possible sadly
+
+##Week of 2/13/17
+Devin: Gathering sound effects and music for main screen/battle screen etc.
