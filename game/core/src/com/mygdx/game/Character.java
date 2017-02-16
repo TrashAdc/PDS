@@ -3,6 +3,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 
@@ -23,13 +24,13 @@ public class Character implements CharacterStates { //parent character class
         DEAD
     }
 
-    private enum Attacks { //attacks include tilts, (sm/tr)ash attacks, and jabs (dash attacks if we implement running)
+    public enum Attack { //attacks include tilts, (sm/tr)ash attacks, and jabs (dash attacks if we implement running)
         JAB,               //numpad1 + any direction
         L_TILT, R_TILT, U_TILT, D_TILT,
         S_SMASH, U_SMASH, D_SMASH,
     }
 
-    private enum Specials { //specials are attacks that differ very greatly from other characters, but there are only 4 of them
+    private enum Special { //specials are attacks that differ very greatly from other characters, but there are only 4 of them
         N_SPECIAL,          //numpad2 + any direction
         S_SPECIAL,
         U_SPECIAL,
@@ -41,11 +42,14 @@ public class Character implements CharacterStates { //parent character class
     private State currentState; //current state of character
     private boolean state_new; //is true on only the first loop of the state method
 
+    private Attack currentAttack;
+
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
     private BodyDef bodyDef;   //body define for box2d
     private Body body;         //actual box2d body
     private float bodyWidth, bodyHeight; //height and width of body
 
+    private boolean direction; // 0 is left, 1 is right
     private float maxSpeed; //max speed at which the character can move
     private boolean hasJump; //if the character has a double jump
     private boolean canJump; //if the character can use the double jump atm
@@ -61,12 +65,14 @@ public class Character implements CharacterStates { //parent character class
 
         objInit(); //does box2d stuff
 
-        playerSprite = new Sprite(new Texture("core/assets/image/spr_parent.png"));  //gets/sets image
+        playerSprite = new Sprite(new Texture("core/assets/image/Wizard.png"));  //gets/sets image
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //sets initial position = body pos
         playerSprite.setSize(bodyWidth * 2f, bodyHeight * 2f); //sets size of the sprite = body size
 
+
         body.setUserData(playerSprite); //links the sprite with the body
 
+        direction = true;
         maxSpeed = 10;
         hasJump = false;
         canJump = false;
@@ -75,10 +81,6 @@ public class Character implements CharacterStates { //parent character class
         currentState = State.IDLE;
         state_new = true;
 
-        animationTimer = new FrameTimer(10);
-
-
-        //hitbox = new Hitbox(1.0f, 1.0f * Window.yConst, Window.camera.viewportWidth / 3 , Window.camera.viewportHeight / 3);
 
     }
 
@@ -201,15 +203,22 @@ public class Character implements CharacterStates { //parent character class
 
     public void St_Animation(){
         if (state_new) {
-            animationTimer.resetTimer();
-            hitbox = new Hitbox(.5f, .33f * Window.yConst, body.getPosition().x + bodyWidth , body.getPosition().y);
-            hitbox.spawnHitbox();
-        }
-        state_new = false;
 
+            animationTimer = new FrameTimer(GameData.AttackData.getFrames(Attack.JAB));
+
+            Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, Attack.JAB, direction);
+            Vector2 dimension = GameData.AttackData.getDimension(Attack.JAB);
+            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y);
+            hitbox.spawnHitbox();
+
+            state_new = false;
+        }
+
+        //the hitbox exists here
         animationTimer.incrementFrame();
 
         if (animationTimer.timerDone(false)) {
+            animationTimer = null;
             Window.bDestroy.addBody(hitbox.getHitboxBody());
             hitbox = null;
             switchState(State.IDLE);

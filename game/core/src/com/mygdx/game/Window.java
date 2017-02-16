@@ -16,6 +16,7 @@ import java.awt.*;
 public class Window extends ApplicationAdapter {
 
     public static Dimension SIZE; //size of window
+    public static int WORLD_SPEED;
     public static float yConst; //this is to fix the clash between resolution and world height
     //whenever calculating height, multiply by this to get an accurate visual
     //width = 2f, height = 2f;                  <------------- incorrect
@@ -46,6 +47,7 @@ public class Window extends ApplicationAdapter {
         Box2D.init(); //inits box2d
 
         SIZE = new Dimension(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //gets size of window into condensed variables
+        WORLD_SPEED = Gdx.graphics.getFramesPerSecond();
         yConst = (float)SIZE.width / (float)SIZE.height;
 
 
