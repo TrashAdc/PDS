@@ -24,6 +24,8 @@ public class FrameTimer {
         currentFrame++;
     }
 
+    public int getCurrentFrame() { return currentFrame; }
+
     public boolean timerDone(boolean reset){ //returns true if the current frame is past the frame to reach
         currentFrame = (reset) ? 0 : currentFrame;
         if (currentFrame >= framesToReach)

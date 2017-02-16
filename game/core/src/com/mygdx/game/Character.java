@@ -50,6 +50,9 @@ public class Character implements CharacterStates { //parent character class
     private boolean hasJump; //if the character has a double jump
     private boolean canJump; //if the character can use the double jump atm
 
+    private Hitbox hitbox;
+
+    private FrameTimer animationTimer;
 
     public Character(){
 
@@ -72,7 +75,10 @@ public class Character implements CharacterStates { //parent character class
         currentState = State.IDLE;
         state_new = true;
 
-        //h = new Hitbox(1.0f, 1.0f * Window.yConst, Window.camera.viewportWidth / 3 , Window.camera.viewportHeight / 3);
+        animationTimer = new FrameTimer(10);
+
+
+        //hitbox = new Hitbox(1.0f, 1.0f * Window.yConst, Window.camera.viewportWidth / 3 , Window.camera.viewportHeight / 3);
 
     }
 
@@ -129,7 +135,6 @@ public class Character implements CharacterStates { //parent character class
 
     }
 
-
     public void St_Idle(){ //the character is not moving
         state_new = false;
         //body.setLinearVelocity(0f, body.getLinearVelocity().y);
@@ -143,6 +148,7 @@ public class Character implements CharacterStates { //parent character class
             switchState(State.IDLE);             //if left and right remain idle
         else if (Window.key.left || Window.key.right)
             switchState(State.WALKING);
+
     }
 
     public void St_Walking(){ //the character is moving on the ground
@@ -194,7 +200,20 @@ public class Character implements CharacterStates { //parent character class
     }
 
     public void St_Animation(){
-    //add hitboxes based on what keys are pressed and then switch to another state
+        if (state_new) {
+            animationTimer.resetTimer();
+            hitbox = new Hitbox(.5f, .33f * Window.yConst, body.getPosition().x + bodyWidth , body.getPosition().y);
+            hitbox.spawnHitbox();
+        }
+        state_new = false;
+
+        animationTimer.incrementFrame();
+
+        if (animationTimer.timerDone(false)) {
+            Window.bDestroy.addBody(hitbox.getHitboxBody());
+            hitbox = null;
+            switchState(State.IDLE);
+        }
     }
 
     private void switchState(State newState){ //this method just changes which method
@@ -211,6 +230,8 @@ public class Character implements CharacterStates { //parent character class
                 return "walking";
             case AIR:
                 return "air";
+            case ANIMATION:
+                return "animation - ";
             default:
                 return "not set";
         }

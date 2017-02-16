@@ -9,7 +9,7 @@ public class Hitbox {
 
     private BodyDef hitboxDef;
     private Body hitbox;
-    private  PolygonShape boxShape;
+    private PolygonShape boxShape;
 
     public Hitbox(float width, float height, float posx, float posy){
 
@@ -21,13 +21,17 @@ public class Hitbox {
         boxShape = new PolygonShape();
         boxShape.setAsBox(width, height);
 
+    }
 
-
+    public Body getHitboxBody(){
+        return hitbox;
     }
 
     public void spawnHitbox(){
         hitbox = Window.world.createBody(hitboxDef);
         hitbox.createFixture(boxShape, 1.0f);
+
+
     }
 
     public void destroyHitbox(){

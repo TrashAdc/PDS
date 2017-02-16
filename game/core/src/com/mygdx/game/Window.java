@@ -24,6 +24,9 @@ public class Window extends ApplicationAdapter {
     public static final ActiveKeys key = new ActiveKeys(); //key listener
 
     public static World world; //physics world
+
+    public static BodyDestroyer bDestroy;
+
     Box2DDebugRenderer debugRenderer; //lets us see hitboxes for debugging
 
     public static OrthographicCamera camera; //camera for sizing things down i guess
@@ -48,6 +51,8 @@ public class Window extends ApplicationAdapter {
 
         world = new World(new Vector2(0, -100), true); //sets gravity of axis
 
+        bDestroy = new BodyDestroyer();
+
         debugRenderer = new Box2DDebugRenderer();
 
         camera = new OrthographicCamera(30, 30); //sets view of camera
@@ -63,12 +68,7 @@ public class Window extends ApplicationAdapter {
 
         shader = new Shader(); //random shader
 
-        font = new BitmapFont(); //words??
-        font.getData().setScale(.08f);
-
         time = 0.0f; //time for shaders
-
-
 
 
     }
@@ -88,9 +88,6 @@ public class Window extends ApplicationAdapter {
 
 
 
-
-        //font.draw(batch, "s t a t e : " + dood.stateToString(), camera.viewportWidth / 2f, camera.viewportHeight / 2f); //test for states
-
         //draw stuff here
 
         //System.out.println(shader.getShader().isCompiled());
@@ -106,12 +103,15 @@ public class Window extends ApplicationAdapter {
         batch.end();
         world.step(1/60f, 6, 2);
 
+        bDestroy.destroyBodies();
+
     }
 
     @Override
     public void dispose() {
         shader.getShader().dispose();
-        //batch.dispose();
+        batch.dispose();
+
     }
 
 }
