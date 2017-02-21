@@ -53,6 +53,8 @@ public class Window extends ApplicationAdapter {
 
         world = new World(new Vector2(0, -100), true); //sets gravity of axis
 
+        world.setContactListener(new ListenerClass()); //collision stuff
+
         bDestroy = new BodyDestroyer();
 
         debugRenderer = new Box2DDebugRenderer();

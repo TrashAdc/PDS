@@ -11,11 +11,15 @@ public final class GameData { //this class has other static classes that are pur
 
     public static class AttackData{
 
-        public static Vector2 getPosition(Body body, float bodyWidth, Character.Attack attackType, boolean direction){
+        public static Vector2 getPosition(Body body, float bodyWidth, float bodyHeight, Character.Attack attackType, boolean direction){
             int d = (direction) ? 1 : -1;
             switch (attackType){
                 case JAB:
                     return new Vector2(body.getPosition().x + (bodyWidth * d) + (.51f * d), body.getPosition().y);
+                case S_TILT:
+                    return new Vector2(body.getPosition().x + (bodyWidth * d) + (.51f * d), (body.getPosition().y + bodyHeight) - getDimension(Character.Attack.S_TILT).y);
+                case D_TILT:
+                case U_TILT:
                 default:
                     return new Vector2(0, 0);
                 //add more cases as we add more attacks
@@ -27,6 +31,10 @@ public final class GameData { //this class has other static classes that are pur
             switch (attackType){
                 case JAB:
                     return new Vector2(.5f, .33f);
+                case S_TILT:
+                    return new Vector2(.75f, .25f);
+                case D_TILT:
+                case U_TILT:
                 default:
                     return new Vector2(.5f, .5f);
             }
@@ -36,6 +44,10 @@ public final class GameData { //this class has other static classes that are pur
             switch (attackType){
                 case JAB:
                     return 5;
+                case S_TILT:
+                    return 15;
+                case D_TILT:
+                case U_TILT:
                 default:
                     return 30;
             }

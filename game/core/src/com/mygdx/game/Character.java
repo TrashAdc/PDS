@@ -26,7 +26,7 @@ public class Character implements CharacterStates { //parent character class
 
     public enum Attack { //attacks include tilts, (sm/tr)ash attacks, and jabs (dash attacks if we implement running)
         JAB,               //numpad1 + any direction
-        L_TILT, R_TILT, U_TILT, D_TILT,
+        S_TILT, U_TILT, D_TILT,
         S_SMASH, U_SMASH, D_SMASH,
     }
 
@@ -65,12 +65,11 @@ public class Character implements CharacterStates { //parent character class
 
         objInit(); //does box2d stuff
 
-        playerSprite = new Sprite(new Texture("core/assets/image/Wizard.png"));  //gets/sets image
+        playerSprite = new Sprite(new Texture("core/assets/image/spr_parent.png"));  //gets/sets image
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //sets initial position = body pos
         playerSprite.setSize(bodyWidth * 2f, bodyHeight * 2f); //sets size of the sprite = body size
 
-
-        body.setUserData(playerSprite); //links the sprite with the body
+        body.setUserData(this); //links the class with the body
 
         direction = true;
         maxSpeed = 10;
@@ -141,8 +140,10 @@ public class Character implements CharacterStates { //parent character class
         state_new = false;
         //body.setLinearVelocity(0f, body.getLinearVelocity().y);
 
-        if (Window.key.numpad1)
+        if (Window.key.numpad1) {
+            currentAttack = Attack.JAB;
             switchState(State.ANIMATION);
+        }
         if (Window.key.numpad3)   //jump
             switchState(State.AIR);
 
@@ -158,6 +159,10 @@ public class Character implements CharacterStates { //parent character class
 
         horizontalMovement(); //moves character left or right
 
+        if (Window.key.numpad1) {
+            currentAttack = Attack.S_TILT;
+            switchState(State.ANIMATION);
+        }
         if (Window.key.numpad3) //jump if pressed
             switchState(State.AIR);
 
@@ -204,10 +209,10 @@ public class Character implements CharacterStates { //parent character class
     public void St_Animation(){
         if (state_new) {
 
-            animationTimer = new FrameTimer(GameData.AttackData.getFrames(Attack.JAB));
+            animationTimer = new FrameTimer(GameData.AttackData.getFrames(currentAttack));
 
-            Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, Attack.JAB, direction);
-            Vector2 dimension = GameData.AttackData.getDimension(Attack.JAB);
+            Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, bodyHeight, currentAttack, direction);
+            Vector2 dimension = GameData.AttackData.getDimension(currentAttack);
             hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y);
             hitbox.spawnHitbox();
 
@@ -252,12 +257,22 @@ public class Character implements CharacterStates { //parent character class
             if (body.getLinearVelocity().x == 0)
                 body.setLinearVelocity(-.01f, body.getLinearVelocity().y);
 
+            if (direction){
+                playerSprite.flip(true, false);
+                direction = false;
+            }
+
             body.applyLinearImpulse(-5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
         }
 
         if (Window.key.right) {
             if (body.getLinearVelocity().x == 0)
                 body.setLinearVelocity(.01f, body.getLinearVelocity().y);
+
+            if (!direction){
+                playerSprite.flip(true, false);
+                direction = true;
+            }
 
             body.applyLinearImpulse(5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
         }
