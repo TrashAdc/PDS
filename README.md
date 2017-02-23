@@ -26,5 +26,5 @@ Devin: Tried to implement audio/music which does not look to be possible sadly
 
 ##Week of 2/13/17
 Devin: Gathering sound effects and music for main screen/battle screen etc.  
-Sarath:Sprites
+Sarath:Sprites 
 Ryan: Made hitbox class & that creates and destroys hitboxes, basic jab with hitboxes, timer that measures time with frames, created database of moves in a spreadsheet as well as a move data class
