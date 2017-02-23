@@ -69,7 +69,8 @@ public class Character implements CharacterStates { //parent character class
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //sets initial position = body pos
         playerSprite.setSize(bodyWidth * 2f, bodyHeight * 2f); //sets size of the sprite = body size
 
-        body.setUserData(this); //links the class with the body
+        body.setUserData("char_parent"); //links the class with the body
+
 
         direction = true;
         maxSpeed = 10;
@@ -101,7 +102,9 @@ public class Character implements CharacterStates { //parent character class
         fixDef.friction = 0.5f;
 
 
+
         body.createFixture(fixDef); //puts the fixture on the body
+
 
 
 
@@ -213,7 +216,7 @@ public class Character implements CharacterStates { //parent character class
 
             Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, bodyHeight, currentAttack, direction);
             Vector2 dimension = GameData.AttackData.getDimension(currentAttack);
-            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y);
+            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, currentAttack);
             hitbox.spawnHitbox();
 
             state_new = false;

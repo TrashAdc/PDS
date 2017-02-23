@@ -35,6 +35,7 @@ public class Stage { //parent stage class
 
 
         stageBody.createFixture(stageShape, 1.0f);
+        stageBody.setUserData("stage");
 
 
     }
