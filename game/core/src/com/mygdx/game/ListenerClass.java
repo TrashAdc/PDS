@@ -10,6 +10,7 @@ public class ListenerClass implements ContactListener {
     private Fixture f1, f2;
 
 
+
     @Override
     public void beginContact(Contact contact) {
 
@@ -17,6 +18,7 @@ public class ListenerClass implements ContactListener {
         f2 = contact.getFixtureB();
 
         //put checking and effects here
+
 
 
     }

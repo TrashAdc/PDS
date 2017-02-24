@@ -216,7 +216,7 @@ public class Character implements CharacterStates { //parent character class
 
             Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, bodyHeight, currentAttack, direction);
             Vector2 dimension = GameData.AttackData.getDimension(currentAttack);
-            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, currentAttack);
+            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, new Vector2(5, 5));
             hitbox.spawnHitbox();
 
             state_new = false;
@@ -227,7 +227,7 @@ public class Character implements CharacterStates { //parent character class
 
         if (animationTimer.timerDone(false)) {
             animationTimer = null;
-            Window.bDestroy.addBody(hitbox.getHitboxBody());
+            hitbox.destroyHitbox();
             hitbox = null;
             switchState(State.IDLE);
         }
