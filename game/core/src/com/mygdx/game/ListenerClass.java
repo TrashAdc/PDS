@@ -1,13 +1,23 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+
 
 /**
  * Created by ryan v on 2/21/2017.
  */
 public class ListenerClass implements ContactListener {
 
+    private enum CollisionType{
+        HIT_PLAYER,
+        PLAYER_PLAYER,
+        HIT_HIT,
+        NONE
+    }
+
     private Fixture f1, f2;
+    private CollisionType cType;
 
 
 
@@ -17,8 +27,10 @@ public class ListenerClass implements ContactListener {
         f1 = contact.getFixtureA();
         f2 = contact.getFixtureB();
 
-        if (f2.getBody().getUserData() == "char_parent")
-            System.out.println("helo my friend");
+        cType = getCType(f1, f2);
+
+
+
 
 
 
@@ -40,8 +52,8 @@ public class ListenerClass implements ContactListener {
 
     private boolean easyCheck(String userData1, String userData2){
         if ((f1.getBody().getUserData().equals(userData1) && f2.getBody().getUserData().equals(userData2)) ||
-            (f1.getBody().getUserData().equals(userData2) && f2.getBody().getUserData().equals(userData1)))
-                return true;
+                (f1.getBody().getUserData().equals(userData2) && f2.getBody().getUserData().equals(userData1)))
+            return true;
         else
             return false;
     }
@@ -60,14 +72,25 @@ public class ListenerClass implements ContactListener {
             return false;
     }
 
-    private void filter(Contact contact){ //puts characters into f1, and hitboxes into f2
-        String hit1 = (String) contact.getFixtureA().getBody().getUserData();
-        String hit2 = (String) contact.getFixtureB().getBody().getUserData();
+    private CollisionType getCType(Fixture fix1, Fixture fix2){ //checks to see what types of boxes are colliding
+        if (fix1.getBody().getUserData().toString().substring(0, 1).equals("p") && fix2.getBody().getUserData().toString().substring(0, 1).equals("p"))
+            return CollisionType.HIT_HIT;
+        else if ((fix1.getBody().getUserData() == GameData.Player.PLAYER1 || fix1.getBody().getUserData() == GameData.Player.PLAYER2) &&
+                 (fix2.getBody().getUserData() == GameData.Player.PLAYER1 || fix2.getBody().getUserData() == GameData.Player.PLAYER2))
+            return CollisionType.PLAYER_PLAYER;
+        else
+            return CollisionType.HIT_PLAYER;
 
-        if (hit1.substring(0, 1).equals("char") && (hit1.substring(0, 1).equals("char")))
-            return;
-        //add more stuff
+    }
 
+    private void characterHit(){
+        float vx = 0, vy = 0;
+
+        
+        if (f1.getBody().getUserData().toString().substring(0, 1).equals("p")) {
+            vx = Hitbox.hitboxMap.get(f1.getBody().getUserData()).x;
+            vx = Hitbox.hitboxMap.get(f1.getBody().getUserData()).y;
+        }
 
     }
 

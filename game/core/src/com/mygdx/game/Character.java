@@ -72,7 +72,7 @@ public class Character implements CharacterStates { //parent character class
 
         player = GameData.Player.PLAYER1;
 
-        body.setUserData("char_parent"); //links the class with the body
+        body.setUserData(player); //links the class with the body
 
 
         direction = true;
