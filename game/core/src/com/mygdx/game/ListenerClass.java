@@ -17,7 +17,8 @@ public class ListenerClass implements ContactListener {
         f1 = contact.getFixtureA();
         f2 = contact.getFixtureB();
 
-        //put checking and effects here
+        if (f2.getBody().getUserData() == "char_parent")
+            System.out.println("helo my friend");
 
 
 
@@ -57,6 +58,17 @@ public class ListenerClass implements ContactListener {
             return true;
         else
             return false;
+    }
+
+    private void filter(Contact contact){ //puts characters into f1, and hitboxes into f2
+        String hit1 = (String) contact.getFixtureA().getBody().getUserData();
+        String hit2 = (String) contact.getFixtureB().getBody().getUserData();
+
+        if (hit1.substring(0, 1).equals("char") && (hit1.substring(0, 1).equals("char")))
+            return;
+        //add more stuff
+
+
     }
 
 }

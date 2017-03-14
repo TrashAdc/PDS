@@ -8,6 +8,11 @@ import com.badlogic.gdx.physics.box2d.Body;
  */
 public final class GameData { //this class has other static classes that are purely for storing data and nothing else. no objects of this class should be created.
 
+    public enum Player {
+        PLAYER1,
+        PLAYER2
+    }
+
 
     public static class AttackData{
 

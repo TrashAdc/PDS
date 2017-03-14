@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -16,11 +17,12 @@ public class Hitbox {
     private PolygonShape boxShape;
     private Vector2 knockback;
     private String userData;
+    private String userDataPrefix;
 
     public static Map<String, Vector2> hitboxMap;
 
 
-    public Hitbox(float width, float height, float posx, float posy, Vector2 force){
+    public Hitbox(float width, float height, float posx, float posy, Vector2 force, GameData.Player player){
 
         hitboxDef = new BodyDef();
         hitboxDef.type = BodyDef.BodyType.KinematicBody;
@@ -32,8 +34,10 @@ public class Hitbox {
 
         knockback = force;
 
-        userData = generateUserData();
+        userDataPrefix = (player == GameData.Player.PLAYER1) ? "p1" : "p2";
 
+        hitboxMap = new HashMap();
+        userData = generateUserData();
         hitboxMap.put(userData, knockback);
 
 
@@ -65,8 +69,8 @@ public class Hitbox {
         Random rand = new Random();
 
         do {
-            key = "";
-            for (int i = 0; i < 8; i++){
+            key = userDataPrefix;
+            for (int i = 0; i < 6; i++){
                 key += (char)rand.nextInt(62) + 60;
             }
         } while (hitboxMap.containsKey(key));

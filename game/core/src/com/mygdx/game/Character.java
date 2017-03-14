@@ -43,6 +43,7 @@ public class Character implements CharacterStates { //parent character class
     private boolean state_new; //is true on only the first loop of the state method
 
     private Attack currentAttack;
+    private GameData.Player player;
 
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
     private BodyDef bodyDef;   //body define for box2d
@@ -68,6 +69,8 @@ public class Character implements CharacterStates { //parent character class
         playerSprite = new Sprite(new Texture("core/assets/image/spr_parent.png"));  //gets/sets image
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //sets initial position = body pos
         playerSprite.setSize(bodyWidth * 2f, bodyHeight * 2f); //sets size of the sprite = body size
+
+        player = GameData.Player.PLAYER1;
 
         body.setUserData("char_parent"); //links the class with the body
 
@@ -216,7 +219,7 @@ public class Character implements CharacterStates { //parent character class
 
             Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, bodyHeight, currentAttack, direction);
             Vector2 dimension = GameData.AttackData.getDimension(currentAttack);
-            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, new Vector2(5, 5));
+            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, new Vector2(5, 5), player);
             hitbox.spawnHitbox();
 
             state_new = false;
