@@ -71,10 +71,11 @@ public class Hitbox {
         do {
             key = userDataPrefix;
             for (int i = 0; i < 6; i++){
-                key += (char)rand.nextInt(62) + 60;
+
+                char l = (char)(rand.nextInt(62) + 60);
+                key += l;
             }
         } while (hitboxMap.containsKey(key));
-
         return key;
     }
 

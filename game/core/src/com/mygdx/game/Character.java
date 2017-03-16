@@ -223,7 +223,6 @@ public class Character implements CharacterStates { //parent character class
 
             hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, knockback, player);
             hitbox.spawnHitbox();
-
             state_new = false;
         }
 

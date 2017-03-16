@@ -89,21 +89,35 @@ public class ListenerClass implements ContactListener {
     private void characterHit(){
         float vx = 0, vy = 0;
         Fixture hit = null;
+        String hitUD = "", hitterUD = "";
 
 
         if (f1.getBody().getUserData().toString().substring(0, 1).equals("p")) {
             vx = Hitbox.hitboxMap.get(f1.getBody().getUserData()).x;
             vy = Hitbox.hitboxMap.get(f1.getBody().getUserData()).y;
             hit = f2;
+            hitUD = f2.getBody().getUserData().toString().substring(6);
+            hitterUD = f1.getBody().getUserData().toString().substring(1, 2);
+
         }
         else if (f2.getBody().getUserData().toString().substring(0, 1).equals("p")) {
             vx = Hitbox.hitboxMap.get(f2.getBody().getUserData()).x;
             vy = Hitbox.hitboxMap.get(f2.getBody().getUserData()).y;
             hit = f1;
+            hitUD = f1.getBody().getUserData().toString().substring(6);
+            hitterUD = f2.getBody().getUserData().toString().substring(1, 2);
         }
 
-        if (hit != null)
-            hit.getBody().applyLinearImpulse(vx, vy, hit.getBody().getPosition().x,hit.getBody().getPosition().y, false);
+
+
+
+        if (hit != null) {
+            //System.out.println(hitUD + " " + hitterUD);
+            if (hitUD != hitterUD){
+                System.out.println(hitUD + " " + hitterUD);
+                hit.getBody().applyLinearImpulse(vx, vy, hit.getBody().getPosition().x, hit.getBody().getPosition().y, false);
+            }
+        }
 
     }
 

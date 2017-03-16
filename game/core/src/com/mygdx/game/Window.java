@@ -51,7 +51,7 @@ public class Window extends ApplicationAdapter {
         yConst = (float)SIZE.width / (float)SIZE.height;
 
 
-        world = new World(new Vector2(0, -100), true); //sets gravity of axis
+        world = new World(new Vector2(0, -60), true); //sets gravity of axis
 
         world.setContactListener(new ListenerClass()); //collision stuff
 
@@ -73,6 +73,8 @@ public class Window extends ApplicationAdapter {
         shader = new Shader(); //random shader
 
         time = 0.0f; //time for shaders
+
+        DummyBox d = new DummyBox();
 
 
     }

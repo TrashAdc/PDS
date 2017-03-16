@@ -67,7 +67,9 @@ public final class GameData { //this class has other static classes that are pur
                 case S_TILT:
                     return new Vector2(50f * d, 35f);
                 case D_TILT:
+                    return new Vector2(15f * d, 50f);
                 case U_TILT:
+                    return new Vector2(10f, 55f);
                 default:
                     return new Vector2(1f * d, 1f);
             }
