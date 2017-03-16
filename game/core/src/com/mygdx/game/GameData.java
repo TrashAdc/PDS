@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 /**
  * Created by 236040 on 2/16/2017.
  */
+//database for values found in code: https://docs.google.com/a/allenisd.org/spreadsheets/d/1sMrRwi33BDu2Ee2jXgkjOK2JmH-mKdtxONRRPkdPZQc/edit?usp=sharing
 public final class GameData { //this class has other static classes that are purely for storing data and nothing else. no objects of this class should be created.
 
     public enum Player {
@@ -55,6 +56,20 @@ public final class GameData { //this class has other static classes that are pur
                 case U_TILT:
                 default:
                     return 30;
+            }
+        }
+
+        public static Vector2 getKnockback(Character.Attack attackType, boolean direction){
+            int d = (direction) ? 1 : -1;
+            switch (attackType){
+                case JAB:
+                    return new Vector2(20f * d, 20f);
+                case S_TILT:
+                    return new Vector2(50f * d, 35f);
+                case D_TILT:
+                case U_TILT:
+                default:
+                    return new Vector2(1f * d, 1f);
             }
         }
 

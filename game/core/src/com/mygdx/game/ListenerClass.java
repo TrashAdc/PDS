@@ -29,6 +29,9 @@ public class ListenerClass implements ContactListener {
 
         cType = getCType(f1, f2);
 
+        if (cType == CollisionType.HIT_PLAYER)
+            characterHit();
+
 
 
 
@@ -76,7 +79,7 @@ public class ListenerClass implements ContactListener {
         if (fix1.getBody().getUserData().toString().substring(0, 1).equals("p") && fix2.getBody().getUserData().toString().substring(0, 1).equals("p"))
             return CollisionType.HIT_HIT;
         else if ((fix1.getBody().getUserData() == GameData.Player.PLAYER1 || fix1.getBody().getUserData() == GameData.Player.PLAYER2) &&
-                 (fix2.getBody().getUserData() == GameData.Player.PLAYER1 || fix2.getBody().getUserData() == GameData.Player.PLAYER2))
+                (fix2.getBody().getUserData() == GameData.Player.PLAYER1 || fix2.getBody().getUserData() == GameData.Player.PLAYER2))
             return CollisionType.PLAYER_PLAYER;
         else
             return CollisionType.HIT_PLAYER;
@@ -85,12 +88,22 @@ public class ListenerClass implements ContactListener {
 
     private void characterHit(){
         float vx = 0, vy = 0;
+        Fixture hit = null;
 
-        
+
         if (f1.getBody().getUserData().toString().substring(0, 1).equals("p")) {
             vx = Hitbox.hitboxMap.get(f1.getBody().getUserData()).x;
-            vx = Hitbox.hitboxMap.get(f1.getBody().getUserData()).y;
+            vy = Hitbox.hitboxMap.get(f1.getBody().getUserData()).y;
+            hit = f2;
         }
+        else if (f2.getBody().getUserData().toString().substring(0, 1).equals("p")) {
+            vx = Hitbox.hitboxMap.get(f2.getBody().getUserData()).x;
+            vy = Hitbox.hitboxMap.get(f2.getBody().getUserData()).y;
+            hit = f1;
+        }
+
+        if (hit != null)
+            hit.getBody().applyLinearImpulse(vx, vy, hit.getBody().getPosition().x,hit.getBody().getPosition().y, false);
 
     }
 

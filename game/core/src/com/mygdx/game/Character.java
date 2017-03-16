@@ -219,7 +219,9 @@ public class Character implements CharacterStates { //parent character class
 
             Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, bodyHeight, currentAttack, direction);
             Vector2 dimension = GameData.AttackData.getDimension(currentAttack);
-            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, new Vector2(5, 5), player);
+            Vector2 knockback = GameData.AttackData.getKnockback(currentAttack, direction);
+
+            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, knockback, player);
             hitbox.spawnHitbox();
 
             state_new = false;
