@@ -17,17 +17,17 @@ Ryan: Researched how to use Box2D for collision and easy physics (its taking a l
 
 Sarath:Began to put data into game database, learning how to implement knockback with Box2D.  
 
-##Week of 2/6/17
+## Week of 2/6/17 
 Ryan: Implemented box2d into a parent character that can move, jump, and double jump on a stage with box2d as well. also started making attacks with hitboxes
 
 Sarath: Creating Sprites/animations
 
 Devin: Tried to implement audio/music which does not look to be possible sadly
 
-##Week of 2/13/17
+## Week of 2/13/17
 Devin: Gathering sound effects and music for main screen/battle screen etc.  
 Sarath:Sprites            
 Ryan: Made hitbox class & that creates and destroys hitboxes, basic jab with hitboxes, timer that measures time with frames, created database of moves in a spreadsheet as well as a move data class
 
-##Week of 2/20/17
+## Week of 2/20/17
 Ryan: Sensors for hitbox collision and knockback
