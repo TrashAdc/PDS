@@ -25,7 +25,9 @@ public final class GameData { //this class has other static classes that are pur
                 case S_TILT:
                     return new Vector2(body.getPosition().x + (bodyWidth * d) + (.51f * d), (body.getPosition().y + bodyHeight) - getDimension(Character.Attack.S_TILT).y);
                 case D_TILT:
+                    return new Vector2(body.getPosition().x + (bodyWidth * d) + (.51f * d), (body.getPosition().y - bodyHeight) + getDimension(Character.Attack.S_TILT).y);
                 case U_TILT:
+                    return new Vector2(body.getPosition().x, body.getPosition().y + bodyHeight + getDimension(Character.Attack.D_TILT).y);
                 default:
                     return new Vector2(0, 0);
                 //add more cases as we add more attacks
@@ -40,9 +42,11 @@ public final class GameData { //this class has other static classes that are pur
                 case S_TILT:
                     return new Vector2(.75f, .25f);
                 case D_TILT:
+                    return new Vector2(.75f, .25f);
                 case U_TILT:
+                    return new Vector2(.75f, 1.5f);
                 default:
-                    return new Vector2(.5f, .5f);
+                    return new Vector2(.5f, 1f);
             }
         }
 
@@ -53,7 +57,9 @@ public final class GameData { //this class has other static classes that are pur
                 case S_TILT:
                     return 15;
                 case D_TILT:
+                    return 15;
                 case U_TILT:
+                    return 15;
                 default:
                     return 30;
             }
@@ -67,9 +73,9 @@ public final class GameData { //this class has other static classes that are pur
                 case S_TILT:
                     return new Vector2(50f * d, 35f);
                 case D_TILT:
-                    return new Vector2(15f * d, 50f);
+                    return new Vector2(35f * d, 50f);
                 case U_TILT:
-                    return new Vector2(10f, 55f);
+                    return new Vector2(5f * d, 50f);
                 default:
                     return new Vector2(1f * d, 1f);
             }

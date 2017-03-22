@@ -26,8 +26,8 @@ public class DummyBox {
         FixtureDef fixDef = new FixtureDef(); //the boxes fixture
         fixDef.shape = bs; //sets fixture to shape of the body
         fixDef.density = 0.1f;
-        fixDef.restitution = 0.5f; //bounciness
-        fixDef.friction = 0.1f;
+        fixDef.restitution = 0f; //bounciness
+        fixDef.friction = 0.5f;
 
         b.createFixture(fixDef);
     }

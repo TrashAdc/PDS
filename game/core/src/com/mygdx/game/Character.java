@@ -102,7 +102,7 @@ public class Character implements CharacterStates { //parent character class
         fixDef.shape = bodyShape; //sets fixture to shape of the body
         fixDef.density = 0.5f;
         fixDef.restitution = 0.0f; //bounciness
-        fixDef.friction = 0.5f;
+        fixDef.friction = 0.75f;
 
 
 
@@ -147,7 +147,12 @@ public class Character implements CharacterStates { //parent character class
         //body.setLinearVelocity(0f, body.getLinearVelocity().y);
 
         if (Window.key.numpad1) {
-            currentAttack = Attack.JAB;
+            if (Window.key.up)
+                currentAttack = Attack.U_TILT;
+            else if (Window.key.down)
+                currentAttack = Attack.D_TILT;
+            else
+                currentAttack = Attack.JAB;
             switchState(State.ANIMATION);
         }
         if (Window.key.numpad3)   //jump
@@ -166,7 +171,12 @@ public class Character implements CharacterStates { //parent character class
         horizontalMovement(); //moves character left or right
 
         if (Window.key.numpad1) {
-            currentAttack = Attack.S_TILT;
+            if (Window.key.up)
+                currentAttack = Attack.U_TILT;
+            else if (Window.key.down)
+                currentAttack = Attack.D_TILT;
+            else
+                currentAttack = Attack.S_TILT;
             switchState(State.ANIMATION);
         }
         if (Window.key.numpad3) //jump if pressed

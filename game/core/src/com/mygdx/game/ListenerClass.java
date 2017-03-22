@@ -113,7 +113,7 @@ public class ListenerClass implements ContactListener {
 
         if (hit != null) {
             //System.out.println(hitUD + " " + hitterUD);
-            if (hitUD != hitterUD){
+            if (!hitUD.equals(hitterUD)){
                 System.out.println(hitUD + " " + hitterUD);
                 hit.getBody().applyLinearImpulse(vx, vy, hit.getBody().getPosition().x, hit.getBody().getPosition().y, false);
             }

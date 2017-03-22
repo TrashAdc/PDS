@@ -34,6 +34,8 @@ public class Window extends ApplicationAdapter {
 
     private SpriteBatch batch; //u need this to draw
 
+    private Stage testStage;
+
     private Character dood; //this is an object in the game
 
     private Shader shader; //effects
@@ -59,7 +61,7 @@ public class Window extends ApplicationAdapter {
 
         debugRenderer = new Box2DDebugRenderer();
 
-        camera = new OrthographicCamera(30, 30); //sets view of camera
+        camera = new OrthographicCamera(60, 60); //sets view of camera
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0); //position
         camera.update();
 
@@ -68,7 +70,7 @@ public class Window extends ApplicationAdapter {
         Gdx.input.setInputProcessor(key);
 
         dood = new Character(); //creates character
-        Stage testStage = new Stage(); //makes stage in world
+        testStage = new Stage(); //makes stage in world
 
         shader = new Shader(); //random shader
 
@@ -91,6 +93,8 @@ public class Window extends ApplicationAdapter {
 
         debugRenderer.render(world, camera.combined);
         batch.begin();
+
+        testStage.getStageSprite().draw(batch);
 
 
 
