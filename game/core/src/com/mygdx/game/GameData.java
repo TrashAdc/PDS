@@ -69,15 +69,15 @@ public final class GameData { //this class has other static classes that are pur
             int d = (direction) ? 1 : -1;
             switch (attackType){
                 case JAB:
-                    return new Vector2(20f * d, 20f);
+                    return new Vector2(200f * d, 200f);
                 case S_TILT:
-                    return new Vector2(50f * d, 35f);
+                    return new Vector2(500f * d, 350f);
                 case D_TILT:
-                    return new Vector2(35f * d, 50f);
+                    return new Vector2(350f * d, 500f);
                 case U_TILT:
-                    return new Vector2(5f * d, 50f);
+                    return new Vector2(500f * d, 500f);
                 default:
-                    return new Vector2(1f * d, 1f);
+                    return new Vector2(10f * d, 10f);
             }
         }
 

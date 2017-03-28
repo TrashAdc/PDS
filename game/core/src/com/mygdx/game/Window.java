@@ -36,7 +36,7 @@ public class Window extends ApplicationAdapter {
 
     private Stage testStage;
 
-    private Character dood; //this is an object in the game
+    private Character dood, dood2; //this is an object in the game
 
     private Shader shader; //effects
     private float time; //time for shader
@@ -69,7 +69,8 @@ public class Window extends ApplicationAdapter {
 
         Gdx.input.setInputProcessor(key);
 
-        dood = new Character(); //creates character
+        dood = new Character(GameData.Player.PLAYER1); //creates character
+        dood2 = new Character(GameData.Player.PLAYER2); //creates character
         testStage = new Stage(); //makes stage in world
 
         shader = new Shader(); //random shader
@@ -107,6 +108,7 @@ public class Window extends ApplicationAdapter {
         //batch.getProjectionMatrix();
 
         dood.getSprite().draw(batch); //draw the sprite
+        dood2.getSprite().draw(batch);
 
 
 

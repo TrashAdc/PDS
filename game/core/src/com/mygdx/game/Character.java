@@ -38,6 +38,14 @@ public class Character implements CharacterStates { //parent character class
     }
     //maybe aerial attacks will come in the future but for now use basic attacks in the air
 
+    //<editor-fold desc="keys">
+    private boolean left = false;
+    private boolean right = false;
+    private boolean up = false;
+    private boolean down = false;
+    private boolean attack = false;
+    private boolean jump = false;
+    //</editor-fold>
 
     private State currentState; //current state of character
     private boolean state_new; //is true on only the first loop of the state method
@@ -59,7 +67,7 @@ public class Character implements CharacterStates { //parent character class
 
     private FrameTimer animationTimer;
 
-    public Character(){
+    public Character(GameData.Player p){
 
         bodyWidth = 1f;                 //set width and height
         bodyHeight = 1f * Window.yConst;
@@ -70,7 +78,7 @@ public class Character implements CharacterStates { //parent character class
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //sets initial position = body pos
         playerSprite.setSize(bodyWidth * 2f, bodyHeight * 2f); //sets size of the sprite = body size
 
-        player = GameData.Player.PLAYER1;
+        player = p;
 
         body.setUserData(player); //links the class with the body
 
@@ -108,9 +116,6 @@ public class Character implements CharacterStates { //parent character class
 
         body.createFixture(fixDef); //puts the fixture on the body
 
-
-
-
     }
 
     public Sprite getSprite(){ //returns the sprite (this contains position as well) and updates the body
@@ -121,6 +126,7 @@ public class Character implements CharacterStates { //parent character class
     private void executeState(){ //this executes the state that the character is currently in
 
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //set sprite equal to body
+        updateKeys(); //update what keys are pressed
 
         switch (currentState) { //executes the state
             case IDLE:
@@ -142,25 +148,46 @@ public class Character implements CharacterStates { //parent character class
 
     }
 
+    private void updateKeys(){ //updates keys that are active for multiple players
+
+        if (player == GameData.Player.PLAYER1){
+            left = Window.key.A;
+            right = Window.key.D;
+            up = Window.key.W;
+            down = Window.key.S;
+            attack = Window.key.V;
+            jump = Window.key.N;
+        }
+
+        else {
+            left = Window.key.left;
+            right = Window.key.right;
+            up = Window.key.up;
+            down = Window.key.down;
+            attack = Window.key.numpad1;
+            jump = Window.key.numpad3;
+        }
+    }
+
     public void St_Idle(){ //the character is not moving
         state_new = false;
         //body.setLinearVelocity(0f, body.getLinearVelocity().y);
 
-        if (Window.key.numpad1) {
-            if (Window.key.up)
+        if (attack) {
+            if (up)
                 currentAttack = Attack.U_TILT;
-            else if (Window.key.down)
+            else if (down)
                 currentAttack = Attack.D_TILT;
             else
                 currentAttack = Attack.JAB;
             switchState(State.ANIMATION);
         }
-        if (Window.key.numpad3)   //jump
+        if (jump)   //jump
             switchState(State.AIR);
 
-        if (Window.key.left && Window.key.right) //switch to walking state if left OR right
+        if (left && right) //switch to walking state if left OR right
             switchState(State.IDLE);             //if left and right remain idle
-        else if (Window.key.left || Window.key.right)
+        else if (left ||right)
             switchState(State.WALKING);
 
     }
@@ -170,21 +197,21 @@ public class Character implements CharacterStates { //parent character class
 
         horizontalMovement(); //moves character left or right
 
-        if (Window.key.numpad1) {
-            if (Window.key.up)
+        if (attack) {
+            if (up)
                 currentAttack = Attack.U_TILT;
-            else if (Window.key.down)
+            else if (down)
                 currentAttack = Attack.D_TILT;
             else
                 currentAttack = Attack.S_TILT;
             switchState(State.ANIMATION);
         }
-        if (Window.key.numpad3) //jump if pressed
+        if (jump) //jump if pressed
             switchState(State.AIR);
 
-        if (Window.key.left && Window.key.right)  //if neither or both l & r are pressed stop moving
+        if (left && right)  //if neither or both l & r are pressed stop moving
             switchState(State.IDLE);
-        else if (!Window.key.left && !Window.key.right)
+        else if (!left && !right)
             switchState(State.IDLE);
 
     }
@@ -197,14 +224,14 @@ public class Character implements CharacterStates { //parent character class
             hasJump = true; //gives the character a double jump
             state_new = false;
         }
-        else if (Window.key.numpad3 && hasJump && canJump){
+        else if (jump && hasJump && canJump){
             body.setLinearVelocity(body.getLinearVelocity().x, .01f);
             body.applyLinearImpulse(0f, 125f, bodyWidth / 2, bodyHeight / 2, false);
             hasJump = false;
             canJump = false;
         }
 
-        if (!Window.key.numpad3) //can use the double jump if player has let go of the jump key
+        if (!jump) //can use the double jump if player has let go of the jump key
             canJump = true;
 
         horizontalMovement(); //move horizontally
@@ -269,7 +296,7 @@ public class Character implements CharacterStates { //parent character class
     }
 
     private void horizontalMovement(){ //checks for and gives horizontal movement
-        if (Window.key.left) {
+        if (left) {
 
             if (body.getLinearVelocity().x == 0)
                 body.setLinearVelocity(-.01f, body.getLinearVelocity().y);
@@ -282,7 +309,7 @@ public class Character implements CharacterStates { //parent character class
             body.applyLinearImpulse(-5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
         }
 
-        if (Window.key.right) {
+        if (right) {
             if (body.getLinearVelocity().x == 0)
                 body.setLinearVelocity(.01f, body.getLinearVelocity().y);
 

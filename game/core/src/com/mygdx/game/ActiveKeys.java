@@ -9,12 +9,20 @@ import com.badlogic.gdx.InputProcessor;
 //this class is basically just a key listener :P
 
 public class ActiveKeys implements InputProcessor {
+    //<editor-fold desc="all key types">
     public boolean right = false; //these variables turn true when the corresponding key is pressed
     public boolean left = false; //more keys other than left and right can be added by just copying what ive done but with other keys its really that simple
     public boolean up = false;
     public boolean down = false;
     public boolean numpad1 = false;
     public boolean numpad3 = false;
+    public boolean W = false;
+    public boolean A = false;
+    public boolean S = false;
+    public boolean D = false;
+    public boolean V = false;
+    public boolean N = false;
+    //</editor-fold>
 
     @Override
     public boolean keyDown(int keycode) {
@@ -36,6 +44,24 @@ public class ActiveKeys implements InputProcessor {
                 break;
             case Input.Keys.NUMPAD_3:
                 numpad3 = true;
+                break;
+            case Input.Keys.W:
+                W = true;
+                break;
+            case Input.Keys.A:
+                A = true;
+                break;
+            case Input.Keys.S:
+                S = true;
+                break;
+            case Input.Keys.D:
+                D = true;
+                break;
+            case Input.Keys.V:
+                V = true;
+                break;
+            case Input.Keys.N:
+                N = true;
                 break;
         }
         return true;
@@ -62,8 +88,26 @@ public class ActiveKeys implements InputProcessor {
             case Input.Keys.NUMPAD_3:
                 numpad3 = false;
                 break;
+            case Input.Keys.W:
+                W = false;
+                break;
+            case Input.Keys.A:
+                A = false;
+                break;
+            case Input.Keys.S:
+                S = false;
+                break;
+            case Input.Keys.D:
+                D = false;
+                break;
+            case Input.Keys.V:
+                V = false;
+                break;
+            case Input.Keys.N:
+                N = false;
+                break;
         }
-        return true;
+        return false;
     }
 
     @Override

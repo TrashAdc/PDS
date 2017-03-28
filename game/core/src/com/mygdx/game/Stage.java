@@ -30,6 +30,7 @@ public class Stage { //parent stage class
 
     }
 
+
     private void stageBodyInit(){ //this is a static body
 
         stageDef = new BodyDef();
