@@ -77,7 +77,7 @@ public class Window extends ApplicationAdapter {
 
         time = 0.0f; //time for shaders
 
-        DummyBox d = new DummyBox();
+        //DummyBox d = new DummyBox();
 
 
     }
@@ -102,10 +102,10 @@ public class Window extends ApplicationAdapter {
         //draw stuff here
 
         //System.out.println(shader.getShader().isCompiled());
-        //shader.getShader().setUniformf("time", time);
-        // shader.getShader().setUniformf("resolution", SIZE.width, SIZE.height);
-        //batch.setShader(shader.getShader()); //shaders!
-        //batch.getProjectionMatrix();
+        shader.getShader().setUniformf("time", time);
+        shader.getShader().setUniformf("resolution", SIZE.width, SIZE.height);
+        batch.setShader(shader.getShader()); //shaders!
+        batch.getProjectionMatrix();
 
         dood.getSprite().draw(batch); //draw the sprite
         dood2.getSprite().draw(batch);

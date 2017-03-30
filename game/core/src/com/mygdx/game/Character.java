@@ -27,15 +27,13 @@ public class Character implements CharacterStates { //parent character class
     public enum Attack { //attacks include tilts, (sm/tr)ash attacks, and jabs (dash attacks if we implement running)
         JAB,               //numpad1 + any direction
         S_TILT, U_TILT, D_TILT,
-        S_SMASH, U_SMASH, D_SMASH,
+        S_SMASH, U_SMASH, D_SMASH;
+
+         public enum Special {
+            N_SPECIAL, S_SPECIAL, U_SPECIAL, D_SPECIAL //specials are attacks that differ very greatly from other characters, but there are only 4 of them
+        }                                              //numpad2 + any direction
     }
 
-    private enum Special { //specials are attacks that differ very greatly from other characters, but there are only 4 of them
-        N_SPECIAL,          //numpad2 + any direction
-        S_SPECIAL,
-        U_SPECIAL,
-        D_SPECIAL
-    }
     //maybe aerial attacks will come in the future but for now use basic attacks in the air
 
     //<editor-fold desc="keys">
@@ -265,6 +263,8 @@ public class Character implements CharacterStates { //parent character class
 
         //the hitbox exists here
         animationTimer.incrementFrame();
+        if (currentAttack instanceof Attack)
+        hitbox.getHitboxBody().setLinearVelocity(body.getLinearVelocity());
 
         if (animationTimer.timerDone(false)) {
             animationTimer = null;

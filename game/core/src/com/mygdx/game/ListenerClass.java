@@ -84,6 +84,10 @@ public class ListenerClass implements ContactListener {
         else
             return CollisionType.HIT_PLAYER;
 
+
+
+
+
     }
 
     private void characterHit(){
@@ -93,19 +97,23 @@ public class ListenerClass implements ContactListener {
 
 
         if (f1.getBody().getUserData().toString().substring(0, 1).equals("p")) {
-            vx = Hitbox.hitboxMap.get(f1.getBody().getUserData()).x;
-            vy = Hitbox.hitboxMap.get(f1.getBody().getUserData()).y;
-            hit = f2;
-            hitUD = f2.getBody().getUserData().toString().substring(6);
-            hitterUD = f1.getBody().getUserData().toString().substring(1, 2);
+            if (Hitbox.hitboxMap.containsKey(f1.getBody().getUserData())) {
+                vx = Hitbox.hitboxMap.get(f1.getBody().getUserData()).x;
+                vy = Hitbox.hitboxMap.get(f1.getBody().getUserData()).y;
+                hit = f2;
+                hitUD = f2.getBody().getUserData().toString().substring(6);
+                hitterUD = f1.getBody().getUserData().toString().substring(1, 2);
+            }
 
         }
         else if (f2.getBody().getUserData().toString().substring(0, 1).equals("p")) {
-            vx = Hitbox.hitboxMap.get(f2.getBody().getUserData()).x;
-            vy = Hitbox.hitboxMap.get(f2.getBody().getUserData()).y;
-            hit = f1;
-            hitUD = f1.getBody().getUserData().toString().substring(6);
-            hitterUD = f2.getBody().getUserData().toString().substring(1, 2);
+            if (Hitbox.hitboxMap.containsKey(f2.getBody().getUserData())) {
+                vx = Hitbox.hitboxMap.get(f2.getBody().getUserData()).x;
+                vy = Hitbox.hitboxMap.get(f2.getBody().getUserData()).y;
+                hit = f1;
+                hitUD = f1.getBody().getUserData().toString().substring(6);
+                hitterUD = f2.getBody().getUserData().toString().substring(1, 2);
+            }
         }
 
 
