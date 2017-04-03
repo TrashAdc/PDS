@@ -8,7 +8,8 @@ public interface CharacterStates { //states of character to be implemented in ch
     void St_Walking();
     void St_Idle();
     void St_Air();
-    void St_Animation();
+    void St_Attack();
+    void St_Speical();
 
 }
 

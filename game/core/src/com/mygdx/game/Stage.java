@@ -16,6 +16,14 @@ public class Stage { //parent stage class
     private float stageWidth, stageHeight; //stage w, h
 
     public Stage(){
+        WindowView();
+
+
+        putBlastZone(-30, Window.camera.viewportHeight / 2, 5f, Window.camera.viewportHeight, "KOLeft");
+        putBlastZone(90, Window.camera.viewportHeight / 2, 5f, Window.camera.viewportHeight, "KORight");
+        putBlastZone(Window.camera.viewportHeight / 2, Window.camera.viewportHeight * 1.5f, Window.camera.viewportWidth, 5f, "KOUp");
+        putBlastZone(Window.camera.viewportHeight / 2, -5, Window.camera.viewportWidth, 5f, "KOUp");
+
 
         stageWidth = 20f;
         stageHeight = 2f * Window.yConst;
@@ -28,6 +36,44 @@ public class Stage { //parent stage class
 
 
 
+    }
+
+    private void putBlastZone(float posx, float posy, float width, float height, String userdata){
+        BodyDef bd = new BodyDef();
+        bd.type = BodyDef.BodyType.StaticBody;
+        bd.position.set(posx, posy);
+        bd.fixedRotation = true;
+
+        PolygonShape bShape = new PolygonShape();
+        bShape.setAsBox(width, height);
+
+        Body bod = Window.world.createBody(bd);
+        bod.setUserData(userdata);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = bShape;
+        fixtureDef.isSensor = true;
+
+        bod.createFixture(fixtureDef);
+    }
+
+    private void WindowView(){
+        BodyDef bd = new BodyDef();
+        bd.type = BodyDef.BodyType.StaticBody;
+        bd.position.set(Window.camera.viewportWidth / 2, Window.camera.viewportHeight / 4);
+        bd.fixedRotation = true;
+
+        PolygonShape bShape = new PolygonShape();
+        bShape.setAsBox(30, 30);
+
+        Body bod = Window.world.createBody(bd);
+        bod.setUserData("view");
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = bShape;
+        fixtureDef.isSensor = true;
+
+        bod.createFixture(fixtureDef);
     }
 
 

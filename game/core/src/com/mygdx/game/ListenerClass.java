@@ -13,6 +13,7 @@ public class ListenerClass implements ContactListener {
         HIT_PLAYER,
         PLAYER_PLAYER,
         HIT_HIT,
+        PLAYER_KO,
         NONE
     }
 
@@ -31,6 +32,9 @@ public class ListenerClass implements ContactListener {
 
         if (cType == CollisionType.HIT_PLAYER)
             characterHit();
+        else if (cType == CollisionType.PLAYER_KO)
+            System.exit(420);
+
 
 
 
@@ -76,11 +80,14 @@ public class ListenerClass implements ContactListener {
     }
 
     private CollisionType getCType(Fixture fix1, Fixture fix2){ //checks to see what types of boxes are colliding
+
         if (fix1.getBody().getUserData().toString().substring(0, 1).equals("p") && fix2.getBody().getUserData().toString().substring(0, 1).equals("p"))
             return CollisionType.HIT_HIT;
         else if ((fix1.getBody().getUserData() == GameData.Player.PLAYER1 || fix1.getBody().getUserData() == GameData.Player.PLAYER2) &&
                 (fix2.getBody().getUserData() == GameData.Player.PLAYER1 || fix2.getBody().getUserData() == GameData.Player.PLAYER2))
             return CollisionType.PLAYER_PLAYER;
+        else if (fix1.getBody().getUserData().toString().substring(0, 2).equals("KO") || fix2.getBody().getUserData().toString().substring(0, 2).equals("KO"))
+            return CollisionType.PLAYER_KO;
         else
             return CollisionType.HIT_PLAYER;
 

@@ -17,7 +17,8 @@ public class Character implements CharacterStates { //parent character class
         IDLE,           //the character will always be in a state, and only be in one state at a time
         WALKING,      //the method corresponding with the state the character is in
         AIR,        //these methods will be listed in an interface
-        ANIMATION,
+        ATTACK,
+        SPECIAL,
         LEDGE,
         HITSTUN,
         STUNNED,
@@ -118,6 +119,7 @@ public class Character implements CharacterStates { //parent character class
 
     public Sprite getSprite(){ //returns the sprite (this contains position as well) and updates the body
         executeState();
+        //System.out.println(body.getPosition());
         return playerSprite;
     }
 
@@ -136,8 +138,8 @@ public class Character implements CharacterStates { //parent character class
             case AIR:
                 St_Air();
                 break;
-            case ANIMATION:
-                St_Animation();
+            case ATTACK:
+                St_Attack();
                 break;
             default:
                 St_Idle();
@@ -178,7 +180,7 @@ public class Character implements CharacterStates { //parent character class
                 currentAttack = Attack.D_TILT;
             else
                 currentAttack = Attack.JAB;
-            switchState(State.ANIMATION);
+            switchState(State.ATTACK);
         }
         if (jump)   //jump
             switchState(State.AIR);
@@ -202,7 +204,7 @@ public class Character implements CharacterStates { //parent character class
                 currentAttack = Attack.D_TILT;
             else
                 currentAttack = Attack.S_TILT;
-            switchState(State.ANIMATION);
+            switchState(State.ATTACK);
         }
         if (jump) //jump if pressed
             switchState(State.AIR);
@@ -247,7 +249,7 @@ public class Character implements CharacterStates { //parent character class
 
     }
 
-    public void St_Animation(){
+    public void St_Attack(){
         if (state_new) {
 
             animationTimer = new FrameTimer(GameData.AttackData.getFrames(currentAttack));
@@ -274,6 +276,10 @@ public class Character implements CharacterStates { //parent character class
         }
     }
 
+    public void St_Speical(){
+
+    }
+
     private void switchState(State newState){ //this method just changes which method
         state_new = true;                    //will be run evey step by changing the state
         currentState = newState;
@@ -288,8 +294,8 @@ public class Character implements CharacterStates { //parent character class
                 return "walking";
             case AIR:
                 return "air";
-            case ANIMATION:
-                return "animation - ";
+            case ATTACK:
+                return "attacking";
             default:
                 return "not set";
         }
