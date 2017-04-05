@@ -16,13 +16,13 @@ public class Stage { //parent stage class
     private float stageWidth, stageHeight; //stage w, h
 
     public Stage(){
-        WindowView();
+        //WindowView();
 
 
         putBlastZone(-30, Window.camera.viewportHeight / 2, 5f, Window.camera.viewportHeight, "KOLeft");
         putBlastZone(90, Window.camera.viewportHeight / 2, 5f, Window.camera.viewportHeight, "KORight");
         putBlastZone(Window.camera.viewportHeight / 2, Window.camera.viewportHeight * 1.5f, Window.camera.viewportWidth, 5f, "KOUp");
-        putBlastZone(Window.camera.viewportHeight / 2, -5, Window.camera.viewportWidth, 5f, "KOUp");
+        putBlastZone(Window.camera.viewportHeight / 2, -10, Window.camera.viewportWidth, 5f, "KOUp");
 
 
         stageWidth = 20f;

@@ -9,9 +9,9 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 public class Shader {
     private ShaderProgram shader;
 
-    public Shader(){
+    public Shader(String path1, String path2){
         ShaderProgram.pedantic = false;
-        shader = new ShaderProgram(Gdx.files.internal("core/assets/shaders/passthrough.vsh"), Gdx.files.internal("core/assets/shaders/passthrough.fsh"));
+        shader = new ShaderProgram(Gdx.files.internal(path1), Gdx.files.internal(path2));
     }
 
     public ShaderProgram getShader(){

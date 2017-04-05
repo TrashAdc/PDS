@@ -61,6 +61,7 @@ public class Character implements CharacterStates { //parent character class
     private float maxSpeed; //max speed at which the character can move
     private boolean hasJump; //if the character has a double jump
     private boolean canJump; //if the character can use the double jump atm
+    private boolean jumpCD; //if the character can double jump
 
     private Hitbox hitbox;
 
@@ -84,9 +85,9 @@ public class Character implements CharacterStates { //parent character class
 
         direction = true;
         maxSpeed = 10;
-        hasJump = false;
-        canJump = false;
-
+        hasJump = true;
+        canJump = true;
+        jumpCD = true;
 
         currentState = State.IDLE;
         state_new = true;
@@ -127,6 +128,8 @@ public class Character implements CharacterStates { //parent character class
 
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //set sprite equal to body
         updateKeys(); //update what keys are pressed
+
+        //if ()
 
         switch (currentState) { //executes the state
             case IDLE:
@@ -172,16 +175,8 @@ public class Character implements CharacterStates { //parent character class
     public void St_Idle(){ //the character is not moving
         state_new = false;
         //body.setLinearVelocity(0f, body.getLinearVelocity().y);
+        attackInput();
 
-        if (attack) {
-            if (up)
-                currentAttack = Attack.U_TILT;
-            else if (down)
-                currentAttack = Attack.D_TILT;
-            else
-                currentAttack = Attack.JAB;
-            switchState(State.ATTACK);
-        }
         if (jump)   //jump
             switchState(State.AIR);
 
@@ -196,16 +191,8 @@ public class Character implements CharacterStates { //parent character class
         state_new = false;
 
         horizontalMovement(); //moves character left or right
+        attackInput();
 
-        if (attack) {
-            if (up)
-                currentAttack = Attack.U_TILT;
-            else if (down)
-                currentAttack = Attack.D_TILT;
-            else
-                currentAttack = Attack.S_TILT;
-            switchState(State.ATTACK);
-        }
         if (jump) //jump if pressed
             switchState(State.AIR);
 
@@ -218,29 +205,33 @@ public class Character implements CharacterStates { //parent character class
 
     public void St_Air(){ //if the character is in the air
         if (state_new){ //if this is the first step of the state
-            body.setLinearVelocity(body.getLinearVelocity().x, .01f); //give the character a little push
-            body.applyLinearImpulse(0f, 125f, bodyWidth / 2, bodyHeight / 2, false); //push harder for the jump
+            if (canJump) {
+                body.setLinearVelocity(body.getLinearVelocity().x, .01f); //give the character a little push
+                body.applyLinearImpulse(0f, 125f, bodyWidth / 2, bodyHeight / 2, false); //push harder for the jump
+            }
 
-            hasJump = true; //gives the character a double jump
+            jumpCD = true;
+            canJump = false;
             state_new = false;
         }
-        else if (jump && hasJump && canJump){
+        else if (jump && hasJump && !jumpCD){
             body.setLinearVelocity(body.getLinearVelocity().x, .01f);
             body.applyLinearImpulse(0f, 125f, bodyWidth / 2, bodyHeight / 2, false);
             hasJump = false;
-            canJump = false;
         }
 
+
         if (!jump) //can use the double jump if player has let go of the jump key
-            canJump = true;
+            jumpCD = false;
 
         horizontalMovement(); //move horizontally
+        attackInput(); //aerial attacks
 
         if (body.getLinearVelocity().y == 0.0f){ //if the body hits the ground
-            hasJump = false;
-            canJump = false;
+            hasJump = true;
+            canJump = true;
 
-            if (Window.key.left || Window.key.right) //goes to a different state depending on if keys are pressed
+            if (left || right) //goes to a different state depending on if keys are pressed
                 switchState(State.WALKING);
             else
                 switchState(State.IDLE);
@@ -328,6 +319,21 @@ public class Character implements CharacterStates { //parent character class
         }
 
         setMaxSpeed(maxSpeed); //caps speed
+    }
+
+    private void attackInput(){
+        if (attack) {
+            if (up)
+                currentAttack = Attack.U_TILT;
+            else if (down)
+                currentAttack = Attack.D_TILT;
+            else if (left || right)
+                currentAttack = Attack.S_TILT;
+            else
+                currentAttack = Attack.JAB;
+            switchState(State.ATTACK);
+        }
+
     }
 
     private void setMaxSpeed(float maxV){ //this method changes the speed to the maximum speed defined if it goes over

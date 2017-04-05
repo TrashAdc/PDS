@@ -38,7 +38,8 @@ public class Window extends ApplicationAdapter {
 
     private Character dood, dood2; //this is an object in the game
 
-    private Shader shader; //effects
+    private Shader rainbowShader; //effects
+    private Shader passthroughShader;
     private float time; //time for shader
 
     private BitmapFont font; //text
@@ -73,7 +74,8 @@ public class Window extends ApplicationAdapter {
         dood2 = new Character(GameData.Player.PLAYER2); //creates character
         testStage = new Stage(); //makes stage in world
 
-        shader = new Shader(); //random shader
+        rainbowShader = new Shader("core/assets/shaders/passthrough.vsh", "core/assets/shaders/passthrough.fsh"); //random shader
+        passthroughShader = new Shader("core/assets/shaders/normal.vsh", "core/assets/shaders/normal.fsh");
 
         time = 0.0f; //time for shaders
 
@@ -95,17 +97,16 @@ public class Window extends ApplicationAdapter {
         debugRenderer.render(world, camera.combined);
         batch.begin();
 
-        testStage.getStageSprite().draw(batch);
-
-
-
+        
         //draw stuff here
 
         //System.out.println(shader.getShader().isCompiled());
-        //shader.getShader().setUniformf("time", time);
-        //shader.getShader().setUniformf("resolution", SIZE.width, SIZE.height);
-        //batch.setShader(shader.getShader()); //shaders!
-        //batch.getProjectionMatrix();
+        rainbowShader.getShader().setUniformf("time", time);
+        rainbowShader.getShader().setUniformf("resolution", SIZE.width, SIZE.height);
+        batch.setShader(rainbowShader.getShader()); //shaders!
+        testStage.getStageSprite().draw(batch);
+        batch.getProjectionMatrix();
+
 
         dood.getSprite().draw(batch); //draw the sprite
         dood2.getSprite().draw(batch);
@@ -121,7 +122,8 @@ public class Window extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-        shader.getShader().dispose();
+        rainbowShader.getShader().dispose();
+        passthroughShader.getShader().dispose();
         batch.dispose();
 
     }
