@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+
+import java.util.*;
 
 
 /**
@@ -20,7 +22,11 @@ public class ListenerClass implements ContactListener {
     private Fixture f1, f2;
     private CollisionType cType;
 
+    public static List<Fixture> moveList;
 
+    public ListenerClass(){
+        moveList = new ArrayList<Fixture>();
+    }
 
     @Override
     public void beginContact(Contact contact) {
@@ -33,7 +39,7 @@ public class ListenerClass implements ContactListener {
         if (cType == CollisionType.HIT_PLAYER)
             characterHit();
         else if (cType == CollisionType.PLAYER_KO)
-            System.exit(420);
+            characterDeath();
 
 
 
@@ -134,6 +140,18 @@ public class ListenerClass implements ContactListener {
             }
         }
 
+    }
+
+    private void characterDeath(){
+        if (f1.getBody().getUserData().toString().substring(0, 1).equals("P")) {
+            //.getBody().setLinearVelocity(0f, 0f);
+            moveList.add(f1);
+        }
+        else {
+            //f2.getBody().setLinearVelocity(0f, 0f);
+            moveList.add(f2);
+
+        }
     }
 
 }

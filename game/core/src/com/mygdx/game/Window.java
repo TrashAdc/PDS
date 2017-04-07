@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+import javax.xml.bind.Marshaller;
 import java.awt.*;
 
 public class Window extends ApplicationAdapter {
@@ -101,22 +102,29 @@ public class Window extends ApplicationAdapter {
         //draw stuff here
 
         //System.out.println(shader.getShader().isCompiled());
-        rainbowShader.getShader().setUniformf("time", time);
-        rainbowShader.getShader().setUniformf("resolution", SIZE.width, SIZE.height);
-        batch.setShader(rainbowShader.getShader()); //shaders!
+        //rainbowShader.getShader().setUniformf("time", time);
+        //rainbowShader.getShader().setUniformf("resolution", SIZE.width, SIZE.height);
+        //batch.setShader(rainbowShader.getShader()); //shaders!
         testStage.getStageSprite().draw(batch);
-        batch.getProjectionMatrix();
+        //batch.getProjectionMatrix();
 
 
         dood.getSprite().draw(batch); //draw the sprite
         dood2.getSprite().draw(batch);
 
 
-
         batch.end();
         world.step(1/60f, 6, 2);
 
         bDestroy.destroyBodies();
+
+        if (!ListenerClass.moveList.isEmpty()){
+            for (int i = 0; i < ListenerClass.moveList.size(); i++) {
+                ListenerClass.moveList.get(i).getBody().setLinearVelocity(0, 10f);
+                ListenerClass.moveList.get(i).getBody().setTransform(camera.viewportWidth / 2, camera.viewportHeight / 2 + 15f, 0);
+                ListenerClass.moveList.remove(i);
+            }
+        }
 
     }
 
