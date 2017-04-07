@@ -34,3 +34,4 @@ Ryan: Sensors for hitbox collision and knockback
 
 ## Week of <= 4/7/17
 Ryan: Implemented Knockback, two players with different controls, all basic attacks, aerial attacks, blast zones and respawning
+Devin and Sarath: worked on finishing the attack database and started implementing an ultimate charge system.
