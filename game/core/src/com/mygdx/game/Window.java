@@ -2,10 +2,11 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -33,17 +34,20 @@ public class Window extends ApplicationAdapter {
 
     public static OrthographicCamera camera; //camera for sizing things down i guess
 
-    private SpriteBatch batch; //u need this to draw
+    private SpriteBatch batch, textBatch; //u need this to draw
 
     private Stage testStage;
 
     private Character dood, dood2; //this is an object in the game
+
+    public static Score_ scoreData;
 
     private Shader rainbowShader; //effects
     private Shader passthroughShader;
     private float time; //time for shader
 
     private BitmapFont font; //text
+
 
 
     @Override
@@ -53,7 +57,6 @@ public class Window extends ApplicationAdapter {
         SIZE = new Dimension(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); //gets size of window into condensed variables
         WORLD_SPEED = Gdx.graphics.getFramesPerSecond();
         yConst = (float)SIZE.width / (float)SIZE.height;
-
 
         world = new World(new Vector2(0, -60), true); //sets gravity of axis
 
@@ -68,6 +71,7 @@ public class Window extends ApplicationAdapter {
         camera.update();
 
         batch = new SpriteBatch();
+        textBatch = new SpriteBatch(); //spritebatch for drawing text
 
         Gdx.input.setInputProcessor(key);
 
@@ -75,10 +79,18 @@ public class Window extends ApplicationAdapter {
         dood2 = new Character(GameData.Player.PLAYER2); //creates character
         testStage = new Stage(); //makes stage in world
 
+        scoreData = new Score_(3); //sets initial score (stocks and damage)
+
         rainbowShader = new Shader("core/assets/shaders/passthrough.vsh", "core/assets/shaders/passthrough.fsh"); //random shader
         passthroughShader = new Shader("core/assets/shaders/normal.vsh", "core/assets/shaders/normal.fsh");
 
         time = 0.0f; //time for shaders
+
+        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("core/assets/fonts/coders_crux.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameter.size = 96;
+        fontParameter.color = Color.RED;
+        font = fontGenerator.generateFont(fontParameter);
 
         //DummyBox d = new DummyBox();
 
@@ -104,9 +116,9 @@ public class Window extends ApplicationAdapter {
         //System.out.println(shader.getShader().isCompiled());
         //rainbowShader.getShader().setUniformf("time", time);
         //rainbowShader.getShader().setUniformf("resolution", SIZE.width, SIZE.height);
-        //batch.setShader(rainbowShader.getShader()); //shaders!
-        testStage.getStageSprite().draw(batch);
+        //batch.setShader(passthroughShader.getShader()); //shaders!
         //batch.getProjectionMatrix();
+        testStage.getStageSprite().draw(batch);
 
 
         dood.getSprite().draw(batch); //draw the sprite
@@ -114,11 +126,17 @@ public class Window extends ApplicationAdapter {
 
 
         batch.end();
-        world.step(1/60f, 6, 2);
 
-        bDestroy.destroyBodies();
+        textBatch.begin(); //draw text here
+        font.draw(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER1)) + "%", (SIZE.width / 10) * 3, SIZE.height / 6);
+        font.draw(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER2)) + "%", (SIZE.width / 10) * 7, SIZE.height / 6);
+        textBatch.end();
 
-        if (!ListenerClass.moveList.isEmpty()){
+        world.step(1/60f, 6, 2); //step the physics world
+
+        bDestroy.destroyBodies(); //destroy any bodies that should be despawned
+
+        if (!ListenerClass.moveList.isEmpty()){ //move any characters that need to be repositioned
             for (int i = 0; i < ListenerClass.moveList.size(); i++) {
                 ListenerClass.moveList.get(i).getBody().setLinearVelocity(0, 10f);
                 ListenerClass.moveList.get(i).getBody().setTransform(camera.viewportWidth / 2, camera.viewportHeight / 2 + 15f, 0);

@@ -107,7 +107,8 @@ public class ListenerClass implements ContactListener {
         float vx = 0, vy = 0;
         Fixture hit = null;
         String hitUD = "", hitterUD = "";
-
+        //hitUD is the body being hit
+        //hitterUD is the hitbox dealing damage
 
         if (f1.getBody().getUserData().toString().substring(0, 1).equals("p")) {
             if (Hitbox.hitboxMap.containsKey(f1.getBody().getUserData())) {
@@ -136,7 +137,9 @@ public class ListenerClass implements ContactListener {
             //System.out.println(hitUD + " " + hitterUD);
             if (!hitUD.equals(hitterUD)){
                 System.out.println(hitUD + " " + hitterUD);
-                hit.getBody().applyLinearImpulse(vx, vy, hit.getBody().getPosition().x, hit.getBody().getPosition().y, false);
+                hit.getBody().applyLinearImpulse(vx, vy, hit.getBody().getPosition().x, hit.getBody().getPosition().y, false); //knock the character back
+                Window.scoreData.setDamage((GameData.Player) hit.getBody().getUserData(), Window.scoreData.getDamage((GameData.Player) hit.getBody().getUserData()) + 5); //deal damage
+                System.out.println(hit.getBody().getUserData() + "damage: " + Window.scoreData.getDamage((GameData.Player) hit.getBody().getUserData()));
             }
         }
 

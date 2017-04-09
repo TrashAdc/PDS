@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -50,7 +51,7 @@ public class Character implements CharacterStates { //parent character class
     private boolean state_new; //is true on only the first loop of the state method
 
     private Attack currentAttack;
-    private GameData.Player player;
+    private GameData.Player player, opponent;
 
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
     private BodyDef bodyDef;   //body define for box2d
@@ -78,7 +79,8 @@ public class Character implements CharacterStates { //parent character class
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //sets initial position = body pos
         playerSprite.setSize(bodyWidth * 2f, bodyHeight * 2f); //sets size of the sprite = body size
 
-        player = p;
+        player = p; //sets what player the character is for score and controls
+        opponent = (p == GameData.Player.PLAYER1) ? GameData.Player.PLAYER2 : GameData.Player.PLAYER1; //sets the opposite player
 
         body.setUserData(player); //links the class with the body
 
@@ -110,7 +112,7 @@ public class Character implements CharacterStates { //parent character class
         fixDef.shape = bodyShape; //sets fixture to shape of the body
         fixDef.density = 0.5f;
         fixDef.restitution = 0.0f; //bounciness
-        fixDef.friction = 0.75f;
+        fixDef.friction = 1f;
 
 
 
@@ -128,8 +130,6 @@ public class Character implements CharacterStates { //parent character class
 
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //set sprite equal to body
         updateKeys(); //update what keys are pressed
-
-        //if ()
 
         switch (currentState) { //executes the state
             case IDLE:
@@ -248,6 +248,8 @@ public class Character implements CharacterStates { //parent character class
             Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, bodyHeight, currentAttack, direction);
             Vector2 dimension = GameData.AttackData.getDimension(currentAttack);
             Vector2 knockback = GameData.AttackData.getKnockback(currentAttack, direction);
+                    knockback.x *= (1 + (Window.scoreData.getDamage(opponent) / 10)); //knockback
+                    knockback.y *= (1 + (Window.scoreData.getDamage(opponent) / 10)); //scaling hehe
 
             hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, knockback, player);
             hitbox.spawnHitbox();
