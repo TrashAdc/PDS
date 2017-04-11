@@ -46,7 +46,7 @@ public class Window extends ApplicationAdapter {
     private Shader passthroughShader;
     private float time; //time for shader
 
-    private BitmapFont font; //text
+    private TextWriter textWriter;
 
 
 
@@ -86,11 +86,8 @@ public class Window extends ApplicationAdapter {
 
         time = 0.0f; //time for shaders
 
-        FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("core/assets/fonts/coders_crux.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        fontParameter.size = 96;
-        fontParameter.color = Color.RED;
-        font = fontGenerator.generateFont(fontParameter);
+        textWriter = new TextWriter("core/assets/fonts/coders_crux.ttf", "hello", 96, Color.RED);
+        textWriter.updateLayout(TextWriter.TextLayout.CENTER);
 
         //DummyBox d = new DummyBox();
 
@@ -128,8 +125,8 @@ public class Window extends ApplicationAdapter {
         batch.end();
 
         textBatch.begin(); //draw text here
-        font.draw(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER1)) + "%", (SIZE.width / 10) * 3, SIZE.height / 6);
-        font.draw(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER2)) + "%", (SIZE.width / 10) * 7, SIZE.height / 6);
+        textWriter.drawText(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER1)) + "%", (SIZE.width / 10) * 3, SIZE.height / 6);
+        textWriter.drawText(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER2)) + "%", (SIZE.width / 10) * 7, SIZE.height / 6);
         textBatch.end();
 
         world.step(1/60f, 6, 2); //step the physics world
