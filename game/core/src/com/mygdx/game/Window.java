@@ -137,6 +137,7 @@ public class Window extends ApplicationAdapter {
             for (int i = 0; i < ListenerClass.moveList.size(); i++) {
                 ListenerClass.moveList.get(i).getBody().setLinearVelocity(0, 10f);
                 ListenerClass.moveList.get(i).getBody().setTransform(camera.viewportWidth / 2, camera.viewportHeight / 2 + 15f, 0);
+                scoreData.setDamage((GameData.Player) ListenerClass.moveList.get(i).getBody().getUserData(), 0);
                 ListenerClass.moveList.remove(i);
             }
         }

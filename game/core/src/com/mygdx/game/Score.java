@@ -10,9 +10,7 @@ public class Score {
     private boolean KOP2;
     private boolean KOP1;
     private boolean stockmodeplaceholder;
-    private boolean gameon = false;
-    private boolean ultimateon= false;
-    private float charge;
+    private boolean ultimateon = false;
     private float chargepart1;
     private float chargepart2;
     private float percentmodifier;
@@ -20,7 +18,6 @@ public class Score {
     private float realcharge;
     private int timephold;
     private boolean gameover = false;
-    private int ultimatecharge;
 
     // Returns value of percent as a String
     public String scoreConverter(int inputScore) {
@@ -36,6 +33,13 @@ public class Score {
 
         return charge=chargepart2+chargepart1;
     }*/
+    public float chargecalc(int baseAtk){
+        percentmodifier2 = 5 / 100;
+        chargepart1 =  baseAtk / 2;
+        chargepart2 = DamageR * percentmodifier2;
+
+        return chargepart2+chargepart1;
+    }
 
     // Stores amount of kills by Player1/Player2 as an int
     public String statKillP1() {
@@ -108,6 +112,19 @@ public class Score {
         return 0;
     }
 */
+    public float p2UltimateCharge(){
+        while(gameon){
+            while(ultimateon==false) {
+                for (int i = 0; realcharge <= maxcharge; realcharge += chargecalC()) {
+                    realcharge += realcharge;
+                    return realcharge;
+                }
+                return realcharge;
+
+            }
+        }
+        return 0;
+    }
     public boolean gameState() {
         while (gameon) {
             if (stockmodeplaceholder == true) {

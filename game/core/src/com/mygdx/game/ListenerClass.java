@@ -138,7 +138,7 @@ public class ListenerClass implements ContactListener {
             if (!hitUD.equals(hitterUD)){
                 System.out.println(hitUD + " " + hitterUD);
                 hit.getBody().applyLinearImpulse(vx, vy, hit.getBody().getPosition().x, hit.getBody().getPosition().y, false); //knock the character back
-                Window.scoreData.setDamage((GameData.Player) hit.getBody().getUserData(), Window.scoreData.getDamage((GameData.Player) hit.getBody().getUserData()) + 5); //deal damage
+                Window.scoreData.setDamage((GameData.Player) hit.getBody().getUserData(), Window.scoreData.getDamage((GameData.Player) hit.getBody().getUserData()) + 50); //deal damage
                 System.out.println(hit.getBody().getUserData() + "damage: " + Window.scoreData.getDamage((GameData.Player) hit.getBody().getUserData()));
             }
         }

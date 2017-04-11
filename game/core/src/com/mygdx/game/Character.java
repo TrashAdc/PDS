@@ -23,7 +23,8 @@ public class Character implements CharacterStates { //parent character class
         LEDGE,
         HITSTUN,
         STUNNED,
-        DEAD
+        DEAD,
+        SUPERPOSITIONED
     }
 
     public enum Attack { //attacks include tilts, (sm/tr)ash attacks, and jabs (dash attacks if we implement running)
@@ -248,8 +249,8 @@ public class Character implements CharacterStates { //parent character class
             Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, bodyHeight, currentAttack, direction);
             Vector2 dimension = GameData.AttackData.getDimension(currentAttack);
             Vector2 knockback = GameData.AttackData.getKnockback(currentAttack, direction);
-                    knockback.x *= (1 + (Window.scoreData.getDamage(opponent) / 10)); //knockback
-                    knockback.y *= (1 + (Window.scoreData.getDamage(opponent) / 10)); //scaling hehe
+                    knockback.x *= (1 + (Window.scoreData.getDamage(opponent) / 35)); //knockback
+                    knockback.y *= (1 + (Window.scoreData.getDamage(opponent) / 35)); //scaling hehe
 
             hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, knockback, player);
             hitbox.spawnHitbox();

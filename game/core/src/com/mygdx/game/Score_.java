@@ -22,10 +22,10 @@ public class Score_ {
     }
 
     //returns stock/damage of a player
-    public  int getStock(GameData.Player player){
+    public int getStock(GameData.Player player){
         return (player == GameData.Player.PLAYER1) ? stockP1 : stockP2;
     }
-    public  int getDamage(GameData.Player player){
+    public int getDamage(GameData.Player player){
         return (player == GameData.Player.PLAYER1) ? damageP1 : damageP2;
     }
 
