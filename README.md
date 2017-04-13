@@ -32,6 +32,9 @@ Ryan: Made hitbox class & that creates and destroys hitboxes, basic jab with hit
 ## Week of 2/20/17
 Ryan: Sensors for hitbox collision and knockback
 
-## Week of <= 4/7/17
+## Week of  4/7/17
 Ryan: Implemented Knockback, two players with different controls, all basic attacks, aerial attacks, blast zones and respawning
-Devin and Sarath: worked on finishing the attack database and started implementing an ultimate charge system.
+Devin and Sarath: worked on finishing the attack database and started implementing an ultimate charge system.  
+
+##Week of 4/10/17
+Sarath,Devin,Ryan-Created Ultimate Charge counter thing 
