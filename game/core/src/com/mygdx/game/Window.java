@@ -40,7 +40,7 @@ public class Window extends ApplicationAdapter {
 
     private Character dood, dood2; //this is an object in the game
 
-    public static Score_ scoreData;
+    public static Score scoreData;
 
     private Shader rainbowShader; //effects
     private Shader passthroughShader;
@@ -79,7 +79,7 @@ public class Window extends ApplicationAdapter {
         dood2 = new Character(GameData.Player.PLAYER2); //creates character
         testStage = new Stage(); //makes stage in world
 
-        scoreData = new Score_(3); //sets initial score (stocks and damage)
+        scoreData = new Score(3); //sets initial score (stocks and damage)
 
         rainbowShader = new Shader("core/assets/shaders/passthrough.vsh", "core/assets/shaders/passthrough.fsh"); //random shader
         passthroughShader = new Shader("core/assets/shaders/normal.vsh", "core/assets/shaders/normal.fsh");
@@ -137,7 +137,7 @@ public class Window extends ApplicationAdapter {
             for (int i = 0; i < ListenerClass.moveList.size(); i++) {
                 ListenerClass.moveList.get(i).getBody().setLinearVelocity(0, 10f);
                 ListenerClass.moveList.get(i).getBody().setTransform(camera.viewportWidth / 2, camera.viewportHeight / 2 + 15f, 0);
-                scoreData.setDamage((GameData.Player) ListenerClass.moveList.get(i).getBody().getUserData(), 0);
+                scoreData.addDamage((GameData.Player) ListenerClass.moveList.get(i).getBody().getUserData(), -scoreData.getDamage((GameData.Player) ListenerClass.moveList.get(i).getBody().getUserData()));
                 ListenerClass.moveList.remove(i);
             }
         }
