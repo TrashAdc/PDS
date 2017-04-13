@@ -37,4 +37,5 @@ Ryan: Implemented Knockback, two players with different controls, all basic atta
 Devin and Sarath: worked on finishing the attack database and started implementing an ultimate charge system.  
 
 ##Week of 4/10/17
+
 Sarath,Devin,Ryan-Created Ultimate Charge counter thing 
