@@ -105,6 +105,7 @@ public class ListenerClass implements ContactListener {
 
     private void characterHit(){
         float vx = 0, vy = 0;
+        int damage = 0;
         Fixture hit = null;
         String hitUD = "", hitterUD = "";
         //hitUD is the body being hit
@@ -114,6 +115,7 @@ public class ListenerClass implements ContactListener {
             if (Hitbox.hitboxMap.containsKey(f1.getBody().getUserData())) {
                 vx = Hitbox.hitboxMap.get(f1.getBody().getUserData()).x;
                 vy = Hitbox.hitboxMap.get(f1.getBody().getUserData()).y;
+                damage = Hitbox.damageMap.get(f1.getBody().getUserData());
                 hit = f2;
                 hitUD = f2.getBody().getUserData().toString().substring(6);
                 hitterUD = f1.getBody().getUserData().toString().substring(1, 2);
@@ -124,6 +126,7 @@ public class ListenerClass implements ContactListener {
             if (Hitbox.hitboxMap.containsKey(f2.getBody().getUserData())) {
                 vx = Hitbox.hitboxMap.get(f2.getBody().getUserData()).x;
                 vy = Hitbox.hitboxMap.get(f2.getBody().getUserData()).y;
+                damage = Hitbox.damageMap.get(f2.getBody().getUserData());
                 hit = f1;
                 hitUD = f1.getBody().getUserData().toString().substring(6);
                 hitterUD = f2.getBody().getUserData().toString().substring(1, 2);
@@ -139,7 +142,7 @@ public class ListenerClass implements ContactListener {
                 System.out.println(hitUD + " " + hitterUD);
                 hit.getBody().setLinearVelocity(0f, .1f);
                 hit.getBody().applyLinearImpulse(vx, vy, hit.getBody().getPosition().x, hit.getBody().getPosition().y, false); //knock the character back
-                Window.scoreData.addDamage((GameData.Player) hit.getBody().getUserData(), 5); //deal damage
+                Window.scoreData.addDamage((GameData.Player) hit.getBody().getUserData(), damage); //deal damage
                 System.out.println(hit.getBody().getUserData() + "damage: " + Window.scoreData.getDamage((GameData.Player) hit.getBody().getUserData()));
             }
         }

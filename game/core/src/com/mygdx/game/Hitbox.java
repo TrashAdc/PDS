@@ -20,9 +20,10 @@ public class Hitbox {
     private String userDataPrefix;
 
     public static Map<String, Vector2> hitboxMap;
+    public static Map<String, Integer> damageMap;
 
 
-    public Hitbox(float width, float height, float posx, float posy, Vector2 force, GameData.Player player){
+    public Hitbox(float width, float height, float posx, float posy, Vector2 force, int damage, GameData.Player player){
 
         hitboxDef = new BodyDef();
         hitboxDef.type = BodyDef.BodyType.KinematicBody;
@@ -37,8 +38,10 @@ public class Hitbox {
         userDataPrefix = (player == GameData.Player.PLAYER1) ? "p1" : "p2";
 
         hitboxMap = new HashMap();
+        damageMap = new HashMap();
         userData = generateUserData();
         hitboxMap.put(userData, knockback);
+        damageMap.put(userData, damage);
 
 
     }

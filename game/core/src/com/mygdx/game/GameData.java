@@ -15,11 +15,11 @@ public final class GameData { //this class has other static classes that are pur
     }
 
 
-    public static class AttackData{
+    public static class AttackData {
 
-        public static Vector2 getPosition(Body body, float bodyWidth, float bodyHeight, Character.Attack attackType, boolean direction){
+        public static Vector2 getPosition(Body body, float bodyWidth, float bodyHeight, Character.Attack attackType, boolean direction) {
             int d = (direction) ? 1 : -1;
-            switch (attackType){
+            switch (attackType) {
                 case JAB:
                     return new Vector2(body.getPosition().x + (bodyWidth * d) + (1f * d), body.getPosition().y);
                 case S_TILT:
@@ -35,8 +35,8 @@ public final class GameData { //this class has other static classes that are pur
             }
         }
 
-        public static Vector2 getDimension(Character.Attack attackType){
-            switch (attackType){
+        public static Vector2 getDimension(Character.Attack attackType) {
+            switch (attackType) {
                 case JAB:
                     return new Vector2(.5f, .33f);
                 case S_TILT:
@@ -50,8 +50,8 @@ public final class GameData { //this class has other static classes that are pur
             }
         }
 
-        public static int getFrames(Character.Attack attackType){
-            switch (attackType){
+        public static int getFrames(Character.Attack attackType) {
+            switch (attackType) {
                 case JAB:
                     return 5;
                 case S_TILT:
@@ -65,9 +65,9 @@ public final class GameData { //this class has other static classes that are pur
             }
         }
 
-        public static Vector2 getKnockback(Character.Attack attackType, boolean direction){
+        public static Vector2 getKnockback(Character.Attack attackType, boolean direction) {
             int d = (direction) ? 1 : -1;
-            switch (attackType){
+            switch (attackType) {
                 case JAB:
                     return new Vector2(20f * d, 20f);
                 case S_TILT:
@@ -80,6 +80,22 @@ public final class GameData { //this class has other static classes that are pur
                     return new Vector2(10f * d, 10f);
             }
         }
+
+        public static int getDamage(Character.Attack attackType) {
+            switch (attackType) {
+                case JAB:
+                    return 3;
+                case S_TILT:
+                    return 7;
+                case D_TILT:
+                    return 5;
+                case U_TILT:
+                    return 6;
+                default:
+                    return 1;
+            }
+        }
+
 
 
 

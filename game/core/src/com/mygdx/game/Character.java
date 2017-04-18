@@ -248,11 +248,10 @@ public class Character implements CharacterStates { //parent character class
 
             Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, bodyHeight, currentAttack, direction);
             Vector2 dimension = GameData.AttackData.getDimension(currentAttack);
-            Vector2 knockback = GameData.AttackData.getKnockback(currentAttack, direction);
-                    knockback.x *= (1 + (Window.scoreData.getDamage(opponent) / 35)); //knockback
-                    knockback.y *= (1 + (Window.scoreData.getDamage(opponent) / 35)); //scaling hehe
+            Vector2 knockback = calculateKnockback();
+            int damage = GameData.AttackData.getDamage(currentAttack);
 
-            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, knockback, player);
+            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, knockback, damage, player);
             hitbox.spawnHitbox();
             state_new = false;
         }
@@ -337,6 +336,17 @@ public class Character implements CharacterStates { //parent character class
             switchState(State.ATTACK);
         }
 
+    }
+
+    private Vector2 calculateKnockback(){
+        int p = Window.scoreData.getDamage(opponent); //opponent's damage
+        int d = GameData.AttackData.getDamage(currentAttack); //damage of attack
+        float w = 2.5f; //weight of all characters
+        int dir = (direction) ? 1 : -1;
+        Vector2 b = GameData.AttackData.getKnockback(currentAttack, direction); //base knockback
+
+        double knockback = ((((p / 10) + ((p * d) / 20)) * w) + 18);
+        return new Vector2(((float)knockback + b.x) * dir, ((float)knockback + b.y)); //todo FIX THIS AAAAAAAAAAAA
     }
 
     private void setMaxSpeed(float maxV){ //this method changes the speed to the maximum speed defined if it goes over
