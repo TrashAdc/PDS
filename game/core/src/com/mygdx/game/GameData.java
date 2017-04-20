@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
@@ -14,7 +16,7 @@ public final class GameData { //this class has other static classes that are pur
         PLAYER2
     }
 
-
+    //class that stores data for attacks such as power, knockback, frame data, etc
     public static class AttackData {
 
         public static Vector2 getPosition(Body body, float bodyWidth, float bodyHeight, Character.Attack attackType, boolean direction) {
@@ -53,13 +55,13 @@ public final class GameData { //this class has other static classes that are pur
         public static int getFrames(Character.Attack attackType) {
             switch (attackType) {
                 case JAB:
-                    return 5;
+                    return 20;
                 case S_TILT:
-                    return 15;
+                    return 30;
                 case D_TILT:
-                    return 15;
+                    return 30;
                 case U_TILT:
-                    return 15;
+                    return 30;
                 default:
                     return 30;
             }
@@ -99,6 +101,28 @@ public final class GameData { //this class has other static classes that are pur
 
 
 
+    }
+
+    //class that stores data about characters such as size, density, sprites, etc
+    public static class CharacterData{
+        public static Vector2 getBodySize(Character characterType){
+            if (characterType instanceof Knight)
+                return new Vector2(2f, 3f * Window.yConst);
+            else
+                return new Vector2(1f, 1f * Window.yConst);
+        }
+        public static float getDensity(Character characterType){
+            if (characterType instanceof Knight)
+                return .08f;
+            else
+                return .5f;
+        }
+        public static Sprite getSprite(Character characterType){
+            if (characterType instanceof Knight)
+                return new Sprite(new Texture("core/assets/image/spr_knight_idle.png"));
+            else
+                return new Sprite(new Texture("core/assets/image/spr_parent.png"));
+        }
     }
 
 }

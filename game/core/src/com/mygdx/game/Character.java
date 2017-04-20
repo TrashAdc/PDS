@@ -71,12 +71,12 @@ public class Character implements CharacterStates { //parent character class
 
     public Character(GameData.Player p){
 
-        bodyWidth = 1f;                 //set width and height
-        bodyHeight = 1f * Window.yConst;
+        bodyWidth = GameData.CharacterData.getBodySize(this).x;                 //set width and height
+        bodyHeight = GameData.CharacterData.getBodySize(this).y;
 
         objInit(); //does box2d stuff
 
-        playerSprite = new Sprite(new Texture("core/assets/image/spr_parent.png"));  //gets/sets image
+        playerSprite = GameData.CharacterData.getSprite(this);  //gets/sets image
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //sets initial position = body pos
         playerSprite.setSize(bodyWidth * 2f, bodyHeight * 2f); //sets size of the sprite = body size
 
@@ -111,9 +111,9 @@ public class Character implements CharacterStates { //parent character class
 
         FixtureDef fixDef = new FixtureDef(); //the boxes fixture
         fixDef.shape = bodyShape; //sets fixture to shape of the body
-        fixDef.density = 0.5f;
+        fixDef.density = GameData.CharacterData.getDensity(this);
         fixDef.restitution = 0.0f; //bounciness
-        fixDef.friction = 1f;
+        fixDef.friction = .8f;
 
 
 
@@ -346,7 +346,8 @@ public class Character implements CharacterStates { //parent character class
         Vector2 b = GameData.AttackData.getKnockback(currentAttack, direction); //base knockback
 
         double knockback = ((((p / 10) + ((p * d) / 20)) * w) + 18);
-        return new Vector2(((float)knockback + b.x) * dir, ((float)knockback + b.y)); //todo FIX THIS AAAAAAAAAAAA
+        ///System.out.println("((((" + p + " / 10) + ((" + p + " + " + d + ") / 20)) * " + w + ") + 18) +" + b.x + " = " + knockback + b.x);
+        return new Vector2(((float)knockback + Math.abs(b.x)) * dir, ((float)knockback + b.y));
     }
 
     private void setMaxSpeed(float maxV){ //this method changes the speed to the maximum speed defined if it goes over

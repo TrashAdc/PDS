@@ -76,7 +76,7 @@ public class Window extends ApplicationAdapter {
         Gdx.input.setInputProcessor(key);
 
         dood = new Character(GameData.Player.PLAYER1); //creates character
-        dood2 = new Character(GameData.Player.PLAYER2); //creates character
+        dood2 = new Knight(GameData.Player.PLAYER2); //creates character
         testStage = new Stage(); //makes stage in world
 
         scoreData = new Score(3); //sets initial score (stocks and damage)
