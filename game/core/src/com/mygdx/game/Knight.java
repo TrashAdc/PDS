@@ -1,7 +1,7 @@
 package com.mygdx.game;
 
 /**
- * Created by 236040 on 4/20/2017.
+ * Created by ryan vanek on 4/20/2017.
  */
 public class Knight extends Character {
 
