@@ -87,7 +87,7 @@ public class Character implements CharacterStates { //parent character class
 
 
         direction = true;
-        maxSpeed = 10;
+        maxSpeed = GameData.CharacterData.getMaxSpeed(this);
         hasJump = true;
         canJump = true;
         jumpCD = true;
@@ -251,19 +251,19 @@ public class Character implements CharacterStates { //parent character class
             Vector2 knockback = calculateKnockback();
             int damage = GameData.AttackData.getDamage(currentAttack);
 
-            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, knockback, damage, player);
-            hitbox.spawnHitbox();
+            hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, knockback, damage, player); //creates the hitbox object
+            hitbox.spawnHitbox(); //puts the hitbox in the world
             state_new = false;
         }
 
         //the hitbox exists here
         animationTimer.incrementFrame();
-        if (currentAttack instanceof Attack)
-        hitbox.getHitboxBody().setLinearVelocity(body.getLinearVelocity());
+        if (currentAttack instanceof Attack) //if this is a basic attack, move it with the character
+            hitbox.getHitboxBody().setLinearVelocity(body.getLinearVelocity());
 
         if (animationTimer.timerDone(false)) {
             animationTimer = null;
-            hitbox.destroyHitbox();
+            hitbox.destroyHitbox(); //remove the hitbox from the world
             hitbox = null;
             switchState(State.IDLE);
         }
