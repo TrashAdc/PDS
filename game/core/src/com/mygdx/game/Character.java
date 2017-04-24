@@ -32,7 +32,7 @@ public class Character implements CharacterStates { //parent character class
         S_TILT, U_TILT, D_TILT,
         S_SMASH, U_SMASH, D_SMASH;
 
-         public enum Special {
+        public enum Special {
             N_SPECIAL, S_SPECIAL, U_SPECIAL, D_SPECIAL //specials are attacks that differ very greatly from other characters, but there are only 4 of them
         }                                              //numpad2 + any direction
     }
@@ -94,6 +94,7 @@ public class Character implements CharacterStates { //parent character class
 
         currentState = State.IDLE;
         state_new = true;
+
 
 
     }
@@ -243,6 +244,7 @@ public class Character implements CharacterStates { //parent character class
 
     public void St_Attack(){
         if (state_new) {
+
 
             animationTimer = new FrameTimer(GameData.AttackData.getFrames(currentAttack));
 

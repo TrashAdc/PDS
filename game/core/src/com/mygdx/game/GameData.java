@@ -11,15 +11,16 @@ import com.badlogic.gdx.physics.box2d.Body;
 //database for values found in code: https://docs.google.com/a/allenisd.org/spreadsheets/d/1sMrRwi33BDu2Ee2jXgkjOK2JmH-mKdtxONRRPkdPZQc/edit?usp=sharing
 public final class GameData { //this class has other static classes that are purely for storing data and nothing else. no objects of this class should be created.
 
-    public enum Player { //enum for which side of the keyboard for control schemes and such
+    public enum Player {
         PLAYER1,
         PLAYER2
     }
 
     //class that stores data for attacks such as power, knockback, frame data, etc
+    //for parent class
     public static class AttackData {
 
-        public static Vector2 getPosition(Body body, float bodyWidth, float bodyHeight, Character.Attack attackType, boolean direction) { //returns the starting position of the hitbox
+        public static Vector2 getPosition(Body body, float bodyWidth, float bodyHeight, Character.Attack attackType, boolean direction) {
             int d = (direction) ? 1 : -1;
             switch (attackType) {
                 case JAB:
@@ -37,7 +38,7 @@ public final class GameData { //this class has other static classes that are pur
             }
         }
 
-        public static Vector2 getDimension(Character.Attack attackType) { //returns the size of the hitbox
+        public static Vector2 getDimension(Character.Attack attackType) {
             switch (attackType) {
                 case JAB:
                     return new Vector2(.5f, .33f);
@@ -52,7 +53,7 @@ public final class GameData { //this class has other static classes that are pur
             }
         }
 
-        public static int getFrames(Character.Attack attackType) { //returns how many frames the hitbox is active
+        public static int getFrames(Character.Attack attackType) {
             switch (attackType) {
                 case JAB:
                     return 20;
@@ -67,7 +68,7 @@ public final class GameData { //this class has other static classes that are pur
             }
         }
 
-        public static Vector2 getKnockback(Character.Attack attackType, boolean direction) { //returns base knockback of the hitbox
+        public static Vector2 getKnockback(Character.Attack attackType, boolean direction) {
             int d = (direction) ? 1 : -1;
             switch (attackType) {
                 case JAB:
@@ -83,7 +84,7 @@ public final class GameData { //this class has other static classes that are pur
             }
         }
 
-        public static int getDamage(Character.Attack attackType) { //returns how much damage the hitbox deals
+        public static int getDamage(Character.Attack attackType) {
             switch (attackType) {
                 case JAB:
                     return 3;
@@ -103,29 +104,108 @@ public final class GameData { //this class has other static classes that are pur
 
     }
 
+    //class that stores data for attacks such as power, knockback, frame data, etc
+    //for knight
+    public static class KnightAttackData{
+        public static Vector2 getPosition(Body body, float bodyWidth, float bodyHeight, Character.Attack attackType, boolean direction) {
+            int d = (direction) ? 1 : -1;
+            switch (attackType) {
+                case JAB:
+                    return new Vector2(body.getPosition().x + (bodyWidth * d) + .5f, body.getPosition().y);
+                case S_TILT:
+                    return new Vector2(body.getPosition().x + (bodyWidth * d) + .5f, body.getPosition().y - getDimension(Character.Attack.S_TILT).y);
+                case D_TILT:
+                    return new Vector2(body.getPosition().x + (bodyWidth * d) + .5f, (body.getPosition().y - bodyHeight) + getDimension(Character.Attack.S_TILT).y);
+                case U_TILT:
+                    return new Vector2(body.getPosition().x, body.getPosition().y + bodyHeight + getDimension(Character.Attack.D_TILT).y);
+                default:
+                    return new Vector2(0, 0);
+                //add more cases as we add more attacks
+
+            }
+        }
+
+        public static Vector2 getDimension(Character.Attack attackType) {
+            switch (attackType) {
+                case JAB:
+                    return new Vector2(.75f, .5f);
+                case S_TILT:
+                    return new Vector2(1f, .5f);
+                case D_TILT:
+                    return new Vector2(1.25f, .5f);
+                case U_TILT:
+                    return new Vector2(.75f, 1.5f);
+                default:
+                    return new Vector2(.5f, 1f);
+            }
+        }
+
+        public static int getFrames(Character.Attack attackType) {
+            switch (attackType) {
+                case JAB:
+                    return 30;
+                case S_TILT:
+                    return 45;
+                case D_TILT:
+                    return 30;
+                case U_TILT:
+                    return 40;
+                default:
+                    return 30;
+            }
+        }
+
+        public static Vector2 getKnockback(Character.Attack attackType, boolean direction) {
+            int d = (direction) ? 1 : -1;
+            switch (attackType) {
+                case JAB:
+                    return new Vector2(20f * d, 20f);
+                case S_TILT:
+                    return new Vector2(40f * d, 25f);
+                case D_TILT:
+                    return new Vector2(50f * d, 5f);
+                case U_TILT:
+                    return new Vector2(5f * d, 45f);
+                default:
+                    return new Vector2(10f * d, 10f);
+            }
+        }
+
+        public static int getDamage(Character.Attack attackType) {
+            switch (attackType) {
+                case JAB:
+                    return 4;
+                case S_TILT:
+                    return 8;
+                case D_TILT:
+                    return 6;
+                case U_TILT:
+                    return 9;
+                default:
+                    return 1;
+            }
+        }
+
+    }
+
+
     //class that stores data about characters such as size, density, sprites, etc
     public static class CharacterData{
-        public static Vector2 getBodySize(Character characterType){ //returns height and width of character
+        public static Vector2 getBodySize(Character characterType){
             if (characterType instanceof Knight)
                 return new Vector2(2f, 3f * Window.yConst);
-            else if (characterType instanceof Assassin)
-                return new Vector2(1.75f, 2.75f * Window.yConst);
             else
                 return new Vector2(1f, 1f * Window.yConst);
         }
-        public static float getDensity(Character characterType){ //returns density / weight of character
+        public static float getDensity(Character characterType){
             if (characterType instanceof Knight)
                 return .08f;
-            else if (characterType instanceof Assassin)
-                return .1f;
             else
                 return .5f;
         }
-        public static Sprite getSprite(Character characterType){ //returns the idle sprite of character
+        public static Sprite getSprite(Character characterType){
             if (characterType instanceof Knight)
                 return new Sprite(new Texture("core/assets/image/spr_knight_idle.png"));
-            else if (characterType instanceof Assassin)
-                return new Sprite(new Texture("core/assets/image/spr_assassin_idle.png"));
             else
                 return new Sprite(new Texture("core/assets/image/spr_parent.png"));
         }
