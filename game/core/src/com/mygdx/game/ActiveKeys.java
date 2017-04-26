@@ -15,12 +15,14 @@ public class ActiveKeys implements InputProcessor {
     public boolean up = false;
     public boolean down = false;
     public boolean numpad1 = false;
+    public boolean numpad2 = false;
     public boolean numpad3 = false;
     public boolean W = false;
     public boolean A = false;
     public boolean S = false;
     public boolean D = false;
     public boolean V = false;
+    public boolean B = false;
     public boolean N = false;
     //</editor-fold>
 
@@ -42,6 +44,9 @@ public class ActiveKeys implements InputProcessor {
             case Input.Keys.NUMPAD_1:
                 numpad1 = true;
                 break;
+            case Input.Keys.NUMPAD_2:
+                numpad2 = true;
+                break;
             case Input.Keys.NUMPAD_3:
                 numpad3 = true;
                 break;
@@ -59,6 +64,9 @@ public class ActiveKeys implements InputProcessor {
                 break;
             case Input.Keys.V:
                 V = true;
+                break;
+            case Input.Keys.B:
+                B = true;
                 break;
             case Input.Keys.N:
                 N = true;
@@ -85,6 +93,9 @@ public class ActiveKeys implements InputProcessor {
             case Input.Keys.NUMPAD_1:
                 numpad1 = false;
                 break;
+            case Input.Keys.NUMPAD_2:
+                numpad2 = false;
+                break;
             case Input.Keys.NUMPAD_3:
                 numpad3 = false;
                 break;
@@ -102,6 +113,9 @@ public class ActiveKeys implements InputProcessor {
                 break;
             case Input.Keys.V:
                 V = false;
+                break;
+            case Input.Keys.B:
+                B = false;
                 break;
             case Input.Keys.N:
                 N = false;

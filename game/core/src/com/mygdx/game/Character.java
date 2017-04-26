@@ -40,26 +40,28 @@ public class Character implements CharacterStates { //parent character class
     //maybe aerial attacks will come in the future but for now use basic attacks in the air
 
     //<editor-fold desc="keys">
-    private boolean left = false;
-    private boolean right = false;
-    private boolean up = false;
-    private boolean down = false;
-    private boolean attack = false;
-    private boolean jump = false;
+    protected boolean left = false;
+    protected boolean right = false;
+    protected boolean up = false;
+    protected boolean down = false;
+    protected boolean attack = false;
+    protected boolean special = false;
+    protected boolean jump = false;
     //</editor-fold>
 
     private State currentState; //current state of character
-    private boolean state_new; //is true on only the first loop of the state method
+    protected boolean state_new; //is true on only the first loop of the state method
 
     private Attack currentAttack;
-    private GameData.Player player, opponent;
+    protected Attack.Special currentSpecial;
+    protected GameData.Player player, opponent;
 
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
     private BodyDef bodyDef;   //body define for box2d
-    private Body body;         //actual box2d body
+    protected Body body;         //actual box2d body
     private float bodyWidth, bodyHeight; //height and width of body
 
-    private boolean direction; // 0 is left, 1 is right
+    protected boolean direction; // 0 is left, 1 is right
     private float maxSpeed; //max speed at which the character can move
     private boolean hasJump; //if the character has a double jump
     private boolean canJump; //if the character can use the double jump atm
@@ -117,7 +119,6 @@ public class Character implements CharacterStates { //parent character class
         fixDef.friction = .8f;
 
 
-
         body.createFixture(fixDef); //puts the fixture on the body
 
     }
@@ -146,6 +147,9 @@ public class Character implements CharacterStates { //parent character class
             case ATTACK:
                 St_Attack();
                 break;
+            case SPECIAL:
+                St_Special();
+                break;
             default:
                 St_Idle();
                 break;
@@ -161,6 +165,7 @@ public class Character implements CharacterStates { //parent character class
             up = Window.key.W;
             down = Window.key.S;
             attack = Window.key.V;
+            special = Window.key.B;
             jump = Window.key.N;
         }
 
@@ -170,6 +175,7 @@ public class Character implements CharacterStates { //parent character class
             up = Window.key.up;
             down = Window.key.down;
             attack = Window.key.numpad1;
+            special = Window.key.numpad2;
             jump = Window.key.numpad3;
         }
     }
@@ -260,8 +266,8 @@ public class Character implements CharacterStates { //parent character class
 
         //the hitbox exists here
         animationTimer.incrementFrame();
-        if (currentAttack instanceof Attack) //if this is a basic attack, move it with the character
-            hitbox.getHitboxBody().setLinearVelocity(body.getLinearVelocity());
+         //if this is a basic attack, move it with the character
+        hitbox.getHitboxBody().setLinearVelocity(body.getLinearVelocity());
 
         if (animationTimer.timerDone(false)) {
             animationTimer = null;
@@ -271,11 +277,12 @@ public class Character implements CharacterStates { //parent character class
         }
     }
 
-    public void St_Speical(){
-
+    public void St_Special(){
+        //implement in child classes
+        switchState(State.IDLE);
     }
 
-    private void switchState(State newState){ //this method just changes which method
+    protected void switchState(State newState){ //this method just changes which method
         state_new = true;                    //will be run evey step by changing the state
         currentState = newState;
         //System.out.println(stateToString());
@@ -337,6 +344,17 @@ public class Character implements CharacterStates { //parent character class
                 currentAttack = Attack.JAB;
             switchState(State.ATTACK);
         }
+        else if (special) {
+            if (up)
+                currentSpecial = Attack.Special.U_SPECIAL;
+            else if (down)
+                currentSpecial = Attack.Special.D_SPECIAL;
+            else if (left || right)
+                currentSpecial = Attack.Special.S_SPECIAL;
+            else
+                currentSpecial = Attack.Special.N_SPECIAL;
+            switchState(State.SPECIAL);
+        }
 
     }
 
@@ -350,7 +368,18 @@ public class Character implements CharacterStates { //parent character class
         double knockback = ((((p / 10) + ((p * d) / 20)) * w) + 18);
         //System.out.println("((((" + p + " / 10) + ((" + p + " + " + d + ") / 20)) * " + w + ") + 18) +" + b.x + " = " + knockback + b.x);
         return new Vector2(((float)knockback + Math.abs(b.x)) * dir, ((float)knockback + b.y));
-    }
+    } //assumed values (mainly for regular attack)
+    protected Vector2 calculateKnockback(int damage, float baseKnockbackX, float baseKnockbackY){
+        int p = Window.scoreData.getDamage(opponent); //opponent's damage
+        int d = damage; //damage of attack
+        float w = 2.5f; //weight of all characters
+        int dir = (direction) ? 1 : -1;
+        Vector2 b = new Vector2(baseKnockbackX, baseKnockbackY); //base knockback
+
+        double knockback = ((((p / 10) + ((p * d) / 20)) * w) + 18);
+        //System.out.println("((((" + p + " / 10) + ((" + p + " + " + d + ") / 20)) * " + w + ") + 18) +" + b.x + " = " + knockback + b.x);
+        return new Vector2(((float)knockback + Math.abs(b.x)) * dir, ((float)knockback + b.y));
+    } //explicit values (mainly for specials)
 
     private void setMaxSpeed(float maxV){ //this method changes the speed to the maximum speed defined if it goes over
         if(body.getLinearVelocity().x > maxV)
