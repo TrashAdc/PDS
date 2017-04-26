@@ -246,12 +246,12 @@ public class Character implements CharacterStates { //parent character class
         if (state_new) {
 
 
-            animationTimer = new FrameTimer(GameData.AttackData.getFrames(currentAttack));
+            animationTimer = new FrameTimer(GameData.AttackData.getFrames(currentAttack, this));
 
-            Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, bodyHeight, currentAttack, direction);
-            Vector2 dimension = GameData.AttackData.getDimension(currentAttack);
+            Vector2 position = GameData.AttackData.getPosition(body, bodyWidth, bodyHeight, currentAttack, direction, this);
+            Vector2 dimension = GameData.AttackData.getDimension(currentAttack, this);
             Vector2 knockback = calculateKnockback();
-            int damage = GameData.AttackData.getDamage(currentAttack);
+            int damage = GameData.AttackData.getDamage(currentAttack, this);
 
             hitbox = new Hitbox(dimension.x, dimension.y * Window.yConst, position.x, position.y, knockback, damage, player); //creates the hitbox object
             hitbox.spawnHitbox(); //puts the hitbox in the world
@@ -342,10 +342,10 @@ public class Character implements CharacterStates { //parent character class
 
     private Vector2 calculateKnockback(){
         int p = Window.scoreData.getDamage(opponent); //opponent's damage
-        int d = GameData.AttackData.getDamage(currentAttack); //damage of attack
+        int d = GameData.AttackData.getDamage(currentAttack, this); //damage of attack
         float w = 2.5f; //weight of all characters
         int dir = (direction) ? 1 : -1;
-        Vector2 b = GameData.AttackData.getKnockback(currentAttack, direction); //base knockback
+        Vector2 b = GameData.AttackData.getKnockback(currentAttack, direction, this); //base knockback
 
         double knockback = ((((p / 10) + ((p * d) / 20)) * w) + 18);
         //System.out.println("((((" + p + " / 10) + ((" + p + " + " + d + ") / 20)) * " + w + ") + 18) +" + b.x + " = " + knockback + b.x);

@@ -16,9 +16,43 @@ public final class GameData { //this class has other static classes that are pur
         PLAYER2
     }
 
+    public static class AttackData{ //accessor class for attack data
+        public static Vector2 getPosition(Body body, float bodyWidth, float bodyHeight, Character.Attack attackType, boolean direction, Character charType){
+            if (charType instanceof Knight)
+                return KnightAttackData.getPosition(body, bodyWidth, bodyHeight, attackType, direction);
+            else
+                return ParentAttackData.getPosition(body, bodyWidth, bodyHeight, attackType, direction);
+        }
+        public static Vector2 getDimension(Character.Attack attackType, Character charType){
+            if (charType instanceof Knight)
+                return KnightAttackData.getDimension(attackType);
+            else
+                return ParentAttackData.getDimension(attackType);
+        }
+        public static int getFrames(Character.Attack attackType, Character charType){
+            if (charType instanceof Knight)
+                return KnightAttackData.getFrames(attackType);
+            else
+                return ParentAttackData.getFrames(attackType);
+        }
+        public static Vector2 getKnockback(Character.Attack attackType, boolean direction, Character charType){
+            if (charType instanceof Knight)
+                return KnightAttackData.getKnockback(attackType, direction);
+            else
+                return ParentAttackData.getKnockback(attackType, direction);
+        }
+        public static int getDamage(Character.Attack attackType, Character charType){
+            if (charType instanceof Knight)
+                return KnightAttackData.getDamage(attackType);
+            else
+                return ParentAttackData.getDamage(attackType);
+        }
+    }
+
+
     //class that stores data for attacks such as power, knockback, frame data, etc
     //for parent class
-    public static class AttackData {
+    private static class ParentAttackData {
 
         public static Vector2 getPosition(Body body, float bodyWidth, float bodyHeight, Character.Attack attackType, boolean direction) {
             int d = (direction) ? 1 : -1;
@@ -106,18 +140,18 @@ public final class GameData { //this class has other static classes that are pur
 
     //class that stores data for attacks such as power, knockback, frame data, etc
     //for knight
-    public static class KnightAttackData{
+    private static class KnightAttackData{
         public static Vector2 getPosition(Body body, float bodyWidth, float bodyHeight, Character.Attack attackType, boolean direction) {
             int d = (direction) ? 1 : -1;
             switch (attackType) {
                 case JAB:
-                    return new Vector2(body.getPosition().x + (bodyWidth * d) + .5f, body.getPosition().y);
+                    return new Vector2(body.getPosition().x + (bodyWidth * d) + (.5f * d), body.getPosition().y);
                 case S_TILT:
-                    return new Vector2(body.getPosition().x + (bodyWidth * d) + .5f, body.getPosition().y - getDimension(Character.Attack.S_TILT).y);
+                    return new Vector2(body.getPosition().x + (bodyWidth * d) + (getDimension(Character.Attack.S_TILT).x * d), body.getPosition().y - getDimension(Character.Attack.S_TILT).y);
                 case D_TILT:
-                    return new Vector2(body.getPosition().x + (bodyWidth * d) + .5f, (body.getPosition().y - bodyHeight) + getDimension(Character.Attack.S_TILT).y);
+                    return new Vector2(body.getPosition().x + (bodyWidth * d) + (getDimension(Character.Attack.S_TILT).x * d), (body.getPosition().y - bodyHeight) + getDimension(Character.Attack.S_TILT).y);
                 case U_TILT:
-                    return new Vector2(body.getPosition().x, body.getPosition().y + bodyHeight + getDimension(Character.Attack.D_TILT).y);
+                    return new Vector2(body.getPosition().x, body.getPosition().y + bodyHeight * 1.5f + getDimension(Character.Attack.D_TILT).y);
                 default:
                     return new Vector2(0, 0);
                 //add more cases as we add more attacks
@@ -128,13 +162,13 @@ public final class GameData { //this class has other static classes that are pur
         public static Vector2 getDimension(Character.Attack attackType) {
             switch (attackType) {
                 case JAB:
-                    return new Vector2(.75f, .5f);
-                case S_TILT:
                     return new Vector2(1f, .5f);
+                case S_TILT:
+                    return new Vector2(1.5f, .5f);
                 case D_TILT:
                     return new Vector2(1.25f, .5f);
                 case U_TILT:
-                    return new Vector2(.75f, 1.5f);
+                    return new Vector2(.75f, 2.5f);
                 default:
                     return new Vector2(.5f, 1f);
             }
