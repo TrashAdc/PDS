@@ -9,7 +9,7 @@ public interface CharacterStates { //states of character to be implemented in ch
     void St_Idle();
     void St_Air();
     void St_Attack();
-    void St_Speical();
+    void St_Special();
 
 }
 
