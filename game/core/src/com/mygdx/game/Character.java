@@ -266,7 +266,7 @@ public class Character implements CharacterStates { //parent character class
 
         //the hitbox exists here
         animationTimer.incrementFrame();
-         //if this is a basic attack, move it with the character
+        //if this is a basic attack, move it with the character
         hitbox.getHitboxBody().setLinearVelocity(body.getLinearVelocity());
 
         if (animationTimer.timerDone(false)) {
@@ -298,6 +298,8 @@ public class Character implements CharacterStates { //parent character class
                 return "air";
             case ATTACK:
                 return "attacking";
+            case SPECIAL:
+                return "special";
             default:
                 return "not set";
         }
@@ -313,8 +315,9 @@ public class Character implements CharacterStates { //parent character class
                 playerSprite.flip(true, false);
                 direction = false;
             }
+            if (!overMaxSpeed(maxSpeed, false))
+                body.applyLinearImpulse(-5f, 0f, bodyWidth / 2, 0, false);
 
-            body.applyLinearImpulse(-5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
         }
 
         if (right) {
@@ -325,11 +328,11 @@ public class Character implements CharacterStates { //parent character class
                 playerSprite.flip(true, false);
                 direction = true;
             }
-
-            body.applyLinearImpulse(5f, 0f, bodyWidth / 2, bodyHeight / 2, false);
+            if (!overMaxSpeed(maxSpeed, true))
+                body.applyLinearImpulse(5f, 0f, bodyWidth / 2, 0, false);
         }
 
-        setMaxSpeed(maxSpeed); //caps speed
+
     }
 
     private void attackInput(){
@@ -358,6 +361,7 @@ public class Character implements CharacterStates { //parent character class
 
     }
 
+
     private Vector2 calculateKnockback(){
         int p = Window.scoreData.getDamage(opponent); //opponent's damage
         int d = GameData.AttackData.getDamage(currentAttack, this); //damage of attack
@@ -381,12 +385,19 @@ public class Character implements CharacterStates { //parent character class
         return new Vector2(((float)knockback + Math.abs(b.x)) * dir, ((float)knockback + b.y));
     } //explicit values (mainly for specials)
 
-    private void setMaxSpeed(float maxV){ //this method changes the speed to the maximum speed defined if it goes over
-        if(body.getLinearVelocity().x > maxV)
-            body.setLinearVelocity(maxV, body.getLinearVelocity().y);
-        else if (body.getLinearVelocity().x < -maxV)
-            body.setLinearVelocity(-maxV, body.getLinearVelocity().y);
-    }
+    private boolean overMaxSpeed(float maxV, boolean positive){ //this method changes the speed to the maximum speed defined if it goes over
+        if (positive) {
+            if (body.getLinearVelocity().x > maxV)
+                return true;
+            //body.setLinearVelocity(maxV, body.getLinearVelocity().y);
+        }
+        else if (!positive) {
+            if (body.getLinearVelocity().x < -maxV)
+                return true;
+            //body.setLinearVelocity(-maxV, body.getLinearVelocity().y);
+        }
+        return false;
+    } //returns true if the character is over the max speed
 
 
 

@@ -75,7 +75,7 @@ public class Window extends ApplicationAdapter {
 
         Gdx.input.setInputProcessor(key);
 
-        dood = new Character(GameData.Player.PLAYER1); //creates character
+        dood = new Knight(GameData.Player.PLAYER1); //creates character
         dood2 = new Knight(GameData.Player.PLAYER2); //creates character
         testStage = new Stage(); //makes stage in world
 
@@ -107,7 +107,7 @@ public class Window extends ApplicationAdapter {
         debugRenderer.render(world, camera.combined);
         batch.begin();
 
-        
+
         //draw stuff here
 
         //System.out.println(shader.getShader().isCompiled());
@@ -120,6 +120,7 @@ public class Window extends ApplicationAdapter {
 
         dood.getSprite().draw(batch); //draw the sprite
         dood2.getSprite().draw(batch);
+        System.out.println(dood2.stateToString());
 
 
         batch.end();

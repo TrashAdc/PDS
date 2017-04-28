@@ -8,10 +8,12 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Knight extends Character {
 
-    private int lanceCharge;
-    private FrameTimer timer;
-    private Hitbox hitbox;
-    private boolean specialReady;
+    private int lanceCharge; //charge for lanceStrike special
+
+    private FrameTimer timer; //timer for special attacks
+    private Hitbox hitbox; //hitbox of special attack
+    private boolean specialReady; //use the special move!!!
+    private boolean specialOver; //prevents more specials from being cast at the same time
 
     public Knight(GameData.Player player){
         super(player);
@@ -28,30 +30,34 @@ public class Knight extends Character {
             state_new = false;
         }
 
-
-        switch (currentSpecial){
-            case N_SPECIAL:
-                lanceStrike();
-                break;
-            case S_SPECIAL:
-                lanceThrow();
-                break;
-            case D_SPECIAL:
-                fortify();
-                break;
-            case U_SPECIAL:
-                sheildSlam();
-                break;
+        if (!specialOver) {
+            switch (currentSpecial) {
+                case N_SPECIAL:
+                    lanceStrike();
+                    break;
+                case S_SPECIAL:
+                    lanceThrow();
+                    break;
+                case D_SPECIAL:
+                    fortify();
+                    break;
+                case U_SPECIAL:
+                    sheildSlam();
+                    break;
+            }
         }
 
         if (timer != null){
             timer.incrementFrame();
-            System.out.println(timer.getCurrentFrame());
+            hitbox.getHitboxBody().setLinearVelocity(body.getLinearVelocity());
+            //System.out.println(timer.getCurrentFrame());
 
             if (timer.timerDone(false)) { //todo fix this
                 hitbox.destroyHitbox(); //remove the hitbox from the world
                 hitbox = null;
+                timer = null;
                 switchState(State.IDLE);
+                specialOver = false;
             }
         }
 
@@ -77,7 +83,7 @@ public class Knight extends Character {
             hitbox = new Hitbox(2f, .5f * Window.yConst, lancePos.x, lancePos.y, calculateKnockback(damage, 50f, 30f), damage, player); //creates the hitbox object
             hitbox.spawnHitbox(); //puts the hitbox in the world
             timer = new FrameTimer(45);
-            specialReady = false;
+            specialOver = true;
         }
 
 
@@ -87,7 +93,7 @@ public class Knight extends Character {
     /*side special
       the knight throws his lance as a projectile until it hits something*/
     private void lanceThrow(){
-
+        lanceStrike();
     }
 
 
@@ -95,13 +101,13 @@ public class Knight extends Character {
       the knight braces himself for impact and gains defense against attacks but
       loses some movement speed*/
     private void fortify(){
-
+        lanceStrike();
     }
 
     /*up special
       the knight leaps into the air and dives down with considerable force, knocking up and damaging opponents.*/
     private void sheildSlam(){
-
+        lanceStrike();
     }
 
 
