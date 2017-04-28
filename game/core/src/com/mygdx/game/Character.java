@@ -1,8 +1,5 @@
 package com.mygdx.game;
 
-
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -69,7 +66,7 @@ public class Character implements CharacterStates { //parent character class
 
     private Hitbox hitbox;
 
-    private FrameTimer animationTimer;
+    private FrameTimer animationTimer, hitstunTimer;
 
     public Character(GameData.Player p){
 
@@ -149,6 +146,9 @@ public class Character implements CharacterStates { //parent character class
                 break;
             case SPECIAL:
                 St_Special();
+                break;
+            case HITSTUN:
+                St_Hitstun();
                 break;
             default:
                 St_Idle();
@@ -282,6 +282,22 @@ public class Character implements CharacterStates { //parent character class
         switchState(State.IDLE);
     }
 
+    public void St_Hitstun(){
+        if (state_new) {
+            hitstunTimer = new FrameTimer(15);
+            state_new = false;
+        }
+
+        hitstunTimer.incrementFrame();
+
+        if (hitstunTimer.timerDone(false))
+            switchState(State.IDLE);
+    }
+
+    public void inflictHitstun(){
+        switchState(State.HITSTUN);
+    }
+
     protected void switchState(State newState){ //this method just changes which method
         state_new = true;                    //will be run evey step by changing the state
         currentState = newState;
@@ -300,6 +316,12 @@ public class Character implements CharacterStates { //parent character class
                 return "attacking";
             case SPECIAL:
                 return "special";
+            case HITSTUN:
+                return "hitstun";
+            case DEAD:
+                return "dead";
+            case LEDGE:
+                return "ledge";
             default:
                 return "not set";
         }
@@ -316,7 +338,7 @@ public class Character implements CharacterStates { //parent character class
                 direction = false;
             }
             if (!overMaxSpeed(maxSpeed, false))
-                body.applyLinearImpulse(-5f, 0f, bodyWidth / 2, 0, false);
+                body.applyLinearImpulse(-10f, 0f, bodyWidth / 2, 0, false);
 
         }
 
@@ -329,7 +351,7 @@ public class Character implements CharacterStates { //parent character class
                 direction = true;
             }
             if (!overMaxSpeed(maxSpeed, true))
-                body.applyLinearImpulse(5f, 0f, bodyWidth / 2, 0, false);
+                body.applyLinearImpulse(10f, 0f, bodyWidth / 2, 0, false);
         }
 
 

@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -10,6 +9,8 @@ public class Knight extends Character {
 
     private int lanceCharge; //charge for lanceStrike special
 
+    private boolean slamUp; //first stage of slamjam special
+
     private FrameTimer timer; //timer for special attacks
     private Hitbox hitbox; //hitbox of special attack
     private boolean specialReady; //use the special move!!!
@@ -18,8 +19,10 @@ public class Knight extends Character {
     public Knight(GameData.Player player){
         super(player);
         specialReady = false;
+
         lanceCharge = 0;
 
+        slamUp = false;
     }
     @Override
     public void St_Special(){ //is run when a special is used
@@ -42,7 +45,7 @@ public class Knight extends Character {
                     fortify();
                     break;
                 case U_SPECIAL:
-                    sheildSlam();
+                    sheildSlamJam();
                     break;
             }
         }
@@ -52,7 +55,7 @@ public class Knight extends Character {
             hitbox.getHitboxBody().setLinearVelocity(body.getLinearVelocity());
             //System.out.println(timer.getCurrentFrame());
 
-            if (timer.timerDone(false)) { //todo fix this
+            if (timer.timerDone(false)) {
                 hitbox.destroyHitbox(); //remove the hitbox from the world
                 hitbox = null;
                 timer = null;
@@ -106,8 +109,15 @@ public class Knight extends Character {
 
     /*up special
       the knight leaps into the air and dives down with considerable force, knocking up and damaging opponents.*/
-    private void sheildSlam(){
-        lanceStrike();
+    private void sheildSlamJam(){
+        if (!slamUp) {
+            body.setLinearVelocity(0f, 65f);
+            slamUp = true;
+        }
+        else if (slamUp && body.getLinearVelocity().y <= 0f)
+            body.setLinearVelocity(0f, -6500f);
+
+
     }
 
 

@@ -4,15 +4,12 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
-import javax.xml.bind.Marshaller;
 import java.awt.*;
 
 public class Window extends ApplicationAdapter {
@@ -38,7 +35,7 @@ public class Window extends ApplicationAdapter {
 
     private Stage testStage;
 
-    private Character dood, dood2; //this is an object in the game
+    private static Character player1, player2; //this is an object in the game
 
     public static Score scoreData;
 
@@ -75,8 +72,8 @@ public class Window extends ApplicationAdapter {
 
         Gdx.input.setInputProcessor(key);
 
-        dood = new Knight(GameData.Player.PLAYER1); //creates character
-        dood2 = new Knight(GameData.Player.PLAYER2); //creates character
+        player1 = new Knight(GameData.Player.PLAYER1); //creates character
+        player2 = new Knight(GameData.Player.PLAYER2); //creates character
         testStage = new Stage(); //makes stage in world
 
         scoreData = new Score(3); //sets initial score (stocks and damage)
@@ -118,9 +115,9 @@ public class Window extends ApplicationAdapter {
         testStage.getStageSprite().draw(batch);
 
 
-        dood.getSprite().draw(batch); //draw the sprite
-        dood2.getSprite().draw(batch);
-        System.out.println(dood2.stateToString());
+        player1.getSprite().draw(batch); //draw the sprite
+        player2.getSprite().draw(batch);
+        System.out.println(player1.stateToString());
 
 
         batch.end();
@@ -150,6 +147,18 @@ public class Window extends ApplicationAdapter {
         rainbowShader.getShader().dispose();
         passthroughShader.getShader().dispose();
         batch.dispose();
+
+    }
+
+    public static void characterHitstun(GameData.Player player){
+        if (player == GameData.Player.PLAYER1) {
+            player1.inflictHitstun();
+            return;
+        }
+        else {
+            player2.inflictHitstun();
+            return;
+        }
 
     }
 
