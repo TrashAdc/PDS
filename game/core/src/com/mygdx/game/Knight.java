@@ -9,7 +9,8 @@ public class Knight extends Character {
 
     private int lanceCharge; //charge for lanceStrike special
 
-    private boolean slamUp; //first stage of slamjam special
+    private boolean slammedUp; //first stage of slamjam special (going up)
+    private boolean slammedDown; //second stage of slamjam special (going down)
 
     private FrameTimer timer; //timer for special attacks
     private Hitbox hitbox; //hitbox of special attack
@@ -22,7 +23,8 @@ public class Knight extends Character {
 
         lanceCharge = 0;
 
-        slamUp = false;
+        slammedUp = false;
+        slammedDown = false;
     }
     @Override
     public void St_Special(){ //is run when a special is used
@@ -110,12 +112,28 @@ public class Knight extends Character {
     /*up special
       the knight leaps into the air and dives down with considerable force, knocking up and damaging opponents.*/
     private void sheildSlamJam(){
-        if (!slamUp) {
+        if (!slammedUp) {
             body.setLinearVelocity(0f, 65f);
-            slamUp = true;
+            slammedUp = true;
+            hitbox = new Hitbox(bodyWidth, .25f * Window.yConst, body.getPosition().x, body.getPosition().y, calculateKnockback(7, 35f, 10f), 7, player); //creates the hitbox object
+            hitbox.spawnHitbox(); //puts the hitbox in the world
         }
-        else if (slamUp && body.getLinearVelocity().y <= 0f)
+        else if (!slammedDown && body.getLinearVelocity().y <= 0f) {
+            hitbox.destroyHitbox();
+            hitbox = null;
+            hitbox = new Hitbox(bodyWidth * 1.5f, .25f * Window.yConst, body.getPosition().x, -body.getPosition().y, calculateKnockback(9, 25f, -20f), 7, player);
             body.setLinearVelocity(0f, -6500f);
+            slammedDown = true;
+        }
+        else if (body.getLinearVelocity().y <= 0f) {
+            hitbox.destroyHitbox();
+            hitbox = null;
+            switchState(State.IDLE);
+        }
+        else {
+            hitbox.getHitboxBody().setLinearVelocity(body.getLinearVelocity());
+            horizontalMovement();
+        }
 
 
     }

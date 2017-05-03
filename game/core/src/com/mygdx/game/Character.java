@@ -56,7 +56,7 @@ public class Character implements CharacterStates { //parent character class
     private Sprite playerSprite; //the image of the character, may not need to be here with animation class
     private BodyDef bodyDef;   //body define for box2d
     protected Body body;         //actual box2d body
-    private float bodyWidth, bodyHeight; //height and width of body
+    protected float bodyWidth, bodyHeight; //height and width of body
 
     protected boolean direction; // 0 is left, 1 is right
     private float maxSpeed; //max speed at which the character can move
@@ -327,7 +327,7 @@ public class Character implements CharacterStates { //parent character class
         }
     }
 
-    private void horizontalMovement(){ //checks for and gives horizontal movement
+    protected void horizontalMovement(){ //checks for and gives horizontal movement
         if (left) {
 
             if (body.getLinearVelocity().x == 0)
