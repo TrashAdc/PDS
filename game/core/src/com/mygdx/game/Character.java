@@ -395,11 +395,13 @@ public class Character implements CharacterStates { //parent character class
         //System.out.println("((((" + p + " / 10) + ((" + p + " + " + d + ") / 20)) * " + w + ") + 18) +" + b.x + " = " + knockback + b.x);
         return new Vector2(((float)knockback + Math.abs(b.x)) * dir, ((float)knockback + b.y));
     } //assumed values (mainly for regular attack)
-    protected Vector2 calculateKnockback(int damage, float baseKnockbackX, float baseKnockbackY){
+    protected Vector2 calculateKnockback(int damage, float baseKnockbackX, float baseKnockbackY, boolean useDirection){
         int p = Window.scoreData.getDamage(opponent); //opponent's damage
         int d = damage; //damage of attack
         float w = 2.5f; //weight of all characters
         int dir = (direction) ? 1 : -1;
+        if (!useDirection)
+            dir = 1;
         Vector2 b = new Vector2(baseKnockbackX, baseKnockbackY); //base knockback
 
         double knockback = ((((p / 10) + ((p * d) / 20)) * w) + 18);

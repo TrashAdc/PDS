@@ -13,7 +13,7 @@ public class Knight extends Character {
     private boolean slammedDown; //second stage of slamjam special (going down)
 
     private FrameTimer timer; //timer for special attacks
-    private Hitbox hitbox; //hitbox of special attack
+    private Hitbox hitbox, hitbox2; //hitbox of special attack
     private boolean specialReady; //use the special move!!!
     private boolean specialOver; //prevents more specials from being cast at the same time
 
@@ -85,7 +85,7 @@ public class Knight extends Character {
         if (specialReady) {
             Vector2 lancePos = GameData.AttackData.getPosition(body, GameData.CharacterData.getBodySize(this).x, GameData.CharacterData.getBodySize(this).y, Attack.S_TILT, direction, this);
             int damage = 10 + (lanceCharge / 10);
-            hitbox = new Hitbox(2f, .5f * Window.yConst, lancePos.x, lancePos.y, calculateKnockback(damage, 50f, 30f), damage, player); //creates the hitbox object
+            hitbox = new Hitbox(2f, .5f * Window.yConst, lancePos.x, lancePos.y, calculateKnockback(damage, 50f, 30f, true), damage, player); //creates the hitbox object
             hitbox.spawnHitbox(); //puts the hitbox in the world
             timer = new FrameTimer(45);
             specialOver = true;
@@ -115,20 +115,23 @@ public class Knight extends Character {
         if (!slammedUp) {
             body.setLinearVelocity(0f, 65f);
             slammedUp = true;
-            hitbox = new Hitbox(bodyWidth, .25f * Window.yConst, body.getPosition().x, body.getPosition().y, calculateKnockback(7, 35f, 10f), 7, player); //creates the hitbox object
+            hitbox = new Hitbox(bodyWidth, .25f * Window.yConst, body.getPosition().x, body.getPosition().y + ((bodyHeight / 1.5f) * Window.yConst), calculateKnockback(7, 5f, 35f, true), 7, player); //creates the hitbox object
             hitbox.spawnHitbox(); //puts the hitbox in the world
         }
-        else if (!slammedDown && body.getLinearVelocity().y <= 0f) {
+        else if (slammedUp && !slammedDown && body.getLinearVelocity().y <= 0f) {
             hitbox.destroyHitbox();
             hitbox = null;
-            hitbox = new Hitbox(bodyWidth * 1.5f, .25f * Window.yConst, body.getPosition().x, -body.getPosition().y, calculateKnockback(9, 25f, -20f), 7, player);
-            body.setLinearVelocity(0f, -6500f);
+            hitbox = new Hitbox(bodyWidth * 1.5f, .5f * Window.yConst, body.getPosition().x, body.getPosition().y - ((bodyHeight / 1.5f) * Window.yConst), calculateKnockback(9, 25f, -200000000f, true), 7, player);
+            hitbox.spawnHitbox();
+            body.setLinearVelocity(0f, -100f);
             slammedDown = true;
         }
-        else if (body.getLinearVelocity().y <= 0f) {
+        else if (body.getLinearVelocity().y == 0f && slammedDown && slammedUp) {
             hitbox.destroyHitbox();
             hitbox = null;
             switchState(State.IDLE);
+            slammedUp = false;
+            slammedDown = false;
         }
         else {
             hitbox.getHitboxBody().setLinearVelocity(body.getLinearVelocity());

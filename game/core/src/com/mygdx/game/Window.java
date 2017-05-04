@@ -115,6 +115,7 @@ public class Window extends ApplicationAdapter {
         testStage.getStageSprite().draw(batch);
 
 
+
         player1.getSprite().draw(batch); //draw the sprite
         player2.getSprite().draw(batch);
         System.out.println(player1.stateToString());
