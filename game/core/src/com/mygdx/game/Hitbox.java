@@ -57,6 +57,8 @@ public class Hitbox {
         FixtureDef fixDef = new FixtureDef(); //the boxes fixture
         fixDef.shape = boxShape; //sets fixture to shape of the body
         fixDef.isSensor = true;
+        fixDef.filter.categoryBits = 0x0004;
+        fixDef.filter.maskBits = 0x0002;
 
         hitbox.createFixture(fixDef);
 

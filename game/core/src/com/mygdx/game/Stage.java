@@ -53,6 +53,8 @@ public class Stage { //parent stage class
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = bShape;
         fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = 0x0004;
+        fixtureDef.filter.maskBits = 0x0002;
 
         bod.createFixture(fixtureDef);
     }
@@ -73,6 +75,7 @@ public class Stage { //parent stage class
         fixtureDef.shape = bShape;
         fixtureDef.isSensor = true;
 
+
         bod.createFixture(fixtureDef);
     }
 
@@ -80,16 +83,22 @@ public class Stage { //parent stage class
     private void stageBodyInit(){ //this is a static body
 
         stageDef = new BodyDef();
+        stageDef.type = BodyDef.BodyType.StaticBody;
         stageDef.position.set(Window.camera.viewportWidth / 2f, Window.camera.viewportHeight / 7f);
-
-        stageBody = Window.world.createBody(stageDef);
+        stageDef.fixedRotation = true;
 
         PolygonShape stageShape = new PolygonShape();
         stageShape.setAsBox(stageWidth, stageHeight);
 
-
-        stageBody.createFixture(stageShape, 1.0f);
+        stageBody = Window.world.createBody(stageDef);
         stageBody.setUserData("stage");
+
+        FixtureDef fd = new FixtureDef();
+        fd.shape = stageShape;
+        fd.filter.categoryBits = 0x0004;
+        fd.filter.maskBits = 0x0002;
+
+        stageBody.createFixture(fd);
 
 
     }

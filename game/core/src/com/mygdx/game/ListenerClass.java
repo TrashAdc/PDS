@@ -1,6 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 
 import java.util.*;
@@ -33,6 +32,7 @@ public class ListenerClass implements ContactListener {
 
         f1 = contact.getFixtureA();
         f2 = contact.getFixtureB();
+        //System.out.println(f1.getBody().getUserData().toString() + "-> " + f2.getBody().getUserData().toString());
 
         cType = getCType(f1, f2);
 
@@ -141,7 +141,9 @@ public class ListenerClass implements ContactListener {
             if (!hitUD.equals(hitterUD)){
                 System.out.println(hitUD + " " + hitterUD);
                 hit.getBody().setLinearVelocity(0f, .1f);
-                hit.getBody().applyLinearImpulse(vx, vy, hit.getBody().getPosition().x, hit.getBody().getPosition().y, false); //knock the character back
+                float kbm = Window.getCharacter((GameData.Player) hit.getBody().getUserData()).getKnockbackMultiplier();
+                System.out.println(kbm);
+                hit.getBody().applyLinearImpulse(vx * kbm, vy * kbm, hit.getBody().getPosition().x, hit.getBody().getPosition().y, false); //knock the character back
                 Window.scoreData.addDamage((GameData.Player) hit.getBody().getUserData(), damage); //deal damage
                 Window.characterHitstun((GameData.Player) hit.getBody().getUserData());
                 //System.out.println(hit.getBody().getUserData() + "damage: " + Window.scoreData.getDamage((GameData.Player) hit.getBody().getUserData()));

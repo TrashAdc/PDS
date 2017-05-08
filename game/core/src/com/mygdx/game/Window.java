@@ -118,7 +118,7 @@ public class Window extends ApplicationAdapter {
 
         player1.getSprite().draw(batch); //draw the sprite
         player2.getSprite().draw(batch);
-        System.out.println(player1.stateToString());
+        //System.out.println(player1.stateToString());
 
 
         batch.end();
@@ -161,6 +161,9 @@ public class Window extends ApplicationAdapter {
             return;
         }
 
+    }
+    public static Character getCharacter(GameData.Player player){
+        return (player == GameData.Player.PLAYER1) ? player1 : player2;
     }
 
 }

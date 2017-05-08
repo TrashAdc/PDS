@@ -58,6 +58,8 @@ public class Character implements CharacterStates { //parent character class
     protected Body body;         //actual box2d body
     protected float bodyWidth, bodyHeight; //height and width of body
 
+    protected float knockbackMultiplier, damageMultiplier, damageTakenMultiplier;
+
     protected boolean direction; // 0 is left, 1 is right
     private float maxSpeed; //max speed at which the character can move
     private boolean hasJump; //if the character has a double jump
@@ -84,6 +86,7 @@ public class Character implements CharacterStates { //parent character class
 
         body.setUserData(player); //links the class with the body
 
+        knockbackMultiplier = 1.0f;
 
         direction = true;
         maxSpeed = GameData.CharacterData.getMaxSpeed(this);
@@ -114,6 +117,8 @@ public class Character implements CharacterStates { //parent character class
         fixDef.density = GameData.CharacterData.getDensity(this);
         fixDef.restitution = 0.0f; //bounciness
         fixDef.friction = .8f;
+        fixDef.filter.categoryBits = 0x0002;
+        fixDef.filter.maskBits = 0x0004;
 
 
         body.createFixture(fixDef); //puts the fixture on the body
@@ -406,8 +411,12 @@ public class Character implements CharacterStates { //parent character class
 
         double knockback = ((((p / 10) + ((p * d) / 20)) * w) + 18);
         //System.out.println("((((" + p + " / 10) + ((" + p + " + " + d + ") / 20)) * " + w + ") + 18) +" + b.x + " = " + knockback + b.x);
-        return new Vector2(((float)knockback + Math.abs(b.x)) * dir, ((float)knockback + b.y));
+        return new Vector2((((float)knockback + Math.abs(b.x)) * dir), ((float)knockback + b.y));
     } //explicit values (mainly for specials)
+
+    public float getKnockbackMultiplier(){
+        return knockbackMultiplier;
+    }
 
     private boolean overMaxSpeed(float maxV, boolean positive){ //this method changes the speed to the maximum speed defined if it goes over
         if (positive) {

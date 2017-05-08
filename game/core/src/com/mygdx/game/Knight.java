@@ -106,22 +106,30 @@ public class Knight extends Character {
       the knight braces himself for impact and gains defense against attacks but
       loses some movement speed*/
     private void fortify(){
-        lanceStrike();
+        knockbackMultiplier = .75f;
+        System.out.println("AAAAAAAA");
+        switchState(State.IDLE);
     }
 
     /*up special
       the knight leaps into the air and dives down with considerable force, knocking up and damaging opponents.*/
     private void sheildSlamJam(){
+        float spikeKb;
+        if (Window.getCharacter(opponent).body.getLinearVelocity().y == 0f)
+            spikeKb = 50f;
+        else
+            spikeKb = -1000;
+
         if (!slammedUp) {
             body.setLinearVelocity(0f, 65f);
             slammedUp = true;
-            hitbox = new Hitbox(bodyWidth, .25f * Window.yConst, body.getPosition().x, body.getPosition().y + ((bodyHeight / 1.5f) * Window.yConst), calculateKnockback(7, 5f, 35f, true), 7, player); //creates the hitbox object
+            hitbox = new Hitbox(bodyWidth, .25f * Window.yConst, body.getPosition().x, body.getPosition().y + ((bodyHeight / 1.5f) * Window.yConst), calculateKnockback(7, 0f, 35f, true), 7, player); //creates the hitbox object
             hitbox.spawnHitbox(); //puts the hitbox in the world
         }
         else if (slammedUp && !slammedDown && body.getLinearVelocity().y <= 0f) {
             hitbox.destroyHitbox();
             hitbox = null;
-            hitbox = new Hitbox(bodyWidth * 1.5f, .5f * Window.yConst, body.getPosition().x, body.getPosition().y - ((bodyHeight / 1.5f) * Window.yConst), calculateKnockback(9, 25f, -200000000f, true), 7, player);
+            hitbox = new Hitbox(bodyWidth * 1.5f, .5f * Window.yConst, body.getPosition().x, body.getPosition().y - ((bodyHeight / 1.5f) * Window.yConst), calculateKnockback(9, 0f, spikeKb, true), 7, player);
             hitbox.spawnHitbox();
             body.setLinearVelocity(0f, -100f);
             slammedDown = true;
