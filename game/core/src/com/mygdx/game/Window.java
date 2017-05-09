@@ -78,8 +78,8 @@ public class Window extends ApplicationAdapter {
 
         scoreData = new Score(3); //sets initial score (stocks and damage)
 
-        rainbowShader = new Shader("core/assets/shaders/passthrough.vsh", "core/assets/shaders/passthrough.fsh"); //random shader
-        passthroughShader = new Shader("core/assets/shaders/normal.vsh", "core/assets/shaders/normal.fsh");
+        //rainbowShader = new Shader("core/assets/shaders/passthrough.vsh", "core/assets/shaders/passthrough.fsh"); //random shader
+        //passthroughShader = new Shader("core/assets/shaders/normal.vsh", "core/assets/shaders/normal.fsh");
 
         time = 0.0f; //time for shaders
 
@@ -145,8 +145,8 @@ public class Window extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-        rainbowShader.getShader().dispose();
-        passthroughShader.getShader().dispose();
+        //rainbowShader.getShader().dispose();
+        //passthroughShader.getShader().dispose();
         batch.dispose();
 
     }

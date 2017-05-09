@@ -11,6 +11,7 @@ public interface CharacterStates { //states of character to be implemented in ch
     void St_Attack();
     void St_Special();
     void St_Hitstun();
+    void St_Stunned();
 
 }
 

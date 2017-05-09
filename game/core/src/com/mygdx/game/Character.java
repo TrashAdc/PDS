@@ -61,7 +61,7 @@ public class Character implements CharacterStates { //parent character class
     protected float knockbackMultiplier, damageMultiplier, damageTakenMultiplier;
 
     protected boolean direction; // 0 is left, 1 is right
-    private float maxSpeed; //max speed at which the character can move
+    protected float maxSpeed; //max speed at which the character can move
     private boolean hasJump; //if the character has a double jump
     private boolean canJump; //if the character can use the double jump atm
     private boolean jumpCD; //if the character can double jump
@@ -69,6 +69,7 @@ public class Character implements CharacterStates { //parent character class
     private Hitbox hitbox;
 
     private FrameTimer animationTimer, hitstunTimer;
+    protected FrameTimer stunTimer;
 
     public Character(GameData.Player p){
 
@@ -126,9 +127,14 @@ public class Character implements CharacterStates { //parent character class
     }
 
     public Sprite getSprite(){ //returns the sprite (this contains position as well) and updates the body
+        runFrame();
         executeState();
         //System.out.println(body.getPosition());
         return playerSprite;
+    }
+    protected void runFrame(){
+        //this method will run every single frame.
+        //should mainly be used for timers or specials such as knight's fortify.
     }
 
     private void executeState(){ //this executes the state that the character is currently in
@@ -155,6 +161,8 @@ public class Character implements CharacterStates { //parent character class
             case HITSTUN:
                 St_Hitstun();
                 break;
+            case STUNNED:
+                St_Stunned();
             default:
                 St_Idle();
                 break;
@@ -299,6 +307,16 @@ public class Character implements CharacterStates { //parent character class
             switchState(State.IDLE);
     }
 
+    public void St_Stunned(){
+        if (stunTimer == null || stunTimer.timerDone(false)) {
+            stunTimer = null;
+            switchState(State.IDLE);
+        }
+        else
+            stunTimer.incrementFrame();
+
+    }
+
     public void inflictHitstun(){
         switchState(State.HITSTUN);
     }
@@ -323,6 +341,8 @@ public class Character implements CharacterStates { //parent character class
                 return "special";
             case HITSTUN:
                 return "hitstun";
+            case STUNNED:
+                return "stunned";
             case DEAD:
                 return "dead";
             case LEDGE:

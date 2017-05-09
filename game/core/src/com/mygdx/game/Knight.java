@@ -12,7 +12,9 @@ public class Knight extends Character {
     private boolean slammedUp; //first stage of slamjam special (going up)
     private boolean slammedDown; //second stage of slamjam special (going down)
 
-    private FrameTimer timer; //timer for special attacks
+    private boolean fortified; //whether down special is active
+
+    private FrameTimer timer, fortifyTimer; //timer for special attacks
     private Hitbox hitbox, hitbox2; //hitbox of special attack
     private boolean specialReady; //use the special move!!!
     private boolean specialOver; //prevents more specials from being cast at the same time
@@ -104,10 +106,17 @@ public class Knight extends Character {
 
     /*down special special
       the knight braces himself for impact and gains defense against attacks but
-      loses some movement speed*/
+      loses some movement speed
+      this effect lasts for 3 seconds, and becomes stunned for .5 seconds
+      after the effect wears off.*/
     private void fortify(){
-        knockbackMultiplier = .75f;
-        System.out.println("AAAAAAAA");
+        if (!fortified) {
+            knockbackMultiplier = .75f;
+            maxSpeed = 5f;
+            fortified = true;
+            fortifyTimer = new FrameTimer(180);
+            System.out.println("fortified");
+        }
         switchState(State.IDLE);
     }
 
@@ -146,6 +155,25 @@ public class Knight extends Character {
             horizontalMovement();
         }
 
+
+    }
+
+    @Override
+    protected void runFrame(){ //this method will run every single frame.
+                             // should mainly be used for timers or specials such as knight's fortify.
+        if (fortifyTimer != null) {
+            fortifyTimer.incrementFrame();
+
+            if (fortifyTimer.timerDone(false) && fortified) {
+                stunTimer = new FrameTimer(30);
+                switchState(State.STUNNED);
+                fortifyTimer = null;
+                fortified = false;
+                maxSpeed = GameData.CharacterData.getMaxSpeed(this);
+                knockbackMultiplier = 1.0f;
+                System.out.println("unfortified");
+            }
+        }
 
     }
 
