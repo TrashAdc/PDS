@@ -163,6 +163,7 @@ public class Character implements CharacterStates { //parent character class
                 break;
             case STUNNED:
                 St_Stunned();
+                break;
             default:
                 St_Idle();
                 break;
@@ -308,7 +309,8 @@ public class Character implements CharacterStates { //parent character class
     }
 
     public void St_Stunned(){
-        if (stunTimer == null || stunTimer.timerDone(false)) {
+        if (stunTimer != null && stunTimer.timerDone(false)) {
+            //System.out.println(stunTimer.getCurrentFrame());
             stunTimer = null;
             switchState(State.IDLE);
         }

@@ -117,7 +117,8 @@ public class Knight extends Character {
             fortifyTimer = new FrameTimer(180);
             System.out.println("fortified");
         }
-        switchState(State.IDLE);
+        else
+            switchState(State.IDLE);
     }
 
     /*up special
@@ -161,7 +162,8 @@ public class Knight extends Character {
     @Override
     protected void runFrame(){ //this method will run every single frame.
                              // should mainly be used for timers or specials such as knight's fortify.
-        if (fortifyTimer != null) {
+
+        if (fortifyTimer != null) { //for fortify
             fortifyTimer.incrementFrame();
 
             if (fortifyTimer.timerDone(false) && fortified) {
