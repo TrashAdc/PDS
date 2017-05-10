@@ -2,6 +2,9 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ryan vanek on 4/20/2017.
  */
@@ -14,8 +17,10 @@ public class Knight extends Character {
 
     private boolean fortified; //whether down special is active
 
-    private FrameTimer timer, fortifyTimer; //timer for special attacks
-    private Hitbox hitbox, hitbox2; //hitbox of special attack
+    private List<MovingHitbox> projectileList; //list of lances thrown
+
+    private FrameTimer timer, fortifyTimer, lanceThrowTimer; //timer for special attacks
+    private Hitbox hitbox; //hitbox of special attack
     private boolean specialReady; //use the special move!!!
     private boolean specialOver; //prevents more specials from being cast at the same time
 
@@ -27,6 +32,8 @@ public class Knight extends Character {
 
         slammedUp = false;
         slammedDown = false;
+
+        projectileList = new ArrayList<MovingHitbox>();
     }
     @Override
     public void St_Special(){ //is run when a special is used
@@ -78,7 +85,6 @@ public class Knight extends Character {
         if (special){
             if (lanceCharge++ >= 100)  //if the charge is more than max (100), then release otherwise keep charging
                 specialReady = true;
-
         }
 
         else //release early if the key is released
@@ -100,7 +106,23 @@ public class Knight extends Character {
     /*side special
       the knight throws his lance as a projectile until it hits something*/
     private void lanceThrow(){
-        lanceStrike();
+        if (lanceThrowTimer == null) {
+            Vector2 lancePos = GameData.AttackData.getPosition(body, GameData.CharacterData.getBodySize(this).x, GameData.CharacterData.getBodySize(this).y, Attack.S_TILT, direction, this);
+            projectileList.add(new MovingHitbox(2f, .5f * Window.yConst, lancePos.x, lancePos.y, calculateKnockback(8, 30f, 30f, true), 8, player, direction, false, 180));
+            projectileList.get(projectileList.size() - 1).spawnHitbox();
+            projectileList.get(projectileList.size() - 1).getHitboxBody().setLinearVelocity(20f * projectileList.get(projectileList.size() - 1).getHDirection(), -3f);
+            lanceThrowTimer = new FrameTimer(40);
+        }
+        else {
+            lanceThrowTimer.incrementFrame();
+            if (lanceThrowTimer.timerDone(false)) {
+                lanceThrowTimer = null;
+                switchState(State.IDLE);
+            }
+        }
+
+
+
     }
 
 
@@ -115,7 +137,7 @@ public class Knight extends Character {
             maxSpeed = 5f;
             fortified = true;
             fortifyTimer = new FrameTimer(180);
-            System.out.println("fortified");
+            //System.out.println("fortified");
         }
         else
             switchState(State.IDLE);
@@ -161,7 +183,7 @@ public class Knight extends Character {
 
     @Override
     protected void runFrame(){ //this method will run every single frame.
-                             // should mainly be used for timers or specials such as knight's fortify.
+        // should mainly be used for timers or specials such as knight's fortify.
 
         if (fortifyTimer != null) { //for fortify
             fortifyTimer.incrementFrame();
@@ -173,7 +195,21 @@ public class Knight extends Character {
                 fortified = false;
                 maxSpeed = GameData.CharacterData.getMaxSpeed(this);
                 knockbackMultiplier = 1.0f;
-                System.out.println("unfortified");
+                //System.out.println("unfortified");
+            }
+        }
+
+        if (!projectileList.isEmpty()){
+            for (int i = 0; i < projectileList.size(); i++){
+
+                //projectileList.get(i).getHitboxBody().setLinearVelocity(6f *  projectileList.get(projectileList.size() - 1).getHDirection(), -3f);
+                projectileList.get(i).incrementFrame();
+
+                if (projectileList.get(i).timerCheck()) {
+                    projectileList.get(i).destroyHitbox();
+                    projectileList.remove(i);
+                }
+
             }
         }
 

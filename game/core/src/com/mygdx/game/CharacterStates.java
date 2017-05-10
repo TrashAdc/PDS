@@ -15,4 +15,3 @@ public interface CharacterStates { //states of character to be implemented in ch
 
 }
 
-

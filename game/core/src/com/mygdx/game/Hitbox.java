@@ -18,6 +18,7 @@ public class Hitbox {
     private Vector2 knockback;
     private String userData;
     private String userDataPrefix;
+    private boolean spawned;
 
     public static Map<String, Vector2> hitboxMap;
     public static Map<String, Integer> damageMap;
@@ -43,6 +44,8 @@ public class Hitbox {
         hitboxMap.put(userData, knockback);
         damageMap.put(userData, damage);
 
+        spawned = false;
+
 
     }
 
@@ -59,6 +62,8 @@ public class Hitbox {
         fixDef.isSensor = true;
         fixDef.filter.categoryBits = 0x0004;
         fixDef.filter.maskBits = 0x0002;
+
+        spawned = true;
 
         hitbox.createFixture(fixDef);
 
@@ -90,5 +95,9 @@ public class Hitbox {
 
     public String getKey(){
         return userData;
+    }
+
+    public boolean isSpawned(){
+        return spawned;
     }
 }
