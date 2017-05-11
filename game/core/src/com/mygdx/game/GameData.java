@@ -253,4 +253,9 @@ public final class GameData { //this class has other static classes that are pur
         }
     }
 
+    public static class TextStuff {
+
+
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Window extends ApplicationAdapter {
 
@@ -46,7 +48,6 @@ public class Window extends ApplicationAdapter {
     private TextWriter textWriter;
 
 
-
     @Override
     public void create(){
         Box2D.init(); //inits box2d
@@ -73,7 +74,7 @@ public class Window extends ApplicationAdapter {
         Gdx.input.setInputProcessor(key);
 
         player1 = new Knight(GameData.Player.PLAYER1); //creates character
-        player2 = new Knight(GameData.Player.PLAYER2); //creates character
+        player2 = new Assassin(GameData.Player.PLAYER2); //creates character
         testStage = new Stage(); //makes stage in world
 
         scoreData = new Score(3); //sets initial score (stocks and damage)
@@ -87,6 +88,7 @@ public class Window extends ApplicationAdapter {
         textWriter.updateLayout(TextWriter.TextLayout.CENTER);
 
         //DummyBox d = new DummyBox();
+
 
 
     }
@@ -124,8 +126,13 @@ public class Window extends ApplicationAdapter {
         batch.end();
 
         textBatch.begin(); //draw text here
+
         textWriter.drawText(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER1)) + "%", (SIZE.width / 10) * 3, SIZE.height / 6);
         textWriter.drawText(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER2)) + "%", (SIZE.width / 10) * 7, SIZE.height / 6);
+
+        textWriter.drawText(textBatch, "1P", SIZE.width / (camera.viewportWidth / player1.getPosition().x), SIZE.height / (camera.viewportHeight / (player1.getPosition().y + player1.getSprite().getHeight())));
+        textWriter.drawText(textBatch, "2P", SIZE.width / (camera.viewportWidth / player2.getPosition().x), SIZE.height / (camera.viewportHeight / (player2.getPosition().y + player2.getSprite().getHeight())));
+
         textBatch.end();
 
         world.step(1/60f, 6, 2); //step the physics world

@@ -440,6 +440,10 @@ public class Character implements CharacterStates { //parent character class
         return knockbackMultiplier;
     }
 
+    public Vector2 getPosition(){
+        return body.getPosition();
+    }
+
     private boolean overMaxSpeed(float maxV, boolean positive){ //this method changes the speed to the maximum speed defined if it goes over
         if (positive) {
             if (body.getLinearVelocity().x > maxV)

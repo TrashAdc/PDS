@@ -35,20 +35,21 @@ public class TextWriter {
         fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
         fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         fontParameter.size = size; //size of the text
-        fontParameter.color = color; //color of the text
 
         font = fontGenerator.generateFont(fontParameter);
+        font.getData().markupEnabled = true;
+        font.setColor(color);
         text = str; //what the text is
 
         layout = TextLayout.LEFT;
 
     }
 
-    public void drawText(SpriteBatch batch, int posX, int posY){ //draw text
+    public void drawText(SpriteBatch batch, float posX, float posY){ //draw text
         int offset = (int) getOffset();
         font.draw(batch, text, posX - offset, posY);
     }
-    public void drawText(SpriteBatch batch, String str, int posX, int posY){ //draw text + update the string
+    public void drawText(SpriteBatch batch, String str, float posX, float posY){ //draw text + update the string
         text = str;
         int offset = (int) getOffset();
         font.draw(batch, text, posX - offset, posY);
@@ -66,7 +67,7 @@ public class TextWriter {
         return fontParameter.color;
     } //get/set color
     public void setColor(Color color) {
-        fontParameter.color = color;
+        font.setColor(color);
         font = fontGenerator.generateFont(fontParameter);
     }
 
