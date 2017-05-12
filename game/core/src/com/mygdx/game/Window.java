@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
@@ -45,7 +46,8 @@ public class Window extends ApplicationAdapter {
     private Shader passthroughShader;
     private float time; //time for shader
 
-    private TextWriter textWriter;
+    private TextWriter p1Damage, p2Damage;
+    private Sprite indicator1, indicator2;
 
 
     @Override
@@ -84,8 +86,15 @@ public class Window extends ApplicationAdapter {
 
         time = 0.0f; //time for shaders
 
-        textWriter = new TextWriter("core/assets/fonts/coders_crux.ttf", "hello", 96, Color.RED);
-        textWriter.updateLayout(TextWriter.TextLayout.CENTER);
+        p1Damage = new TextWriter("core/assets/fonts/coders_crux.ttf", "hello", 96, Color.RED);
+        p1Damage.updateLayout(TextWriter.TextLayout.CENTER);
+        p2Damage = new TextWriter("core/assets/fonts/coders_crux.ttf", "hello", 96, Color.BLUE);
+        p2Damage.updateLayout(TextWriter.TextLayout.CENTER);
+
+        indicator1 = new Sprite(new Texture("core/assets/image/indicator1.png"));
+        indicator2 = new Sprite(new Texture("core/assets/image/indicator2.png"));
+        indicator1.setSize(2f, 4f * yConst);
+        indicator2.setSize(2f, 4f * yConst);
 
         //DummyBox d = new DummyBox();
 
@@ -120,6 +129,11 @@ public class Window extends ApplicationAdapter {
 
         player1.getSprite().draw(batch); //draw the sprite
         player2.getSprite().draw(batch);
+        indicator1.setPosition(player1.getPosition().x - indicator1.getWidth() / 2, player1.getPosition().y + player1.getSprite().getHeight() / 2);
+        indicator2.setPosition(player2.getPosition().x - indicator2.getWidth() / 2, player2.getPosition().y + player2.getSprite().getHeight() / 2);
+
+        indicator1.draw(batch);
+        indicator2.draw(batch);
         //System.out.println(player1.stateToString());
 
 
@@ -127,11 +141,13 @@ public class Window extends ApplicationAdapter {
 
         textBatch.begin(); //draw text here
 
-        textWriter.drawText(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER1)) + "%", (SIZE.width / 10) * 3, SIZE.height / 6);
-        textWriter.drawText(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER2)) + "%", (SIZE.width / 10) * 7, SIZE.height / 6);
+        p1Damage.drawText(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER1)) + "%", (SIZE.width / 10) * 3, SIZE.height / 6);
+        p2Damage.drawText(textBatch, scoreData.scoreConverter(scoreData.getDamage(GameData.Player.PLAYER2)) + "%", (SIZE.width / 10) * 7, SIZE.height / 6);
 
-        textWriter.drawText(textBatch, "1P", SIZE.width / (camera.viewportWidth / player1.getPosition().x), SIZE.height / (camera.viewportHeight / (player1.getPosition().y + player1.getSprite().getHeight())));
-        textWriter.drawText(textBatch, "2P", SIZE.width / (camera.viewportWidth / player2.getPosition().x), SIZE.height / (camera.viewportHeight / (player2.getPosition().y + player2.getSprite().getHeight())));
+//        batch.draw(new Texture("core/assets/image/indicator1.png"), SIZE.width / (camera.viewportWidth / player1.getPosition().x), SIZE.height / (camera.viewportHeight / (player1.getPosition().y + player1.getSprite().getHeight())));
+        //batch.draw(new Texture("core/assets/image/indicator2.png"), SIZE.width / (camera.viewportWidth / player2.getPosition().x), SIZE.height / (camera.viewportHeight / (player2.getPosition().y + player2.getSprite().getHeight())));
+        //textWriter.drawText(textBatch, "1P", SIZE.width / (camera.viewportWidth / player1.getPosition().x), SIZE.height / (camera.viewportHeight / (player1.getPosition().y + player1.getSprite().getHeight())));
+        //textWriter.drawText(textBatch, "2P", SIZE.width / (camera.viewportWidth / player2.getPosition().x), SIZE.height / (camera.viewportHeight / (player2.getPosition().y + player2.getSprite().getHeight())));
 
         textBatch.end();
 

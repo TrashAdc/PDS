@@ -34,6 +34,9 @@ public class ListenerClass implements ContactListener {
         f2 = contact.getFixtureB();
         //System.out.println(f1.getBody().getUserData().toString() + "-> " + f2.getBody().getUserData().toString());
 
+        //if (f1.getBody().getUserData().toString().contains("proj_") || f2.getBody().getUserData().toString().contains("proj_"))
+
+
         cType = getCType(f1, f2);
 
         if (cType == CollisionType.HIT_PLAYER)

@@ -24,6 +24,7 @@ public class ActiveKeys implements InputProcessor {
     public boolean V = false;
     public boolean B = false;
     public boolean N = false;
+    public boolean ANY = false;
     //</editor-fold>
 
     @Override
@@ -70,6 +71,9 @@ public class ActiveKeys implements InputProcessor {
                 break;
             case Input.Keys.N:
                 N = true;
+                break;
+            case Input.Keys.ANY_KEY:
+                ANY = true;
                 break;
         }
         return true;
@@ -119,6 +123,9 @@ public class ActiveKeys implements InputProcessor {
                 break;
             case Input.Keys.N:
                 N = false;
+                break;
+            case Input.Keys.ANY_KEY:
+                ANY = false;
                 break;
         }
         return false;
