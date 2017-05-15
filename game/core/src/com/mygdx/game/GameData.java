@@ -172,13 +172,13 @@ public final class GameData { //this class has other static classes that are pur
         public static Vector2 getDimension(Character.Attack attackType) {
             switch (attackType) {
                 case JAB:
-                    return new Vector2(1f, .5f);
+                    return new Vector2(.5f, .5f);
                 case S_TILT:
-                    return new Vector2(1.5f, .5f);
+                    return new Vector2(1f, .5f);
                 case D_TILT:
                     return new Vector2(1.25f, .5f);
                 case U_TILT:
-                    return new Vector2(.75f, 2.5f);
+                    return new Vector2(2f, 2f);
                 default:
                     return new Vector2(.5f, 1f);
             }
@@ -187,13 +187,13 @@ public final class GameData { //this class has other static classes that are pur
         public static int getFrames(Character.Attack attackType) {
             switch (attackType) {
                 case JAB:
-                    return 30;
+                    return 10;
                 case S_TILT:
-                    return 45;
+                    return 15;
                 case D_TILT:
-                    return 30;
+                    return 20;
                 case U_TILT:
-                    return 40;
+                    return 20;
                 default:
                     return 30;
             }
@@ -203,13 +203,13 @@ public final class GameData { //this class has other static classes that are pur
             int d = (direction) ? 1 : -1;
             switch (attackType) {
                 case JAB:
-                    return new Vector2(20f * d, 20f);
+                    return new Vector2(10f * d, 10f);
                 case S_TILT:
-                    return new Vector2(40f * d, 25f);
+                    return new Vector2(20f * d, 15f);
                 case D_TILT:
-                    return new Vector2(50f * d, 5f);
+                    return new Vector2(5f * d, 25f);
                 case U_TILT:
-                    return new Vector2(5f * d, 45f);
+                    return new Vector2(0f * d, 20f);
                 default:
                     return new Vector2(10f * d, 10f);
             }
@@ -218,13 +218,13 @@ public final class GameData { //this class has other static classes that are pur
         public static int getDamage(Character.Attack attackType) {
             switch (attackType) {
                 case JAB:
-                    return 4;
+                    return 3;
                 case S_TILT:
-                    return 8;
+                    return 5;
                 case D_TILT:
-                    return 6;
+                    return 4;
                 case U_TILT:
-                    return 9;
+                    return 4;
                 default:
                     return 1;
             }

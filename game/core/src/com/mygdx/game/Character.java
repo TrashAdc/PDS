@@ -61,7 +61,7 @@ public class Character implements CharacterStates { //parent character class
 
     protected float knockbackMultiplier, damageMultiplier, damageTakenMultiplier;
 
-    protected boolean direction; // 0 is left, 1 is right
+    protected boolean direction; // false is left, true is right
     protected float maxSpeed; //max speed at which the character can move
     private boolean hasJump; //if the character has a double jump
     private boolean canJump; //if the character can use the double jump atm

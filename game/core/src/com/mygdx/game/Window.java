@@ -128,6 +128,7 @@ public class Window extends ApplicationAdapter {
 
 
 
+
         batch.end();
 
         textBatch.begin(); //draw text here
