@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -53,7 +54,7 @@ public class Character implements CharacterStates { //parent character class
     protected Attack.Special currentSpecial;
     protected GameData.Player player, opponent;
 
-    private Sprite playerSprite; //the image of the character, may not need to be here with animation class
+    private Sprite playerSprite, indicator; //the image of the character, may not need to be here with animation class
     private BodyDef bodyDef;   //body define for box2d
     protected Body body;         //actual box2d body
     protected float bodyWidth, bodyHeight; //height and width of body
@@ -81,6 +82,9 @@ public class Character implements CharacterStates { //parent character class
         playerSprite = GameData.CharacterData.getSprite(this);  //gets/sets image
         playerSprite.setPosition(body.getPosition().x - bodyWidth, body.getPosition().y - bodyHeight); //sets initial position = body pos
         playerSprite.setSize(bodyWidth * 2f, bodyHeight * 2f); //sets size of the sprite = body size
+
+        indicator = (p == GameData.Player.PLAYER1) ? new Sprite(new Texture("core/assets/image/indicator1.png")) : new Sprite(new Texture("core/assets/image/indicator2.png"));
+        indicator.setSize(2f, 4f * Window.yConst);
 
         player = p; //sets what player the character is for score and controls
         opponent = (p == GameData.Player.PLAYER1) ? GameData.Player.PLAYER2 : GameData.Player.PLAYER1; //sets the opposite player
@@ -129,6 +133,8 @@ public class Character implements CharacterStates { //parent character class
     public Sprite getSprite(){ //returns the sprite (this contains position as well) and updates the body
         runFrame();
         executeState();
+        indicator.setPosition(body.getPosition().x - indicator.getWidth() / 2, body.getPosition().y + playerSprite.getHeight() / 2);
+        indicator.draw(Window.batch);
         //System.out.println(body.getPosition());
         return playerSprite;
     }

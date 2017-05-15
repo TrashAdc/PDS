@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.util.Random;
 
 public class Window extends ApplicationAdapter {
@@ -34,7 +35,7 @@ public class Window extends ApplicationAdapter {
 
     public static OrthographicCamera camera; //camera for sizing things down i guess
 
-    private SpriteBatch batch, textBatch; //u need this to draw
+    public static SpriteBatch batch, textBatch; //u need this to draw
 
     private Stage testStage;
 
@@ -47,7 +48,6 @@ public class Window extends ApplicationAdapter {
     private float time; //time for shader
 
     private TextWriter p1Damage, p2Damage;
-    private Sprite indicator1, indicator2;
 
 
     @Override
@@ -91,11 +91,6 @@ public class Window extends ApplicationAdapter {
         p2Damage = new TextWriter("core/assets/fonts/coders_crux.ttf", "hello", 96, Color.BLUE);
         p2Damage.updateLayout(TextWriter.TextLayout.CENTER);
 
-        indicator1 = new Sprite(new Texture("core/assets/image/indicator1.png"));
-        indicator2 = new Sprite(new Texture("core/assets/image/indicator2.png"));
-        indicator1.setSize(2f, 4f * yConst);
-        indicator2.setSize(2f, 4f * yConst);
-
         //DummyBox d = new DummyBox();
 
 
@@ -129,12 +124,8 @@ public class Window extends ApplicationAdapter {
 
         player1.getSprite().draw(batch); //draw the sprite
         player2.getSprite().draw(batch);
-        indicator1.setPosition(player1.getPosition().x - indicator1.getWidth() / 2, player1.getPosition().y + player1.getSprite().getHeight() / 2);
-        indicator2.setPosition(player2.getPosition().x - indicator2.getWidth() / 2, player2.getPosition().y + player2.getSprite().getHeight() / 2);
-
-        indicator1.draw(batch);
-        indicator2.draw(batch);
         //System.out.println(player1.stateToString());
+
 
 
         batch.end();

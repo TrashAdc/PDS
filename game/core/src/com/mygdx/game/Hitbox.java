@@ -13,10 +13,10 @@ import java.util.Random;
 public class Hitbox {
 
     private BodyDef hitboxDef;
-    private Body hitbox;
+    protected Body hitbox;
     private PolygonShape boxShape;
     private Vector2 knockback;
-    private String userData;
+    protected String userData;
     private String userDataPrefix;
     private boolean spawned;
 
