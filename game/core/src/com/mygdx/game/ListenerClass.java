@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.physics.box2d.*;
 
 import java.util.*;
@@ -15,16 +16,20 @@ public class ListenerClass implements ContactListener {
         PLAYER_PLAYER,
         HIT_HIT,
         PLAYER_KO,
+        STAGE,
         NONE
     }
 
     private Fixture f1, f2;
     private CollisionType cType;
+    public static boolean p1Hit, p2Hit;
 
     public static List<Fixture> moveList;
 
     public ListenerClass(){
         moveList = new ArrayList<Fixture>();
+        p1Hit = false; //if it has been hit
+        p2Hit = false;
     }
 
     @Override
@@ -36,15 +41,20 @@ public class ListenerClass implements ContactListener {
 
         //if (f1.getBody().getUserData().toString().contains("proj_") || f2.getBody().getUserData().toString().contains("proj_"))
 
-
         cType = getCType(f1, f2);
 
-        if (cType == CollisionType.HIT_PLAYER)
-            characterHit();
+        GameData.Player p;
+        if (cType == CollisionType.HIT_PLAYER) {
+            p = characterHit();
+            if (p == GameData.Player.PLAYER1 && p != null)
+                p1Hit = true;
+            else if (p == GameData.Player.PLAYER2 && p != null)
+                p2Hit = true;
+
+            System.out.println("p1 hit - " + p1Hit + " p2 hit - " + p2Hit);
+        }
         else if (cType == CollisionType.PLAYER_KO)
             characterDeath();
-
-
 
 
 
@@ -54,6 +64,8 @@ public class ListenerClass implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
+        p1Hit = false;
+        p2Hit = false;
     }
 
     @Override
@@ -97,6 +109,8 @@ public class ListenerClass implements ContactListener {
             return CollisionType.PLAYER_PLAYER;
         else if (fix1.getBody().getUserData().toString().substring(0, 2).equals("KO") || fix2.getBody().getUserData().toString().substring(0, 2).equals("KO"))
             return CollisionType.PLAYER_KO;
+        else if (fix1.getBody().getUserData().toString().equals("stage") || fix2.getBody().getUserData().toString().equals("stage"))
+            return CollisionType.STAGE;
         else
             return CollisionType.HIT_PLAYER;
 
@@ -106,7 +120,7 @@ public class ListenerClass implements ContactListener {
 
     }
 
-    private void characterHit(){
+    private GameData.Player characterHit(){
         float vx = 0, vy = 0;
         int damage = 0;
         Fixture hit = null;
@@ -142,16 +156,17 @@ public class ListenerClass implements ContactListener {
         if (hit != null) {
             //System.out.println(hitUD + " " + hitterUD);
             if (!hitUD.equals(hitterUD)){
-                System.out.println(hitUD + " " + hitterUD);
+               //System.out.println("p" + hitterUD + " HIT " + "p" + hitUD);
                 hit.getBody().setLinearVelocity(0f, .1f);
                 float kbm = Window.getCharacter((GameData.Player) hit.getBody().getUserData()).getKnockbackMultiplier();
-                System.out.println(kbm);
                 hit.getBody().applyLinearImpulse(vx * kbm, vy * kbm, hit.getBody().getPosition().x, hit.getBody().getPosition().y, false); //knock the character back
                 Window.scoreData.addDamage((GameData.Player) hit.getBody().getUserData(), damage); //deal damage
                 Window.characterHitstun((GameData.Player) hit.getBody().getUserData());
                 //System.out.println(hit.getBody().getUserData() + "damage: " + Window.scoreData.getDamage((GameData.Player) hit.getBody().getUserData()));
             }
+            return (hit.getBody().getUserData() == GameData.Player.PLAYER1) ? GameData.Player.PLAYER2 : GameData.Player.PLAYER1;
         }
+        return null;
 
     }
 
