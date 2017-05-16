@@ -22,7 +22,7 @@ public class ListenerClass implements ContactListener {
 
     private Fixture f1, f2;
     private CollisionType cType;
-    public static boolean p1Hit, p2Hit;
+    public static boolean p1Hit, p2Hit, p1Stage, p2Stage;
 
     public static List<Fixture> moveList;
 
@@ -30,6 +30,8 @@ public class ListenerClass implements ContactListener {
         moveList = new ArrayList<Fixture>();
         p1Hit = false; //if it has been hit
         p2Hit = false;
+        p1Stage = false;
+        p2Stage = false;
     }
 
     @Override
@@ -51,7 +53,13 @@ public class ListenerClass implements ContactListener {
             else if (p == GameData.Player.PLAYER2 && p != null)
                 p2Hit = true;
 
-            System.out.println("p1 hit - " + p1Hit + " p2 hit - " + p2Hit);
+            //System.out.println("p1 hit - " + p1Hit + " p2 hit - " + p2Hit);
+        }
+        else if (cType == CollisionType.STAGE){
+            if (f1.getBody().getUserData() == GameData.Player.PLAYER1 || f2.getBody().getUserData() == GameData.Player.PLAYER1)
+                p1Stage = true;
+            else if (f1.getBody().getUserData() == GameData.Player.PLAYER2 || f2.getBody().getUserData() == GameData.Player.PLAYER2)
+                p2Stage = true;
         }
         else if (cType == CollisionType.PLAYER_KO)
             characterDeath();
@@ -66,6 +74,8 @@ public class ListenerClass implements ContactListener {
     public void endContact(Contact contact) {
         p1Hit = false;
         p2Hit = false;
+        p1Stage = false;
+        p2Stage = false;
     }
 
     @Override
@@ -156,7 +166,7 @@ public class ListenerClass implements ContactListener {
         if (hit != null) {
             //System.out.println(hitUD + " " + hitterUD);
             if (!hitUD.equals(hitterUD)){
-               //System.out.println("p" + hitterUD + " HIT " + "p" + hitUD);
+                //System.out.println("p" + hitterUD + " HIT " + "p" + hitUD);
                 hit.getBody().setLinearVelocity(0f, .1f);
                 float kbm = Window.getCharacter((GameData.Player) hit.getBody().getUserData()).getKnockbackMultiplier();
                 hit.getBody().applyLinearImpulse(vx * kbm, vy * kbm, hit.getBody().getPosition().x, hit.getBody().getPosition().y, false); //knock the character back

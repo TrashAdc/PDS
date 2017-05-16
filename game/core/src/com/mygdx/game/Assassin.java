@@ -1,17 +1,13 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * created by ryan v on 4/23/2017
  **/
 public class Assassin extends Character {
-    private boolean katanaActive;
+    private boolean dashed;
     private boolean critAdded;
-    private Hitbox katanaHitbox;
+    private Hitbox katanaHitbox, dashHitbox;
     private FrameTimer specialTimer;
     private float critChance;
 
@@ -19,8 +15,7 @@ public class Assassin extends Character {
         super(player);
         critChance = 0.0f;
         critAdded = false;
-
-        katanaActive = false;
+        dashed = false;
 
 
     }
@@ -41,7 +36,10 @@ public class Assassin extends Character {
                 ambush();
                 break;
             case U_SPECIAL:
-                airBlade();
+                if (!dashed)
+                    airBlade();
+		else
+		    switchState(State.IDLE);	
                 break;
         }
 
@@ -54,7 +52,7 @@ public class Assassin extends Character {
       dealing small damage and knockback.
      */
     private void shurikenThrow(){
-
+        switchState(State.IDLE);
     }
 
     /*side special-
@@ -78,21 +76,18 @@ public class Assassin extends Character {
 
         specialTimer.incrementFrame();
 
-        if (player == GameData.Player.PLAYER1 && ListenerClass.p1Hit && !critAdded) {
-            critChance += 4.5;
-            critAdded = true;
-        }
-        else if (player == GameData.Player.PLAYER2 && ListenerClass.p2Hit && !critAdded) {
-            critChance += 4.5;
-            critAdded = true;
-        }
+        addCritChance(9);
 
+
+        state_new = false;
 
         if (specialTimer.timerDone(false)){
             katanaHitbox.destroyHitbox();
             katanaHitbox = null;
             specialTimer = null;
+            critAdded = false;
             switchState(State.IDLE);
+            System.out.println(critChance);
         }
 
 
@@ -105,7 +100,7 @@ public class Assassin extends Character {
       after a short time, the assassin reappears and dashes in a horizontal direction.
      */
     private void ambush(){
-
+        switchState(State.IDLE);
     }
 
     /*up special-
@@ -113,7 +108,62 @@ public class Assassin extends Character {
       to anything in his way.
      */
     private void airBlade(){
+        if (state_new){
+            specialTimer = new FrameTimer(10);
+            dashHitbox = new Hitbox(bodyWidth * 1.5f, bodyHeight * 1.5f, body.getPosition().x, body.getPosition().y, calculateKnockback(7, 20f, 20f, true), 7, player);
+            dashHitbox.spawnHitbox();
+            state_new = false;
+        }
 
+        int d = (direction) ? 1 : -1;
+        body.setLinearVelocity(200f * d, 200f);
+        dashHitbox.getHitboxBody().setLinearVelocity(body.getLinearVelocity());
+
+        addCritChance(7);
+
+        specialTimer.incrementFrame();
+        System.out.println(specialTimer.getCurrentFrame());
+
+
+
+        if (specialTimer.timerDone(false)){
+            body.setLinearVelocity(0f, 0f);
+            dashHitbox.destroyHitbox();
+            dashHitbox = null;
+            specialTimer = null;
+            critAdded = false;
+            switchState(State.IDLE);
+            dashed = true;
+            //System.out.println(critChance);
+            int thisintistokeepitfromtellingmeihavedupicatecodeiknowihavedupiclatecodebutidontcareatthispoint;
+        }
+
+
+    }
+
+    private void addCritChance(float dmg){
+        if (player == GameData.Player.PLAYER1 && ListenerClass.p1Hit && !critAdded) {
+            critChance += dmg/4f;
+            critAdded = true;
+        }
+        else if (player == GameData.Player.PLAYER2 && ListenerClass.p2Hit && !critAdded) {
+            critChance += dmg/4f;
+            critAdded = true;
+        }
+    }
+
+    protected void runFrame(){
+        System.out.println(dashed);
+        if (dashed){
+            //if (player == GameData.Player.PLAYER1 && ListenerClass.p1Hit)
+            //    dashed = false;
+            //else if (player == GameData.Player.PLAYER2 && ListenerClass.p2Hit)
+            //    dashed = false;
+            if (player == GameData.Player.PLAYER1 && ListenerClass.p1Stage)
+                dashed = false;
+            else if (player == GameData.Player.PLAYER2 && ListenerClass.p2Stage)
+                dashed = false;
+        }
     }
 
 
