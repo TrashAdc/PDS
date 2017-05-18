@@ -24,11 +24,15 @@ public class ActiveKeys implements InputProcessor {
     public boolean V = false;
     public boolean B = false;
     public boolean N = false;
-    public boolean ANY = false;
+    public boolean Q = false;
+    public boolean any=false;
+    public boolean I=false;
+    public boolean M=false;
     //</editor-fold>
 
     @Override
     public boolean keyDown(int keycode) {
+        any=true;
         switch(keycode){
             case Input.Keys.LEFT:
                 left = true;
@@ -72,15 +76,23 @@ public class ActiveKeys implements InputProcessor {
             case Input.Keys.N:
                 N = true;
                 break;
-            case Input.Keys.ANY_KEY:
-                ANY = true;
+            case Input.Keys.Q:
+                Q = true;
                 break;
+            case Input.Keys.I:
+                I=true;
+                break;
+            case Input.Keys.M:
+                M=true;
+                break;
+
         }
         return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
+        any=false;
         switch(keycode){
             case Input.Keys.LEFT:
                 left = false;
@@ -124,9 +136,16 @@ public class ActiveKeys implements InputProcessor {
             case Input.Keys.N:
                 N = false;
                 break;
-            case Input.Keys.ANY_KEY:
-                ANY = false;
+            case Input.Keys.Q:
+                Q = false;
                 break;
+            case Input.Keys.I:
+                I=false;
+                break;
+            case Input.Keys.M:
+                M=true;
+                break;
+
         }
         return false;
     }
