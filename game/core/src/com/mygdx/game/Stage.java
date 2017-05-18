@@ -11,6 +11,11 @@ import com.badlogic.gdx.physics.box2d.*;
 public class Stage { //parent stage class
 
     private Sprite stageSprite; //sprite of stage
+    private Sprite titleSprite;
+    private Sprite contSprite;
+    private Sprite memeSprite;
+    private Sprite instructSprite;
+    private Sprite thingSprite;
     private BodyDef stageDef; //stage body def
     private Body stageBody; //stage body
     private float stageWidth, stageHeight; //stage w, h
@@ -30,7 +35,22 @@ public class Stage { //parent stage class
 
         stageBodyInit(); //box2d stuff
 
-        stageSprite = new Sprite(new Texture("core/assets/image/stageTemp.png"));
+        stageSprite = new Sprite(new Texture("core/assets/image/black.png"));
+        titleSprite = new Sprite(new Texture("core/assets/image/Logo.png"));
+        contSprite= new Sprite (new Texture("core/assets/image/xdxx.png"));
+        memeSprite= new Sprite (new Texture("core/assets/image/Wizard.png"));
+        instructSprite= new Sprite(new Texture("core/assets/image/instruct.png"));
+        thingSprite= new Sprite(new Texture("core/assets/image/meh.png"));
+        titleSprite.setPosition(Window.camera.viewportWidth / 14, Window.camera.viewportHeight / 12);
+        titleSprite.setSize(50f, 50f);
+        contSprite.setPosition(Window.camera.viewportWidth/4f, Window.camera.viewportHeight/48);
+        contSprite.setSize(30f,30f);
+        memeSprite.setPosition(Window.camera.viewportWidth/14,Window.camera.viewportHeight/12);
+        memeSprite.setSize(50f,50f);
+        instructSprite.setPosition(Window.camera.viewportWidth/14, Window.camera.viewportHeight/12);
+        instructSprite.setSize(50f,50f);
+        thingSprite.setPosition(0, 43);
+        thingSprite.setSize(25f,25f);
         stageSprite.setSize(stageWidth * 2f, stageHeight * 2f);
         stageSprite.setPosition(getStageCenter().x - stageWidth, getStageCenter().y - stageHeight);
 
@@ -53,8 +73,6 @@ public class Stage { //parent stage class
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = bShape;
         fixtureDef.isSensor = true;
-        fixtureDef.filter.categoryBits = 0x0004;
-        fixtureDef.filter.maskBits = 0x0002;
 
         bod.createFixture(fixtureDef);
     }
@@ -75,7 +93,6 @@ public class Stage { //parent stage class
         fixtureDef.shape = bShape;
         fixtureDef.isSensor = true;
 
-
         bod.createFixture(fixtureDef);
     }
 
@@ -83,22 +100,16 @@ public class Stage { //parent stage class
     private void stageBodyInit(){ //this is a static body
 
         stageDef = new BodyDef();
-        stageDef.type = BodyDef.BodyType.StaticBody;
         stageDef.position.set(Window.camera.viewportWidth / 2f, Window.camera.viewportHeight / 7f);
-        stageDef.fixedRotation = true;
+
+        stageBody = Window.world.createBody(stageDef);
 
         PolygonShape stageShape = new PolygonShape();
         stageShape.setAsBox(stageWidth, stageHeight);
 
-        stageBody = Window.world.createBody(stageDef);
+
+        stageBody.createFixture(stageShape, 1.0f);
         stageBody.setUserData("stage");
-
-        FixtureDef fd = new FixtureDef();
-        fd.shape = stageShape;
-        fd.filter.categoryBits = 0x0004;
-        fd.filter.maskBits = 0x0002;
-
-        stageBody.createFixture(fd);
 
 
     }
@@ -111,5 +122,15 @@ public class Stage { //parent stage class
         return stageSprite;
     }
 
+    public Sprite getStageSprite2() {
+        return titleSprite;
+    }
 
+    public Sprite getStageSprite3(){return contSprite;}
+
+    public Sprite getStageSprite4(){return memeSprite;}
+
+    public Sprite getStageSprite5(){return instructSprite;}
+
+    public Sprite getStageSprite6(){return thingSprite;}
 }
