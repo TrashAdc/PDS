@@ -24,6 +24,9 @@ public class Assassin extends Character {
     private int ambushCharge;
     private boolean ambushNow;
 
+    private int mD;
+    private float mK;
+
     public Assassin(GameData.Player player){
         super(player);
         critChance = 0.0f;
@@ -36,6 +39,9 @@ public class Assassin extends Character {
 
         ambushCharge = 0;
         ambushNow = false;
+
+        mD = 1;
+        mK = 1f;
 
 
     }
@@ -73,11 +79,11 @@ public class Assassin extends Character {
      */
     private void shurikenThrow(){
         if (shurikensThrown < 3 && canThrow) { //if less than 3 shurikens have been thrown in this special state
-            float mK = (criticalStrike()) ? 1.5f : 1f;
-            int mD = (criticalStrike()) ? 2 : 1;
+            critMult();
 
             Vector2 shurikenPos = GameData.AttackData.getPosition(body, GameData.CharacterData.getBodySize(this).x, GameData.CharacterData.getBodySize(this).y, Attack.S_TILT, direction, this); //establish initial position
-            projectileList.add(new MovingHitbox(.5f, .5f * Window.yConst, shurikenPos.x, shurikenPos.y, calculateKnockback(3 * mD, 7f * mK, 10f * mK, true), 3 * mD, player, direction, false, 180)); //create the hitbox
+            String filepath = "core/assets/image/shuriken.png";
+            projectileList.add(new MovingHitbox(.5f, .5f * Window.yConst, shurikenPos.x, shurikenPos.y, calculateKnockback(3 * mD, 0 * mK, 7f * mK, true), 3 * mD, player, direction, false, 180, filepath)); //create the hitbox
             projectileList.get(projectileList.size() - 1).spawnHitbox(); //spawn it
             projectileList.get(projectileList.size() - 1).getHitboxBody().setLinearVelocity(30f * projectileList.get(projectileList.size() - 1).getHDirection(), 0f); //set the velocity
 
@@ -89,7 +95,7 @@ public class Assassin extends Character {
 
         else if (shurikensThrown >= 3){ //if the three shurikens have been thrown
             if (specialTimer == null)
-                specialTimer = new FrameTimer(15); //start the 'lag' timer
+                specialTimer = new FrameTimer(60); //start the 'lag' timer
             specialTimer.incrementFrame();
 
             if (specialTimer.timerDone(false)){ //'destruct' everything and stuff
@@ -97,6 +103,7 @@ public class Assassin extends Character {
                 specialTimer = null;
                 canThrow = true;
                 shurikensThrown = 0;
+                resetMult();
                 switchState(State.IDLE);
             }
         }
@@ -120,8 +127,7 @@ public class Assassin extends Character {
      */
     private void katanaSlash(){
         if (state_new){
-            float mK = (criticalStrike()) ? 1.5f : 1f;
-            int mD = (criticalStrike()) ? 2 : 1;
+            critMult();
 
             int d = (direction) ? 1 : -1; //get the direction the player is facing
             katanaHitbox = new Hitbox(2.5f, .5f, body.getPosition().x  + (bodyWidth * d), body.getPosition().y, calculateKnockback(9 * mD, 50f  * mK, 25f * mK, true), 9 * mD, player); //make the hitbox
@@ -147,6 +153,7 @@ public class Assassin extends Character {
             katanaHitbox = null;
             specialTimer = null;
             critAdded = false;
+            resetMult();
             switchState(State.IDLE);
             System.out.println(critChance);
         }
@@ -169,8 +176,7 @@ public class Assassin extends Character {
             ambushNow = true;
 
         if (ambushNow){ //create the hitbox and move the player if ready
-            float mK = (criticalStrike()) ? 1.5f : 1f;
-            int mD = (criticalStrike()) ? 2 : 1;
+            critMult();
 
             int d = (direction) ? 1 : -1;
             body.setTransform(getPosition().x + (((float)ambushCharge / 4f) * d), getPosition().y, 0);
@@ -191,6 +197,8 @@ public class Assassin extends Character {
 
                 ambushCharge = 0;
 
+                resetMult();
+
                 stunTimer = new FrameTimer(20);
                 switchState(State.STUNNED);
             }
@@ -203,8 +211,8 @@ public class Assassin extends Character {
      */
     private void airBlade(){
         if (state_new){
-            float mK = (criticalStrike()) ? 1.5f : 1f;
-            int mD = (criticalStrike()) ? 2 : 1;
+
+            critMult();
 
             specialTimer = new FrameTimer(10);
             dashHitbox = new Hitbox(bodyWidth * 1.5f, bodyHeight * 1.5f, body.getPosition().x, body.getPosition().y, calculateKnockback(7 * mD, 18f * mK, 18f * mK, true), 7 * mD, player);
@@ -228,6 +236,7 @@ public class Assassin extends Character {
             dashHitbox = null;
             specialTimer = null;
             critAdded = false;
+            resetMult();
             switchState(State.IDLE);
             dashed = true;
             //System.out.println(critChance);
@@ -245,9 +254,10 @@ public class Assassin extends Character {
      */
     private boolean criticalStrike(){
         Random rand = new Random();
-        float luckyNumber = rand.nextFloat() * 100; //return true if the lucky number is within the crit chance range.
+        float luckyNumber = rand.nextInt(1000) / 10; //return true if the lucky number is within the crit chance range.
+        System.out.println(luckyNumber);
         if (luckyNumber <= critChance) {
-            System.out.println("CRITICAL!");
+            System.out.println("CRITICAL!/n crit chance - " + critChance + "/nnumber generated - " + luckyNumber);
             critChance = 0f;
             return true;
         }
@@ -255,13 +265,28 @@ public class Assassin extends Character {
             return false;
     }
 
+    private void critMult(){
+        if (criticalStrike()){
+            mD = 2;
+            mK = 1.5f;
+        }
+        else{
+            mD = 1;
+            mK = 1f;
+        }
+    }
+    private void resetMult(){
+        mD = 1;
+        mK = 1f;
+    }
+
     private void addCritChance(float dmg){
-        if (player == GameData.Player.PLAYER1 && ListenerClass.p1Hit && !critAdded) {
+        if (player == GameData.Player.PLAYER1 && ListenerClass.p2Hit  ) {
             System.out.println(critChance);
             critChance += dmg/4f;
             critAdded = true;
         }
-        else if (player == GameData.Player.PLAYER2 && ListenerClass.p2Hit && !critAdded) {
+        else if (player == GameData.Player.PLAYER2 && ListenerClass.p1Hit ) {
             System.out.println(critChance);
             critChance += dmg/4f;
             critAdded = true;

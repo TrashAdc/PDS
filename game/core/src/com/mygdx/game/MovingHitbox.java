@@ -35,8 +35,10 @@ public class MovingHitbox extends Hitbox{
         right = directionH;
         up = directionV;
         deathTimer = new FrameTimer(frames);
-        hitboxSprite = new Sprite(new Texture(Gdx.files.internal(spritePath)));
-        hitboxSprite.setSize(width, height);
+        hitboxSprite = new Sprite(new Texture(spritePath));
+        hitboxSprite.setSize(width * 2, height * 2);
+        if (!directionH)
+            hitboxSprite.flip(true, false);
 
     }
 
@@ -55,7 +57,7 @@ public class MovingHitbox extends Hitbox{
     }
     public void incrementFrame(){
         deathTimer.incrementFrame();
-        hitboxSprite.setPosition(hitbox.getPosition().x - width, hitbox.getPosition().y - height);
+        hitboxSprite.setPosition(hitbox.getPosition().x - hitboxSprite.getWidth() /2 , hitbox.getPosition().y - hitboxSprite.getHeight() / 2);
         hitboxSprite.draw(Window.batch);
 
     }

@@ -108,7 +108,8 @@ public class Knight extends Character {
     private void lanceThrow(){
         if (lanceThrowTimer == null) {
             Vector2 lancePos = GameData.AttackData.getPosition(body, GameData.CharacterData.getBodySize(this).x, GameData.CharacterData.getBodySize(this).y, Attack.S_TILT, direction, this);
-            projectileList.add(new MovingHitbox(2f, .5f * Window.yConst, lancePos.x, lancePos.y, calculateKnockback(8, 30f, 30f, true), 8, player, direction, false, 180));
+            String filepath = "core/assets/image/Spear.png";
+            projectileList.add(new MovingHitbox(2f, .5f * Window.yConst, lancePos.x, lancePos.y, calculateKnockback(8, 30f, 30f, true), 8, player, direction, false, 180, filepath));
             projectileList.get(projectileList.size() - 1).spawnHitbox();
             projectileList.get(projectileList.size() - 1).getHitboxBody().setLinearVelocity(40f * projectileList.get(projectileList.size() - 1).getHDirection(), -3f);
             lanceThrowTimer = new FrameTimer(45);

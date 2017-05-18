@@ -153,7 +153,7 @@ public class ListenerClass implements ContactListener {
         else if (f2.getBody().getUserData().toString().substring(0, 1).equals("p")) {
             //System.out.println("2yes");
             //System.out.println(f2.getBody().getUserData().toString());
-           // System.out.println(Hitbox.hitboxMap.size());
+            // System.out.println(Hitbox.hitboxMap.size());
             if (Hitbox.hitboxMap.containsKey(f2.getBody().getUserData())) {
                 vx = Hitbox.hitboxMap.get(f2.getBody().getUserData()).x;
                 vy = Hitbox.hitboxMap.get(f2.getBody().getUserData()).y;
