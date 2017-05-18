@@ -27,11 +27,8 @@ public class FrameTimer {
     public int getCurrentFrame() { return currentFrame; }
 
     public boolean timerDone(boolean reset){ //returns true if the current frame is past the frame to reach
-        currentFrame = (reset) ? 0 : currentFrame;
-        if (currentFrame >= framesToReach)
-            return true;
-        else
-            return false;
+        boolean lol = reset; //i messed up on this so now it literally means nothing because its useless anyways
+        return (currentFrame >= framesToReach) ? true : false;
     }
 
 

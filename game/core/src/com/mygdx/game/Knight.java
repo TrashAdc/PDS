@@ -104,7 +104,7 @@ public class Knight extends Character {
 
 
     /*side special
-      the knight throws his lance as a projectile until it hits something*/
+      the knight throws his lance which travels as a projectile until it is destroyed after 3 seconds*/
     private void lanceThrow(){
         if (lanceThrowTimer == null) {
             Vector2 lancePos = GameData.AttackData.getPosition(body, GameData.CharacterData.getBodySize(this).x, GameData.CharacterData.getBodySize(this).y, Attack.S_TILT, direction, this);

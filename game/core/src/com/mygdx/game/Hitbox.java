@@ -20,8 +20,8 @@ public class Hitbox {
     private String userDataPrefix;
     private boolean spawned;
 
-    public static Map<String, Vector2> hitboxMap;
-    public static Map<String, Integer> damageMap;
+    public static Map<String, Vector2> hitboxMap = new HashMap<String, Vector2>();
+    public static Map<String, Integer> damageMap = new HashMap<String, Integer>();
 
 
     public Hitbox(float width, float height, float posx, float posy, Vector2 force, int damage, GameData.Player player){
@@ -38,11 +38,13 @@ public class Hitbox {
 
         userDataPrefix = (player == GameData.Player.PLAYER1) ? "p1" : "p2";
 
-        hitboxMap = new HashMap();
-        damageMap = new HashMap();
+
+
         userData = generateUserData();
         hitboxMap.put(userData, knockback);
         damageMap.put(userData, damage);
+
+        //System.out.println(hitboxMap.size());
 
         spawned = false;
 

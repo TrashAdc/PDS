@@ -52,7 +52,7 @@ public class ListenerClass implements ContactListener {
                 p1Hit = true;
             else if (p == GameData.Player.PLAYER2 && p != null)
                 p2Hit = true;
-
+            //System.out.println("BAM");
             //System.out.println("p1 hit - " + p1Hit + " p2 hit - " + p2Hit);
         }
         else if (cType == CollisionType.STAGE){
@@ -139,6 +139,7 @@ public class ListenerClass implements ContactListener {
         //hitterUD is the hitbox dealing damage
 
         if (f1.getBody().getUserData().toString().substring(0, 1).equals("p")) {
+            System.out.println("1yes");
             if (Hitbox.hitboxMap.containsKey(f1.getBody().getUserData())) {
                 vx = Hitbox.hitboxMap.get(f1.getBody().getUserData()).x;
                 vy = Hitbox.hitboxMap.get(f1.getBody().getUserData()).y;
@@ -150,6 +151,9 @@ public class ListenerClass implements ContactListener {
 
         }
         else if (f2.getBody().getUserData().toString().substring(0, 1).equals("p")) {
+            //System.out.println("2yes");
+            //System.out.println(f2.getBody().getUserData().toString());
+           // System.out.println(Hitbox.hitboxMap.size());
             if (Hitbox.hitboxMap.containsKey(f2.getBody().getUserData())) {
                 vx = Hitbox.hitboxMap.get(f2.getBody().getUserData()).x;
                 vy = Hitbox.hitboxMap.get(f2.getBody().getUserData()).y;

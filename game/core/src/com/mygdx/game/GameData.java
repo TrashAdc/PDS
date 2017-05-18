@@ -345,7 +345,7 @@ public final class GameData { //this class has other static classes that are pur
             if (characterType instanceof Knight)
                 return 9;
             else if (characterType instanceof Assassin)
-                return 11;
+                return 12;
             else
                 return 10;
         }
