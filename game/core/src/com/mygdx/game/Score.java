@@ -1,4 +1,9 @@
 package com.mygdx.game;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 /**
  * Created by Devin Popock on 1/17/2017.
 **/
@@ -9,6 +14,7 @@ public class Score {
     private float chargeP1, chargeP2;
     private int damageP1, damageP2;
     private boolean stockmodeplaceholder;
+    private Sprite p1Stock, p2Stock;
 
     public Score(int stocks){
         chargeP1 = 0f;
@@ -19,6 +25,9 @@ public class Score {
 
         stockP1 = stocks;
         stockP2 = stocks;
+
+        p1Stock = new Sprite(new Texture("core/assets/image/p1stock.png"));
+        p2Stock = new Sprite(new Texture("core/assets/image/p2stock.png"));
     }
 
     // Returns value of percent as a String
@@ -91,6 +100,23 @@ public class Score {
             return scoreConverter(P1Kill);
         }
         return "";
+    }
+
+    public void drawStock(SpriteBatch batch){
+        int stock1 = getStock(GameData.Player.PLAYER1);
+        int stock2 = getStock(GameData.Player.PLAYER2);
+        float posX1 = (Window.SIZE.width / 10) * 3;
+        float posX2 = 4f;
+        float posY = Window.SIZE.height / 6 + 128;
+        //todo finish this
+
+        if (stock1 == 3)
+            p1Stock.setPosition(posX1 - 128, posY);
+            p1Stock.draw(batch);
+           // else if (stock1 == 2)
+           //     else if (stock1 == 1)
+
+
     }
 
 

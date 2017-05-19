@@ -187,9 +187,15 @@ public class ListenerClass implements ContactListener {
     private void characterDeath(){
         if (f1.getBody().getUserData().toString().substring(0, 1).equals("P")) {
             moveList.add(f1);
+            Window.scoreData.playerKilled((GameData.Player) f1.getBody().getUserData());
+            if (Window.scoreData.getStock((GameData.Player) f1.getBody().getUserData()) <= 0)
+                System.exit(420);
         }
         else {
             moveList.add(f2);
+            Window.scoreData.playerKilled((GameData.Player) f1.getBody().getUserData());
+            if (Window.scoreData.getStock((GameData.Player) f1.getBody().getUserData()) <= 0)
+                System.exit(69);
         }
     }
 

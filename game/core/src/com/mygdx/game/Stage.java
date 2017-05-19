@@ -35,11 +35,11 @@ public class Stage { //parent stage class
 
         stageBodyInit(); //box2d stuff
 
-        stageSprite = new Sprite(new Texture("core/assets/image/black.png"));
-        titleSprite = new Sprite(new Texture("core/assets/image/Logo.png"));
+        stageSprite = new Sprite(new Texture("core/assets/image/stagetemp.png"));
+        titleSprite = new Sprite(new Texture("core/assets/image/title.png"));
         contSprite= new Sprite (new Texture("core/assets/image/xdxx.png"));
         memeSprite= new Sprite (new Texture("core/assets/image/Wizard.png"));
-        instructSprite= new Sprite(new Texture("core/assets/image/instruct.png"));
+        instructSprite= new Sprite(new Texture("core/assets/image/LL.png"));
         thingSprite= new Sprite(new Texture("core/assets/image/meh.png"));
         titleSprite.setPosition(Window.camera.viewportWidth / 14, Window.camera.viewportHeight / 12);
         titleSprite.setSize(50f, 50f);
@@ -73,6 +73,8 @@ public class Stage { //parent stage class
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = bShape;
         fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = 0x0004;
+        fixtureDef.filter.maskBits = 0x0002;
 
         bod.createFixture(fixtureDef);
     }
@@ -100,16 +102,25 @@ public class Stage { //parent stage class
     private void stageBodyInit(){ //this is a static body
 
         stageDef = new BodyDef();
+        stageDef.type = BodyDef.BodyType.StaticBody;
         stageDef.position.set(Window.camera.viewportWidth / 2f, Window.camera.viewportHeight / 7f);
 
         stageBody = Window.world.createBody(stageDef);
+        stageDef.fixedRotation = true;
 
         PolygonShape stageShape = new PolygonShape();
         stageShape.setAsBox(stageWidth, stageHeight);
 
-
         stageBody.createFixture(stageShape, 1.0f);
+        stageBody = Window.world.createBody(stageDef);
         stageBody.setUserData("stage");
+
+        FixtureDef fd = new FixtureDef();
+        fd.shape = stageShape;
+        fd.filter.categoryBits = 0x0004;
+        fd.filter.maskBits = 0x0002;
+
+        stageBody.createFixture(fd);
 
 
     }
