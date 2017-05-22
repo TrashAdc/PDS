@@ -140,6 +140,13 @@ public class Score {
 
     }
 
+    public void restart(){
+        stockP1 = 3;
+        stockP2 = 3;
+        damageP1 = 0;
+        damageP2 = 0;
+    }
+
 
     /*public boolean gameState() {
         while (gameon) {

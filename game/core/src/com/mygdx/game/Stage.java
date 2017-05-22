@@ -40,8 +40,8 @@ public class Stage { //parent stage class
         titleSprite = new Sprite(new Texture("core/assets/image/title.png"));
         contSprite= new Sprite (new Texture("core/assets/image/xdxx.png"));
         memeSprite= new Sprite (new Texture("core/assets/image/Wizard.png"));
-        instructSprite= new Sprite(new Texture("core/assets/image/LL.png"));
-        thingSprite= new Sprite(new Texture("core/assets/image/meh.png"));
+        instructSprite= new Sprite(new Texture("core/assets/image/INSTRUCTIONS.png"));
+        thingSprite= new Sprite(new Texture("core/assets/image/LL.png"));
         winSprite1 = new Sprite(new Texture("core/assets/image/p1Win.png"));
         winSprite2 = new Sprite(new Texture("core/assets/image/p2Win.png"));
         titleSprite.setPosition(Window.camera.viewportWidth / 14, Window.camera.viewportHeight / 12);

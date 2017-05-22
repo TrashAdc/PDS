@@ -12,10 +12,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 import java.awt.*;
-import javazoom.jlme.util.Player;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 
 public class Window extends ApplicationAdapter {
 
@@ -56,7 +52,7 @@ public class Window extends ApplicationAdapter {
 
     private CharacterSelect select;
 
-    public AudioPlayer test;
+    //public AudioPlayer test;
 
     private Shader rainbowShader; //effects
     private Shader passthroughShader;
@@ -142,9 +138,8 @@ public class Window extends ApplicationAdapter {
 
             if (key.Q) {
                 testStage.getStageSprite4().draw(batch);
-                if(!test.isRunning) {
-                    test = new AudioPlayer("core/assets/rrrr.mp3");
-                    new Thread(test).start();
+                if(true) {
+                    int i =5;
                     //test.playStop();
 
 
@@ -186,6 +181,7 @@ public class Window extends ApplicationAdapter {
                         break;
                 }
 
+                scoreData.restart();
                 gameState = GameState.GAMEPLAY;
             }
 
