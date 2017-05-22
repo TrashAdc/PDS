@@ -22,6 +22,8 @@ public final class GameData { //this class has other static classes that are pur
                 return KnightAttackData.getPosition(body, bodyWidth, bodyHeight, attackType, direction);
             if (charType instanceof Assassin)
                 return AssassinAttackData.getPosition(body, bodyWidth, bodyHeight, attackType, direction);
+            if (charType instanceof Mage)
+                return MageAttackData.getPosition(body, bodyWidth, bodyHeight, attackType, direction);
             else
                 return ParentAttackData.getPosition(body, bodyWidth, bodyHeight, attackType, direction);
         }
@@ -30,6 +32,8 @@ public final class GameData { //this class has other static classes that are pur
                 return KnightAttackData.getDimension(attackType);
             if (charType instanceof Assassin)
                 return AssassinAttackData.getDimension(attackType);
+            if (charType instanceof Mage)
+                return MageAttackData.getDimension(attackType);
             else
                 return ParentAttackData.getDimension(attackType);
         }
@@ -38,6 +42,8 @@ public final class GameData { //this class has other static classes that are pur
                 return KnightAttackData.getFrames(attackType);
             if (charType instanceof Assassin)
                 return AssassinAttackData.getFrames(attackType);
+            if (charType instanceof Mage)
+                return MageAttackData.getFrames(attackType);
             else
                 return ParentAttackData.getFrames(attackType);
         }
@@ -46,6 +52,8 @@ public final class GameData { //this class has other static classes that are pur
                 return KnightAttackData.getKnockback(attackType, direction);
             if (charType instanceof Assassin)
                 return AssassinAttackData.getKnockback(attackType, direction);
+            if (charType instanceof Mage)
+                return MageAttackData.getKnockback(attackType, direction);
             else
                 return ParentAttackData.getKnockback(attackType, direction);
         }
@@ -54,6 +62,8 @@ public final class GameData { //this class has other static classes that are pur
                 return KnightAttackData.getDamage(attackType);
             if (charType instanceof Assassin)
                 return AssassinAttackData.getDamage(attackType);
+            if (charType instanceof Mage)
+                return MageAttackData.getDamage(attackType);
             else
                 return ParentAttackData.getDamage(attackType);
         }
@@ -314,6 +324,89 @@ public final class GameData { //this class has other static classes that are pur
 
     }
 
+    private static class MageAttackData{
+        public static Vector2 getPosition(Body body, float bodyWidth, float bodyHeight, Character.Attack attackType, boolean direction) {
+            int d = (direction) ? 1 : -1;
+            switch (attackType) {
+                case JAB:
+                    return new Vector2(body.getPosition().x + (bodyWidth * d) + (.5f * d), body.getPosition().y);
+                case S_TILT:
+                    return new Vector2(body.getPosition().x + (bodyWidth * d) + (getDimension(Character.Attack.S_TILT).x * d), body.getPosition().y - getDimension(Character.Attack.S_TILT).y);
+                case D_TILT:
+                    return new Vector2(body.getPosition().x + (bodyWidth * d) + (getDimension(Character.Attack.S_TILT).x * d), (body.getPosition().y - bodyHeight) + getDimension(Character.Attack.S_TILT).y);
+                case U_TILT:
+                    return new Vector2(body.getPosition().x, body.getPosition().y + bodyHeight * 1.5f + getDimension(Character.Attack.D_TILT).y);
+                default:
+                    return new Vector2(0, 0);
+                //add more cases as we add more attacks
+
+            }
+        }
+
+        public static Vector2 getDimension(Character.Attack attackType) {
+            switch (attackType) {
+                case JAB:
+                    return new Vector2(.5f, .5f);
+                case S_TILT:
+                    return new Vector2(1f, .5f);
+                case D_TILT:
+                    return new Vector2(1.25f, .5f);
+                case U_TILT:
+                    return new Vector2(2f, 2f);
+                default:
+                    return new Vector2(.5f, 1f);
+            }
+        }
+
+        public static int getFrames(Character.Attack attackType) {
+            switch (attackType) {
+                case JAB:
+                    return 13;
+                case S_TILT:
+                    return 19;
+                case D_TILT:
+                    return 25;
+                case U_TILT:
+                    return 25;
+                default:
+                    return 30;
+            }
+        }
+
+        public static Vector2 getKnockback(Character.Attack attackType, boolean direction) {
+            int d = (direction) ? 1 : -1;
+            switch (attackType) {
+                case JAB:
+                    return new Vector2(13f * d, 13f);
+                case S_TILT:
+                    return new Vector2(25f * d, 19f);
+                case D_TILT:
+                    return new Vector2(8f * d, 25f);
+                case U_TILT:
+                    return new Vector2(7f * d, 31f);
+                default:
+                    return new Vector2(10f * d, 10f);
+            }
+        }
+
+        public static int getDamage(Character.Attack attackType) {
+            switch (attackType) {
+                case JAB:
+                    return 4;
+                case S_TILT:
+                    return 7;
+                case D_TILT:
+                    return 6;
+                case U_TILT:
+                    return 6;
+                default:
+                    return 1;
+            }
+        }
+
+    }
+
+
 
     //class that stores data about characters such as size, density, sprites, etc
     public static class CharacterData{
@@ -321,6 +414,8 @@ public final class GameData { //this class has other static classes that are pur
             if (characterType instanceof Knight)
                 return new Vector2(2f, 3f * Window.yConst);
             if (characterType instanceof Assassin)
+                return new Vector2(2f, 2.5f * Window.yConst);
+            if (characterType instanceof Mage)
                 return new Vector2(2f, 2.5f * Window.yConst);
             else
                 return new Vector2(1f, 1f * Window.yConst);
@@ -330,6 +425,8 @@ public final class GameData { //this class has other static classes that are pur
                 return .08f;
             if (characterType instanceof Assassin)
                 return .09f;
+            if (characterType instanceof Mage)
+                return .09f;
             else
                 return .5f;
         }
@@ -338,6 +435,8 @@ public final class GameData { //this class has other static classes that are pur
                 return new Sprite(new Texture("core/assets/image/spr_knight_idle.png"));
             else if (characterType instanceof Assassin)
                 return new Sprite(new Texture("core/assets/image/spr_assassin_idle.png"));
+            else if (characterType instanceof Mage)
+                return new Sprite(new Texture("core/assets/image/spr_mage_idle.png"));
             else
                 return new Sprite(new Texture("core/assets/image/spr_parent.png"));
         }
@@ -345,7 +444,9 @@ public final class GameData { //this class has other static classes that are pur
             if (characterType instanceof Knight)
                 return 9;
             else if (characterType instanceof Assassin)
-                return 12;
+                return 13;
+            else if (characterType instanceof Mage)
+                return 11;
             else
                 return 10;
         }

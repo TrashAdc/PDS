@@ -6,15 +6,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  * Created by Devin Popock on 1/17/2017.
-**/
+ **/
 public class Score {
-    private int P1Kill = 0;
-    private int P2Kill = 0;
-    private int stockP1 = 3, stockP2 = 3;;
+    private int P1Kill = 0, P2Kill = 0; //kills of each player
+    private int stockP1 = 3, stockP2 = 3; //stocks of each player
     private float chargeP1, chargeP2;
     private int damageP1, damageP2;
     private boolean stockmodeplaceholder;
-    private Sprite p1Stock, p2Stock;
+    private Sprite p1Stock, p2Stock; //stock images
 
     public Score(int stocks){
         chargeP1 = 0f;
@@ -27,7 +26,9 @@ public class Score {
         stockP2 = stocks;
 
         p1Stock = new Sprite(new Texture("core/assets/image/p1stock.png"));
+        p1Stock.setSize(50f, 50f);
         p2Stock = new Sprite(new Texture("core/assets/image/p2stock.png"));
+        p2Stock.setSize(50f, 50f);
     }
 
     // Returns value of percent as a String
@@ -41,7 +42,6 @@ public class Score {
         percentmodifier2=10/100;;
         DamageD*percentmodifier=chargepart1;
         DamageR*percentmodifier2=chargepart2;
-
         return charge=chargepart2+chargepart1;
     }*/
     private void attackCharge(int baseAtk, GameData.Player player){ //gives player ultimate charge based on damage dealt
@@ -75,18 +75,18 @@ public class Score {
         }
     }
 
-    public int getStock(GameData.Player player){
+    public int getStock(GameData.Player player){ //gets amount of stocks a player has
         return (player == GameData.Player.PLAYER1) ? stockP1 : stockP2;
     }
-    private void takeStock(GameData.Player player, int stocks){
+    private void takeStock(GameData.Player player, int stocks){ //takes a stock from a player
         if (player == GameData.Player.PLAYER1)
             stockP1 -= stocks;
         else
             stockP2 -= stocks;
     }
 
-    // Stores amount of kills by Player1/Player2 as an int
-    public String playerKilled(GameData.Player playerThatDied){
+
+    public String playerKilled(GameData.Player playerThatDied){ //is run when a player dies
         if (playerThatDied == GameData.Player.PLAYER1){
             takeStock(playerThatDied, 1);
             damageP1 = 0;
@@ -102,19 +102,40 @@ public class Score {
         return "";
     }
 
-    public void drawStock(SpriteBatch batch){
+    public void drawStock(SpriteBatch batch){ //draws amount of stocks
         int stock1 = getStock(GameData.Player.PLAYER1);
         int stock2 = getStock(GameData.Player.PLAYER2);
-        float posX1 = (Window.SIZE.width / 10) * 3;
-        float posX2 = 4f;
-        float posY = Window.SIZE.height / 6 + 128;
-        //todo finish this
+        float posX1 = (Window.SIZE.width / 3.75f);
+        float posX2 = (Window.SIZE.width / 1.5f);
+        float posY = Window.SIZE.height / 100;
 
-        if (stock1 == 3)
-            p1Stock.setPosition(posX1 - 128, posY);
+        //draw p1 stock
+        if (stock1 >= 3) {
+            p1Stock.setPosition(posX1 + 25, posY);
             p1Stock.draw(batch);
-           // else if (stock1 == 2)
-           //     else if (stock1 == 1)
+        }
+        if (stock1 >= 2){
+            p1Stock.setPosition(posX1, posY);
+            p1Stock.draw(batch);
+        }
+        if (stock1 >= 1){
+            p1Stock.setPosition(posX1 - 25, posY);
+            p1Stock.draw(batch);
+        }
+
+        //draw p2 stock
+        if (stock2 >= 3) {
+            p2Stock.setPosition(posX2 - 25, posY);
+            p2Stock.draw(batch);
+        }
+        if (stock2 >= 2){
+            p2Stock.setPosition(posX2, posY);
+            p2Stock.draw(batch);
+        }
+        if (stock2 >= 1){
+            p2Stock.setPosition(posX2 + 25, posY);
+            p2Stock.draw(batch);
+        }
 
 
     }
@@ -136,7 +157,6 @@ public class Score {
         }
         return gameover;
     }
-
     public boolean gameResults() {
         if (gameover) {
             if (stockmodeplaceholder) {
@@ -148,7 +168,6 @@ public class Score {
                     //winner1=true
                     //return winner1
                 }
-
             }
             else{
                 if(P1Kill>P2Kill){

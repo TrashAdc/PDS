@@ -69,6 +69,8 @@ public class Character implements CharacterStates { //parent character class
 
     private Hitbox hitbox;
 
+    private boolean silenced; //if the character can not use any attacks or specials
+
     private FrameTimer animationTimer, hitstunTimer;
     protected FrameTimer stunTimer;
 
@@ -98,6 +100,8 @@ public class Character implements CharacterStates { //parent character class
         hasJump = true;
         canJump = true;
         jumpCD = true;
+
+        silenced = false;
 
         currentState = State.IDLE;
         state_new = true;
@@ -138,6 +142,9 @@ public class Character implements CharacterStates { //parent character class
         //System.out.println(body.getPosition());
         return playerSprite;
     }
+
+    public Sprite getActualSprite(){ return playerSprite; }
+
     protected void runFrame(){
         //this method will run every single frame.
         //should mainly be used for timers or specials such as knight's fortify.
@@ -391,7 +398,7 @@ public class Character implements CharacterStates { //parent character class
     }
 
     private void attackInput(){
-        if (attack) {
+        if (attack && !silenced) {
             if (up)
                 currentAttack = Attack.U_TILT;
             else if (down)
@@ -402,7 +409,7 @@ public class Character implements CharacterStates { //parent character class
                 currentAttack = Attack.JAB;
             switchState(State.ATTACK);
         }
-        else if (special) {
+        else if (special && !silenced) {
             if (up)
                 currentSpecial = Attack.Special.U_SPECIAL;
             else if (down)
@@ -448,6 +455,10 @@ public class Character implements CharacterStates { //parent character class
 
     public Vector2 getPosition(){
         return body.getPosition();
+    }
+
+    public void changeSilence(boolean silence){//change whether the character is silenced or not
+        silenced = silence;
     }
 
     private boolean overMaxSpeed(float maxV, boolean positive){ //this method changes the speed to the maximum speed defined if it goes over

@@ -185,18 +185,21 @@ public class ListenerClass implements ContactListener {
     }
 
     private void characterDeath(){
-        if (f1.getBody().getUserData().toString().substring(0, 1).equals("P")) {
-            moveList.add(f1);
-            Window.scoreData.playerKilled((GameData.Player) f1.getBody().getUserData());
-            if (Window.scoreData.getStock((GameData.Player) f1.getBody().getUserData()) <= 0)
-                System.exit(420);
-        }
-        else {
+        if (f2.getBody().getUserData() == GameData.Player.PLAYER1 || f2.getBody().getUserData() == GameData.Player.PLAYER2) {
             moveList.add(f2);
-            Window.scoreData.playerKilled((GameData.Player) f1.getBody().getUserData());
-            if (Window.scoreData.getStock((GameData.Player) f1.getBody().getUserData()) <= 0)
-                System.exit(69);
+            Window.scoreData.playerKilled((GameData.Player) f2.getBody().getUserData());
+            if (Window.scoreData.getStock((GameData.Player) f2.getBody().getUserData()) <= 0) {
+                if (f2.getBody().getUserData() == GameData.Player.PLAYER1) {
+                    Window.winner = GameData.Player.PLAYER2;
+                    Window.gameState = Window.GameState.RESULTS;
+                    return;
+                }
+                Window.winner = GameData.Player.PLAYER1;
+                Window.gameState = Window.GameState.RESULTS;
+
+            }
         }
+
     }
 
 }

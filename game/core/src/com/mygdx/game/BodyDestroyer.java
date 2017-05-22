@@ -12,6 +12,7 @@ import java.util.List;
 public class BodyDestroyer {
     private List<Body> bodyList;
 
+
     public BodyDestroyer(){
         bodyList = new ArrayList<Body>(); //inits list of bodies
     }
@@ -24,8 +25,8 @@ public class BodyDestroyer {
         if (bodyList.size() > 0) {
             for (int i = 0; i < bodyList.size(); i++) {
                 Window.world.destroyBody(bodyList.get(i)); //destroys bodies if there are any
-                bodyList.remove(i);
             }
         }
+        bodyList.clear();
     }
 }

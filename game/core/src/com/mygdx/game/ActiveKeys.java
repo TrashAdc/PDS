@@ -28,6 +28,8 @@ public class ActiveKeys implements InputProcessor {
     public boolean any=false;
     public boolean I=false;
     public boolean M=false;
+    public boolean E = false;
+    public boolean enter = false;
     //</editor-fold>
 
     @Override
@@ -85,7 +87,12 @@ public class ActiveKeys implements InputProcessor {
             case Input.Keys.M:
                 M=true;
                 break;
-
+            case Input.Keys.E:
+                E=true;
+                break;
+            case Input.Keys.ENTER:
+                enter=true;
+                break;
         }
         return true;
     }
@@ -143,9 +150,14 @@ public class ActiveKeys implements InputProcessor {
                 I=false;
                 break;
             case Input.Keys.M:
-                M=true;
+                M=false;
                 break;
-
+            case Input.Keys.E:
+                E=false;
+                break;
+            case Input.Keys.ENTER:
+                enter=false;
+                break;
         }
         return false;
     }

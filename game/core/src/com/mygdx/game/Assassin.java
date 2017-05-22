@@ -255,9 +255,9 @@ public class Assassin extends Character {
     private boolean criticalStrike(){
         Random rand = new Random();
         float luckyNumber = rand.nextInt(1000) / 10; //return true if the lucky number is within the crit chance range.
-        System.out.println(luckyNumber);
+        //System.out.println(luckyNumber);
         if (luckyNumber <= critChance) {
-            System.out.println("CRITICAL!/n crit chance - " + critChance + "/nnumber generated - " + luckyNumber);
+            //System.out.println("CRITICAL!/n crit chance - " + critChance + "/nnumber generated - " + luckyNumber);
             critChance = 0f;
             return true;
         }
@@ -281,13 +281,13 @@ public class Assassin extends Character {
     }
 
     private void addCritChance(float dmg){
-        if (player == GameData.Player.PLAYER1 && ListenerClass.p2Hit  ) {
-            System.out.println(critChance);
+        if (player == GameData.Player.PLAYER1 && ListenerClass.p2Hit) {
+            //System.out.println(critChance);
             critChance += dmg/4f;
             critAdded = true;
         }
         else if (player == GameData.Player.PLAYER2 && ListenerClass.p1Hit ) {
-            System.out.println(critChance);
+            //System.out.println(critChance);
             critChance += dmg/4f;
             critAdded = true;
         }

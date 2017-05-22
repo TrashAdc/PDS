@@ -16,6 +16,7 @@ public class Stage { //parent stage class
     private Sprite memeSprite;
     private Sprite instructSprite;
     private Sprite thingSprite;
+    private Sprite winSprite1, winSprite2;
     private BodyDef stageDef; //stage body def
     private Body stageBody; //stage body
     private float stageWidth, stageHeight; //stage w, h
@@ -41,6 +42,8 @@ public class Stage { //parent stage class
         memeSprite= new Sprite (new Texture("core/assets/image/Wizard.png"));
         instructSprite= new Sprite(new Texture("core/assets/image/LL.png"));
         thingSprite= new Sprite(new Texture("core/assets/image/meh.png"));
+        winSprite1 = new Sprite(new Texture("core/assets/image/p1Win.png"));
+        winSprite2 = new Sprite(new Texture("core/assets/image/p2Win.png"));
         titleSprite.setPosition(Window.camera.viewportWidth / 14, Window.camera.viewportHeight / 12);
         titleSprite.setSize(50f, 50f);
         contSprite.setPosition(Window.camera.viewportWidth/4f, Window.camera.viewportHeight/48);
@@ -53,8 +56,8 @@ public class Stage { //parent stage class
         thingSprite.setSize(25f,25f);
         stageSprite.setSize(stageWidth * 2f, stageHeight * 2f);
         stageSprite.setPosition(getStageCenter().x - stageWidth, getStageCenter().y - stageHeight);
-
-
+        winSprite1.setSize(25f, 50f);
+        winSprite2.setSize(25f, 50f);
 
     }
 
@@ -144,4 +147,7 @@ public class Stage { //parent stage class
     public Sprite getStageSprite5(){return instructSprite;}
 
     public Sprite getStageSprite6(){return thingSprite;}
+
+    public Sprite getWinSprite1(){ return winSprite1; }
+    public Sprite getWinSprite2(){ return winSprite2; }
 }

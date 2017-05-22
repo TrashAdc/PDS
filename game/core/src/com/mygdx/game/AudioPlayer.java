@@ -1,3 +1,4 @@
+package com.mygdx.game;
 import javazoom.jlme.util.Player;
 /* JavaZoom via
 http://www.javazoom.net/javalayer/sourcesme.html
@@ -20,7 +21,7 @@ public class AudioPlayer implements Runnable{
         init();
     }
     /**
-    Uses String input to setup an audioplayer.
+     Uses String input to setup an audioplayer.
      */
     private void init(){
         try{
